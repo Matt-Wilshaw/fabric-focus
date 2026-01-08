@@ -1,12 +1,21 @@
-(# Python bytecode
+## Python: Byte-compiled / caches
 __pycache__/
+**/__pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 
-# C extensions
+## SQLite / DB files
+*.sqlite3
+*.sqlite
+*.db
+db.sqlite3
+db.sqlite3-journal
+
+## C extensions
 *.so
 
-# Distribution / packaging
+## Distribution / packaging
 /.Python
 build/
 develop-eggs/
@@ -23,7 +32,7 @@ var/
 .installed.cfg
 *.egg
 
-# Virtual environments
+## Virtual environments
 .venv/
 venv/
 ENV/
@@ -31,11 +40,11 @@ env/
 env.bak/
 venv.bak/
 
-# Installer logs
+## Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage
+## Unit test / coverage
 htmlcov/
 .tox/
 .nox/
@@ -48,43 +57,40 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Django
+## Django
 *.log
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
 media/
 staticfiles/
 # If you collect static files into a directory named "staticfiles" or "static"
 static/
 
-# Django migrations: keep the files, ignore compiled python files
+## Django DB and migrations: keep migration source, ignore compiled artifacts
 **/migrations/__pycache__/
 **/migrations/*.pyc
 
-# dotenv
+## dotenv
 .env
 .env.*
 
-# IDEs and editors
+## IDEs and editors
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 
-# OS files
+## OS files
 .DS_Store
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# Python tools
+## Python tools
 .python-version
 .mypy_cache/
 pip-wheel-metadata/
-pip-log.txt
 
-# Misc
+## Misc
 celerybeat-schedule
 .ropeproject/
 .cache/
