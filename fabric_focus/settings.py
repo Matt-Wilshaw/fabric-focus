@@ -81,7 +81,7 @@ AUTHENTICATION_BACKENDS = [
     
 ]
 
-site_id = 1
+SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
