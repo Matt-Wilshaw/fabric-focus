@@ -3,31 +3,39 @@
 <html lang="en">
 
 <head>
+    {% block meta %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% endblock %}
 
-    <title>{% block title %}Fabric Focus{% endblock %}</title>
+    <title>Fabric Focus {% block extra_title %}{% endblock %}</title>
 
+    {% block corecss %}
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    {% endblock %}
 
     {% block extra_head %}{% endblock %}
 </head>
 
 <body>
-    {% block content %}
-    <h1>Hello, world!</h1>
-    {% endblock %}
+    <header class="container-fluid fixed-top"></header>
 
+    {% if message %}
+    <div class="message-container"></div>
+    {% endif %}
+
+    {% block corejs %}
     <!-- Scripts: load at end for better performance; preserve order -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous" defer></script>
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"
+        defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-        crossorigin="anonymous" defer></script>
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"
+        defer></script>
+    {% endblock %}
 
     {% block extra_body %}{% endblock %}
 </body>
