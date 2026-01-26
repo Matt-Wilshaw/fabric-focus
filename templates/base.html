@@ -27,6 +27,14 @@
     <div class="message-container"></div>
     {% endif %}
 
+    {% block page_header%}
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    
+
     {% block corejs %}
     <!-- Scripts: load at end for better performance; preserve order -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
