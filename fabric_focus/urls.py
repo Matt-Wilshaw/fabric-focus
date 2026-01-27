@@ -15,10 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+import os
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('home.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-]
+# In development, also serve project static files from the `static/` folder
+if settings.DEBUG:
+    static_root = None
+    if getattr(settings, 'STATICFILES_DIRS', None):
+        try:
+            static_root = settings.STATICFILES_DIRS[0]
+        except Exception:
+            static_root = None
+    if not static_root:
+        static_root = str(os.path.join(settings.BASE_DIR, 'static'))
+    urlpatterns += static(settings.STATIC_URL, document_root=static_root)

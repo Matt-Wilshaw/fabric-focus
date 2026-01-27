@@ -17,13 +17,20 @@
   {% block corecss %}
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% endblock %}
 
   {% block extra_css %}
   {% endblock %}
 
   {% block corejs %}
-  {% comment %}Core JS moved to the end of the body for non-blocking load. Override this block in child templates if needed.{% endcomment %}
+  {% comment %}Core JS moved to the end of the body for non-blocking load. Override this block in child templates if
+  needed.{% endcomment %}
   {% endblock %}
 
   {% block extra_js %}
@@ -84,9 +91,9 @@
                 <div><i class="fas fa-shopping-bag fa-lg"></i></div>
                 <p class="my-0">
                   {% if grand_total %}
-                    ${{ grand_total|floatformat:2 }}
+                  ${{ grand_total|floatformat:2 }}
                   {% else %}
-                    $0.00
+                  $0.00
                   {% endif %}
                 </p>
               </div>
@@ -108,6 +115,7 @@
   {% endblock %}
 
   {% block postloadjs %}
+  <script src="https://kit.fontawesome.com/4e852f7076.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -116,6 +124,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
+
   {% endblock %}
 
 </body>
