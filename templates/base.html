@@ -17,21 +17,14 @@
   {% block corecss %}
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
-    rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% endblock %}
 
   {% block extra_css %}
   {% endblock %}
 
-  {% block corejs %}
-  {% comment %}Core JS moved to the end of the body for non-blocking load. Override this block in child templates if
-  needed.{% endcomment %}
-  {% endblock %}
+ 
 
   {% block extra_js %}
   {% endblock %}
@@ -91,15 +84,30 @@
                 <div><i class="fas fa-shopping-bag fa-lg"></i></div>
                 <p class="my-0">
                   {% if grand_total %}
-                  ${{ grand_total|floatformat:2 }}
+                  £{{ grand_total|floatformat:2 }}
                   {% else %}
-                  $0.00
+                  £0.00
                   {% endif %}
                 </p>
               </div>
             </a>
           </li>
         </ul>
+      </div>
+    </div>
+    <div class="row bg-white">
+      <nav class="navbar navbar-expand-lg navbar-light w-100">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav"
+          aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        {% include 'includes/mobile-top-header.html' %}
+        {% include 'includes/main-nav.html' %}
+      </nav>
+    </div>
+    <div id="delivery-banner" class="row text-center">
+      <div class="col bg-black text-white">
+        <h4 class="logo-font my-1">Free delivery on orders over £{{ free_shipping_threshold }}!</h4>
       </div>
     </div>
   </header>
