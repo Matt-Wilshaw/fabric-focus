@@ -1,0 +1,19 @@
+{
+  "removed_count": 1,
+  "removed": [
+    {
+      "pk": 122,
+      "model": "products.product",
+      "fields": {
+        "sku": "pp5007310136",
+        "name": "Stylus Flare Jeans",
+        "description": "Add a little retro to your wardrobe to create fashion fun with our Stylus flare jeans. high rise flare leg 5-pockets 32\" inseam cotton/polyester/rayon/spandex washable imported ",
+        "price": 60.99,
+        "category": 6,
+        "rating": 5.0,
+        "image_url": "http://s7d9.scene7.com/is/image/JCPenney/DP1202201517023245M.tif?hei=380&amp;wid=380&op_usm=.4,.8,0,0&resmode=sharp2&op_usm=1.5,.8,0,0&resmode=sharp",
+        "image": "DP1202201517023245M.jpg"
+      }
+    }
+  ]
+}
