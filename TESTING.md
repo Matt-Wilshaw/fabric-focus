@@ -239,7 +239,7 @@ How I use this table:
 
 | ID | Area / Feature | Description | Steps to Reproduce | Status | Fix Summary |
 | -- | -------------- | ----------- | ------------------ | ------ | ---------- |
-| 1 | _TBC_ | _TBC_ | _TBC_ | Open | _TBC_ |
+| 1 | Products routing (`/products/`) | Django fails to start due to a `SyntaxError` in `products/urls.py` (missing comma between `path()` entries). Expected: server runs and `/products/` route loads. | 1) In the project root, run `python manage.py check` or `python manage.py runserver`.<br>2) Observe traceback pointing to `products/urls.py` with “Perhaps you forgot a comma?”. | Open | Add the missing comma between URL patterns in `products/urls.py` and re-run `manage.py check`. |
 | 2 | _TBC_ | _TBC_ | _TBC_ | Open | _TBC_ |
 
 
