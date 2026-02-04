@@ -17,7 +17,7 @@ Key areas covered in testing include:
 - Cross-browser and mobile responsiveness (Bootstrap layout)
 
 Current implementation notes (as of this version of the repo):
-- The Products app includes a list view and template; a product detail route/view is present but appears incomplete, so I focus manual testing on the list page first.
+- The Products app includes a list view, product detail view, and a basic search flow via the `q` query string (e.g. `/products/?q=soft`).
 - The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; I need a placeholder file in `media/` if I want that fallback to work.
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user’s perspective without needing knowledge of internal code logic.
@@ -33,8 +33,12 @@ For additional project details and technical information, including instructions
   - [Lighthouse Testing](#lighthouse-testing)
 - [User Stories](#user-stories)
   - [1. Browse Products](#1-browse-products)
-  - [2. View Product Details (If/When Implemented)](#2-view-product-details-ifwhen-implemented)
+  - [2. View Product Details](#2-view-product-details)
   - [3. Create Account / Login / Logout](#3-create-account--login--logout)
+  - [4. Search Products](#4-search-products)
+  - [5. Responsive Navigation + Header Spacing](#5-responsive-navigation--header-spacing)
+  - [6. Product Images and Fallbacks](#6-product-images-and-fallbacks)
+  - [7. Admin / Product Management (Superuser)](#7-admin--product-management-superuser)
 - [Bug Tracker](#bug-tracker)
 
 
@@ -162,6 +166,8 @@ Notes:
 
 ## 1. Browse Products
 
+- [ ] Tested
+
 **Story:**
 As a visitor, I want to view the products list so that I can browse what’s available.
 
@@ -185,7 +191,9 @@ As a visitor, I want to view the products list so that I can browse what’s ava
 
 ---
 
-## 2. View Product Details (If/When Implemented)
+## 2. View Product Details
+
+- [ ] Tested
 
 **Story:**
 As a visitor, I want to click a product and view its details so that I can learn more before purchasing.
@@ -197,13 +205,23 @@ As a visitor, I want to click a product and view its details so that I can learn
 - Then I am taken to a product detail page
 - And I can see the product’s name, description, price, and image (if available)
 
-**Notes:**
+**Manual test steps:**
 
-- A product detail route/view is present in the project, but it may require completion/fixes before I can fully test this story end-to-end.
+1. Navigate to `/products/`.
+2. Click a product image/name.
+3. Confirm the page loads without server errors.
+4. Confirm the page shows the product name, description, and price.
+5. If the product has an image, confirm it renders; if not, confirm a placeholder image is shown.
+
+**Bug tracking / notes:**
+
+- See the Bug Tracker section at the bottom of this document.
 
 ---
 
 ## 3. Create Account / Login / Logout
+
+- [ ] Tested
 
 **Story:**
 As a visitor, I want to create an account and log in so that I can access account-only features.
@@ -218,9 +236,131 @@ As a visitor, I want to create an account and log in so that I can access accoun
 - When I sign in at `/accounts/login/`
 - Then I can log out successfully
 
+**Manual test steps:**
+
+1. Go to `/accounts/signup/` and complete the form with valid details.
+2. Confirm the app accepts the registration.
+3. Go to `/accounts/login/` and sign in.
+4. Confirm the header shows the logged-in state (e.g. “Logout” option).
+5. Log out and confirm I’m returned to a logged-out state.
+
 **Bug tracking / notes:**
 
 - See the Bug Tracker section at the bottom of this document.
+
+---
+
+## 4. Search Products
+
+- [ ] Tested
+
+**Story:**
+As a visitor, I want to search for products so that I can quickly find items by name or description.
+
+**Acceptance criteria:**
+
+- Given I am on any page with the search box
+- When I submit a search term (e.g. `soft`)
+- Then I am taken to `/products/?q=soft`
+- And the results list is filtered to matching products
+
+- Given I submit an empty search
+- When I press search
+- Then I receive a helpful error message
+- And I am redirected back to the products page
+
+**Manual test steps:**
+
+1. Use the header search input and submit `soft`.
+2. Confirm the URL becomes `/products/?q=soft`.
+3. Confirm the page loads without server errors and shows results.
+4. Submit an empty search and confirm a message is shown and the app returns to `/products/`.
+
+**Bug tracking / notes:**
+
+- See Bug #3 for a previous server error found during search testing.
+
+---
+
+## 5. Responsive Navigation + Header Spacing
+
+- [ ] Tested
+
+**Story:**
+As a mobile visitor, I want the navigation/header to work without overlapping page content so that I can browse and search comfortably.
+
+**Acceptance criteria:**
+
+- Given I’m on a mobile-width screen (below 992px)
+- When the navbar collapses
+- Then page content (including the products header) starts below the navbar
+- And the search form remains usable
+
+**Manual test steps:**
+
+1. Open the site on a mobile device (or use Chrome responsive mode).
+2. Navigate to `/products/`.
+3. Confirm the Products header/content isn’t hidden under the navbar.
+4. Open the navbar toggler and confirm it expands/collapses cleanly.
+
+**Bug tracking / notes:**
+
+- See Bug #2 for a mobile header spacing issue and fix.
+
+---
+
+## 6. Product Images and Fallbacks
+
+- [ ] Tested
+
+**Story:**
+As a visitor, I want products to show an image (or a sensible placeholder) so that the product grid looks consistent.
+
+**Acceptance criteria:**
+
+- Given a product has an uploaded image
+- When I view `/products/`
+- Then the product card shows that image
+
+- Given a product does not have an uploaded image
+- When I view `/products/`
+- Then a placeholder image is displayed instead of a broken image
+
+**Manual test steps:**
+
+1. On `/products/`, find one product with an image and confirm it loads.
+2. Find one product without an image and confirm the placeholder image loads.
+3. Click through to the product detail page and repeat the same checks.
+
+**Bug tracking / notes:**
+
+- If placeholder images 404, I log it in the Bug Tracker with the missing file path.
+
+---
+
+## 7. Admin / Product Management (Superuser)
+
+- [ ] Tested
+
+**Story:**
+As an admin user, I want to manage products through the Django admin so that I can add and update items.
+
+**Acceptance criteria:**
+
+- Given I am logged in as a superuser
+- When I visit `/admin/`
+- Then I can create, edit, and delete products and categories
+
+**Manual test steps:**
+
+1. Log in as a superuser.
+2. Navigate to `/admin/`.
+3. Create a test product (or edit an existing one) and save.
+4. Confirm the change is visible on `/products/`.
+
+**Bug tracking / notes:**
+
+- Any admin form errors or missing fields get logged in the Bug Tracker.
 
 ---
 
@@ -241,6 +381,7 @@ How I use this table:
 | -- | -------------- | ----------- | ------------------ | ------ | ---------- |
 | 1 | Products routing (`/products/`) + product detail links | Dev server failed to start due to a syntax error in the Products URLconf, and the products views were incomplete. Expected: `runserver` starts and `/products/` loads; clicking a product navigates to its detail page. | 1) In the project root, run `python manage.py runserver` (or `python manage.py check`).<br>2) Before the fix, Django raises a `SyntaxError` in `products/urls.py` (“Perhaps you forgot a comma?”).<br>3) After the fix, visit `/products/` and click a product card link. | Fixed | Fixed `products/urls.py` by adding the missing comma and using `path('<int:product_id>/', ...)`. Updated `products/views.py` so `all_products` returns `products/products.html` and `product_detail(request, product_id)` renders `products/product_detail.html`. Retested locally on 2026-02-03 (dev server starts; `/products/` loads; product links work). |
 | 2 | Mobile header spacing (Products page) | On mobile widths, the header/content on the main Products page wasn’t pushed down far enough when the navbar collapses, so content sat underneath the nav. Expected: the content starts below the collapsed navbar. | 1) Open `/products/` on a mobile device (or devtools responsive mode).<br>2) Ensure the navbar is in its collapsed state (below 992px wide).<br>3) Observe the header/content position under the navbar. | Fixed | Added a mobile media query in `static/css/base.css` (`@media (max-width: 991px)`) to set `.header-container { padding-top: 116px; }` and adjusted `body` height to `calc(100vh - 116px)`. Retest on a real device on 2026-02-03. |
+| 3 | Products search (`/products/?q=...`) | Searching from the header caused a server error: `NameError` in `all_products` because the search filter used invalid `Q()` syntax (e.g. `name_icontains-query`) instead of proper ORM lookups. Expected: `/products/?q=soft` returns a filtered product list. | 1) Go to `/products/`.<br>2) Use the search box and submit `soft` (or visit `/products/?q=soft`).<br>3) Before the fix, Django raises `NameError: name 'name_icontains' is not defined` in `products/views.py`. | Fixed | Updated `products/views.py` to use `Q(name__icontains=query) | Q(description__icontains=query)` and apply `.distinct()` to the filtered queryset. Retested locally on 2026-02-04 (search query executes and returns results). |
 
 
 
