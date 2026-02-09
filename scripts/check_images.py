@@ -1,3 +1,9 @@
+"""Check fixture image references against the local media directory.
+
+Useful for spotting missing product images (referenced in fixtures but not
+present under the project's `media/` folder) and orphaned files.
+"""
+
 import json
 import os
 from pathlib import Path
@@ -31,7 +37,7 @@ print('missing_sample=' + str(missing[:50]))
 print(f"orphan_media_count={len(orphan_media)}")
 print('orphan_media_sample=' + str(orphan_media[:50]))
 
-# Also save full lists to files for review
+# Also save full lists to files for review (handy for committing evidence).
 out = workspace / 'scripts' / 'image_check_results.json'
 with out.open('w', encoding='utf-8') as f:
     json.dump({'missing': missing, 'present': present, 'orphan_media': orphan_media}, f, indent=2)

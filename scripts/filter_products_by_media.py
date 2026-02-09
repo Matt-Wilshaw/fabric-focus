@@ -1,3 +1,13 @@
+"""Filter products fixture entries to those with existing media files.
+
+This script overwrites `products/fixtures/products.json` after:
+- backing it up with a timestamp
+- removing entries whose `image` field is missing from `media/`
+- renumbering primary keys consecutively (important for fixture integrity)
+
+Note: If other fixtures reference these PKs, those fixtures will need updating.
+"""
+
 import json
 from pathlib import Path
 from datetime import datetime
@@ -8,11 +18,11 @@ media_dir = workspace / 'media'
 backup_path = json_path.with_suffix('.json.bak')
 removed_out = workspace / 'scripts' / 'removed_products.json'
 
-# Read
+# Read fixture data
 with json_path.open(encoding='utf-8') as f:
     products = json.load(f)
 
-# Backup
+# Backup the original fixture so changes are reversible
 timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
 backup_version = json_path.with_name(f"products.json.bak.{timestamp}")
 backup_path.write_text(json.dumps(products, indent=3), encoding='utf-8')
@@ -29,11 +39,11 @@ for p in products:
     else:
         removed_entries.append(p)
 
-# Renumber PKs consecutively starting at 1
+# Renumber PKs consecutively starting at 1 (Django fixtures often expect this)
 for i, p in enumerate(keep_entries, start=1):
     p['pk'] = i
 
-# Write filtered file (overwrite original)
+# Write filtered file (overwrites original)
 with json_path.open('w', encoding='utf-8') as f:
     json.dump(keep_entries, f, indent=3)
 

@@ -1,7 +1,14 @@
+"""Database models for the Products app.
+
+These models represent the catalogue structure (categories and products)
+displayed in the shopfront.
+"""
+
 from django.db import models
 
 
 class Category(models.Model):
+    """A product category used for filtering and navigation."""
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -9,13 +16,16 @@ class Category(models.Model):
     friendly_name = models.CharField(max_length=254, null=True, blank=True)
 
     def __str__(self):
+        """Return the category name as the human-readable representation."""
         return self.name
 
     def get_friendly_name(self):
+        """Return a user-friendly display name, if provided."""
         return self.friendly_name
 
 
 class Product(models.Model):
+    """A product in the catalogue."""
     category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
     sku = models.CharField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254)
@@ -26,4 +36,5 @@ class Product(models.Model):
     image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
+        """Return the product name as the human-readable representation."""
         return self.name

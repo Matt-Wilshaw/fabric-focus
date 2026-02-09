@@ -1,9 +1,14 @@
+"""Admin configuration for the Products app.
+
+Defines how Product and Category appear in the Django admin interface.
+"""
+
 from django.contrib import admin
+
 from .models import Product, Category
 
-# Register your models here.
-
 class ProductAdmin(admin.ModelAdmin):
+    """Admin list view configuration for products."""
     list_display = (
         'sku',
         'name',
@@ -16,6 +21,7 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ('sku',)
 
 class CategoryAdmin(admin.ModelAdmin):
+    """Admin list view configuration for categories."""
     list_display = (
         'friendly_name',
         'name',

@@ -1,12 +1,24 @@
+"""Products app views.
+
+These views power the public products pages and support common browsing
+behaviour such as sorting, category filtering, and free-text search.
+"""
+
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
+from django.db.models.functions import Lower
 from .models import Product, Category
 
-# Create your views here.
 
 def all_products(request):
-    """ A view to show all products, including sorting and search queries """
+    """Render the products list page.
+
+    Supports:
+    - Sorting via `?sort=<field>&direction=asc|desc`
+    - Filtering by category via `?category=name1,name2`
+    - Searching via `?q=<term>`
+    """
 
     products = Product.objects.all()
     query = None
@@ -15,11 +27,13 @@ def all_products(request):
     direction = None
 
     if request.GET:
+        # Sorting (e.g. name, category, price)
         if 'sort' in request.GET:
             sortkey = request.GET['sort']
             sort = sortkey
             if sortkey == 'name':
                 sortkey = 'lower_name'
+                # Case-insensitive sort for a more consistent user experience.
                 products = products.annotate(lower_name=Lower('name'))
 
             if sortkey == 'category':
@@ -31,11 +45,13 @@ def all_products(request):
                     sortkey = f'-{sortkey}'
             products = products.order_by(sortkey)
 
+        # Category filtering (supports comma-separated values)
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             products = products.filter(category__name__in=categories)
             categories = Category.objects.filter(name__in=categories)
 
+        # Free-text search over name and description
         if 'q' in request.GET:
             query = request.GET['q']
             if not query:
@@ -58,7 +74,7 @@ def all_products(request):
 
 
 def product_detail(request, product_id):
-    """ A view to show individual product details """
+    """Render the product detail page for a single product."""
 
     product = get_object_or_404(Product, pk=product_id)
 

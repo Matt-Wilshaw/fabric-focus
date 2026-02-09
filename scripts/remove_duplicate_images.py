@@ -1,3 +1,9 @@
+"""Remove duplicate products based on repeated image filenames.
+
+Keeps the first occurrence of each image filename and removes subsequent
+duplicates, then renumbers PKs and writes the cleaned fixture back.
+"""
+
 import json
 from pathlib import Path
 from datetime import datetime
@@ -9,11 +15,11 @@ removed_out = workspace / 'scripts' / 'removed_duplicate_products.json'
 
 action_image = 'DP1202201517023245M.jpg'
 
-# Read
+# Read fixture data
 with json_path.open(encoding='utf-8') as f:
     products = json.load(f)
 
-# Backup
+# Backup the original fixture so the operation is reversible
 backup_version.write_text(json.dumps(products, indent=3), encoding='utf-8')
 print(f"Backup written to {backup_version}")
 

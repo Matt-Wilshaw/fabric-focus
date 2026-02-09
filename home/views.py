@@ -1,9 +1,8 @@
+"""Views for the Home app."""
+
 from django.shortcuts import render
 
 
-# Create your views here.
-
-
 def index(request):
-    """Return the index page for the home app."""
+    """Render the home page."""
     return render(request, "home/index.html")

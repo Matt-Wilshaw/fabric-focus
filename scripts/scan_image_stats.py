@@ -1,3 +1,8 @@
+"""Print basic statistics about product images in fixtures vs the media folder.
+
+This is a quick analysis script used during data clean-up.
+"""
+
 import json
 from pathlib import Path
 from collections import defaultdict, Counter
