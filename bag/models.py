@@ -1,3 +1,7 @@
-from django.db import models
+"""Database models for the Bag app.
 
-# Create your models here.
+The bag is currently stored in the session, so there are no database-backed
+models defined here.
+"""
+
+from django.db import models
