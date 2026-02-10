@@ -1,6 +1,6 @@
 # Development: start the server
 
-Preferred: use the project venv created in the repo root (`.venv`).
+Use the project virtual environment in the repo root. This repo may have either `venv/` or `.venv/` (both are supported by the wrappers).
 
 PowerShell (recommended):
 ```powershell
