@@ -61,6 +61,7 @@ def all_products(request):
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             products = products.filter(queries)
 
+    # Used by the template to keep sorting UI state in sync with the query.
     current_sorting = f'{sort}_{direction}'
 
     context = {

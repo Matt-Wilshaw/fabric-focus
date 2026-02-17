@@ -1,49 +1,61 @@
-"""Context processors for the Bag app.
-
-The bag is stored in the session as a mapping of product IDs to quantities.
-This context processor exposes derived totals for use in templates.
-"""
+"""Context processor for shopping bag totals and line items."""
 
 from decimal import Decimal
-
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-
 from products.models import Product
 
-
 def bag_contents(request):
-    """Build and return bag-related context for the current request."""
+    """Build bag line items and totals for global template context."""
 
+    # Values exposed to templates (bag page and top-nav total).
     bag_items = []
-    total = Decimal('0')
+    total = 0
     product_count = 0
+
+    # Bag is stored in session and keyed by product id.
+    # Values can be an int quantity or a size map in `items_by_size`.
     bag = request.session.get('bag', {})
 
-    for item_id, quantity in bag.items():
-        product = get_object_or_404(Product, pk=item_id)
-        quantity = int(quantity)
-        line_total = product.price * quantity
-        total += line_total
-        product_count += quantity
+    for item_id, item_data in bag.items():
 
-        bag_items.append({
-            'item_id': item_id,
-            'quantity': quantity,
-            'product': product,
-            'line_total': line_total,
-        })
+        # Non-sized products: quantity is stored directly as an integer.
+        if isinstance(item_data, int):
+            product = get_object_or_404(Product, pk=item_id)
+            total += item_data * product.price
+            product_count += item_data
+            bag_items.append({
+                'item_id': item_id,
+                'quantity': item_data,
+                'product': product,
+            })
+            
+        else:
+            # Size-aware products: quantities are tracked per selected size.
+            product = get_object_or_404(Product, pk=item_id)
+            for size, quantity in item_data['items_by_size'].items():
+                total += quantity * product.price
+                product_count += quantity
+                bag_items.append({
+                    'item_id': item_id,
+                    'quantity': item_data,
+                    'product': product,
+                    'size': size,
+                })
 
+    # Delivery is free over the configured threshold; otherwise percentage-based.
     if total < settings.FREE_DELIVERY_THRESHOLD:
         delivery = total * Decimal(settings.STANDARD_DELIVERY_PERCENTAGE / 100)
         free_delivery_delta = settings.FREE_DELIVERY_THRESHOLD - total
     else:
-        delivery = Decimal('0')
-        free_delivery_delta = Decimal('0')
-
+        delivery = 0
+        free_delivery_delta = 0
+    
+    # Final checkout amount shown to the customer.
     grand_total = delivery + total
-
-    return {
+    
+    # Context is injected into templates via Django's context processor mechanism.
+    context = {
         'bag_items': bag_items,
         'total': total,
         'product_count': product_count,
@@ -52,3 +64,5 @@ def bag_contents(request):
         'free_delivery_threshold': settings.FREE_DELIVERY_THRESHOLD,
         'grand_total': grand_total,
     }
+
+    return context

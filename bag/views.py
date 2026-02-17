@@ -1,35 +1,53 @@
-"""Views for the Bag app."""
+"""Views for the Bag app.
 
-from django.contrib import messages
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+These views handle the basket page and session-backed add-to-bag behaviour,
+including optional product sizes.
+"""
 
-from products.models import Product
-
+from django.shortcuts import render, redirect
 
 def view_bag(request):
     """Render the bag contents page."""
-    return render(request, "bag/bag.html")
+
+    return render(request, 'bag/bag.html')
 
 
 def add_to_bag(request, item_id):
-    """Add a quantity of the specified product to the session-backed bag."""
+    """Add a quantity of the specified product to the session bag.
 
-    product = get_object_or_404(Product, pk=item_id)
+    If a size is posted, quantities are tracked per size under
+    `items_by_size`; otherwise, quantity is stored directly by item id.
+    """
 
-    try:
-        quantity = int(request.POST.get('quantity', 1))
-    except (TypeError, ValueError):
-        quantity = 1
+    # Quantity selector from the product form.
+    quantity = int(request.POST.get('quantity'))
+    # URL we return to after adding the item.
+    redirect_url = request.POST.get('redirect_url')
 
-    if quantity < 1:
-        quantity = 1
+    # Optional size selection (e.g. XS/S/M/L/XL).
+    size = None
+    if 'product_size' in request.POST:
+        size = request.POST['product_size']
 
-    redirect_url = request.POST.get('redirect_url') or reverse('view_bag')
-
+    # Bag is persisted in the session as a dictionary.
     bag = request.session.get('bag', {})
-    item_id_str = str(item_id)
-    bag[item_id_str] = bag.get(item_id_str, 0) + quantity
-    request.session['bag'] = bag
 
-    messages.success(request, f'Added {product.name} to your bag')
+    if size:
+        # Size-aware items are nested by `items_by_size`.
+        if item_id in list(bag.keys()):
+            if size in bag[item_id]['items_by_size'].keys():
+                bag[item_id]['items_by_size'][size] += quantity
+            else:
+                bag[item_id]['items_by_size'][size] = quantity
+        else:
+            bag[item_id] = {'items_by_size': {size: quantity}}
+    else:
+        # Non-sized items are tracked as a single quantity value.
+        if item_id in list(bag.keys()):
+            bag[item_id] += quantity
+        else:
+            bag[item_id] = quantity
+
+    # Persist updated bag structure back to the user's session.
+    request.session['bag'] = bag
     return redirect(redirect_url)
