@@ -65,10 +65,7 @@ coverage.xml
 ## Django
 *.log
 local_settings.py
-media/
 staticfiles/
-# If you collect static files into a directory named "staticfiles" or "static"
-static/
 
 ## Django DB and migrations: keep migration source, ignore compiled artifacts
 **/migrations/__pycache__/
