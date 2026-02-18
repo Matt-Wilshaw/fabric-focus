@@ -28,6 +28,7 @@ def bag_contents(request):
                 'item_id': item_id,
                 'quantity': item_data,
                 'product': product,
+                'lineitem_total': item_data * product.price,
             })
             
         else:
@@ -38,9 +39,10 @@ def bag_contents(request):
                 product_count += quantity
                 bag_items.append({
                     'item_id': item_id,
-                    'quantity': item_data,
+                    'quantity': quantity,
                     'product': product,
                     'size': size,
+                    'lineitem_total': quantity * product.price,
                 })
 
     # Delivery is free over the configured threshold; otherwise percentage-based.
