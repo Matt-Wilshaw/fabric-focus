@@ -117,13 +117,17 @@
   <div class="message-container">
 
     {% for message in messages %}
-    {% if message.tags == 'success' %}
-    {% include 'includes/toasts/toast_success.html' with message=message %}
-    {% elif message.tags == 'info' %}
-    {% include 'includes/toasts/toast_info.html' with message=message %}
-    {% elif message.tags == 'error' %}
-    {% include 'includes/toasts/toast_error.html' with message=message %}
+    {% with message.level as level %}
+    {% if level == 40 %}
+    {% include 'includes/toasts/toast_error.html' %}
+    {% elif level == 30 %}
+    {% include 'includes/toasts/toast_warning.html' %}
+    {% elif level == 25 %}
+    {% include 'includes/toasts/toast_success.html' %}
+    {% else %}
+    {% include 'includes/toasts/toast_info.html' %}
     {% endif %}
+    {% endwith %}
     {% endfor %}
   </div>
   {% endif %}
@@ -135,9 +139,6 @@
   {% endblock %}
 
   {% block postloadjs %}
-  <script type="text/javascript">
-    $('.toast').toast('show');
-  </script>
   <script src="https://kit.fontawesome.com/4e852f7076.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -147,6 +148,11 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $(function () {
+      $('.toast').toast('show');
+    });
+  </script>
 
   {% endblock %}
 
