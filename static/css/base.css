@@ -41,7 +41,7 @@ body {
 .btn-outline-black {
     background: white;
     color: black !important;
-    /* use important to override link colors for <a> elements */
+    /* use important to override link colours for <a> elements */
     border: 1px solid black;
 }
 
@@ -133,7 +133,7 @@ a.category-badge>span.badge:hover {
     right: 36px;
 }
 
-/* Convenience classes - colors copied from Bootstrap */
+/* Convenience classes - colours copied from Bootstrap */
 .arrow-primary {
     border-bottom-color: #007bff !important;
 }
