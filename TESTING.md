@@ -40,9 +40,8 @@ For additional project details and technical information, including instructions
   - [6. Product Images and Fallbacks](#6-product-images-and-fallbacks)
   - [7. Admin / Product Management (Superuser)](#7-admin--product-management-superuser)
 - [Bug Tracker](#bug-tracker)
+- [Testing Table](#testing-table)
 
-
-----
 
 ## Responsiveness Testing
 
@@ -388,7 +387,43 @@ How I use this table:
 | 7   | Shopping bag remove action (`/bag/`)                   | Clicking Remove did not consistently remove items during bag testing. Expected: Remove deletes the selected line item and refreshes the bag page.                                                                                                              | 1) Add one or more products to bag.<br>2) Visit `/bag/`.<br>3) Click Remove on a line item.<br>4) Before fix, item may persist or fail to remove depending on request mismatch.                                                                                           | Fixed  | Updated remove-link JS in `bag/templates/bag/bag.html` to post to `/bag/remove/<item_id>/` with consistent `product_size` payload naming and added failure handling. Retested on 2026-02-18.                                                                                                                                                                  |
 | 8   | Bag JavaScript dependency/protocol (`base.html`)       | Bag AJAX actions can fail when jQuery is loaded incorrectly (slim build or insecure/incorrect protocol). Expected: full jQuery over HTTPS is loaded so `$.post` works reliably.                                                                                | 1) Open `/bag/` and try Remove/Update actions.<br>2) If jQuery is slim or loaded incorrectly, JS behaviors may fail and AJAX methods may be unavailable.<br>3) Check browser console/network for script-load/AJAX errors.                                                 | Fixed  | Confirmed full jQuery (non-slim) is loaded via HTTPS in `templates/base.html`, which supports AJAX methods used by bag scripts. Retested on 2026-02-18.                                                                                                                                                                                                       |
 | 9   | Shopping bag subtotal calculation (`/bag/`)            | Subtotal column was not using a dedicated template calculation pattern. Expected: each row subtotal equals quantity × unit price.                                                                                                                              | 1) Add items to bag and vary quantity.<br>2) Visit `/bag/` and inspect row subtotal values.<br>3) Confirm subtotal updates with quantity and price.                                                                                                                       | Fixed  | Added custom template filter `calc_subtotal` in `bag/templatetags/bag_tools.py`, added `bag/templatetags/__init__.py`, loaded it in `bag/templates/bag/bag.html`, and updated subtotal render to use `item.product.price` with the `calc_subtotal` filter. Retested on 2026-02-18.                                                                            |
-| 10  | Add-to-bag toast notifications (`/products/<id>/`)     | Adding items increased the bag total but no toast appeared in most cases because success messaging only ran in one branch of `add_to_bag`. Expected: every successful add shows toast feedback.                                                                | 1) Open a product detail page.<br>2) Add a sized product or add a product already in the bag.<br>3) Before fix, bag count increases but no toast appears.<br>4) After fix, a success toast is displayed.                                                                  | Fixed  | Updated `bag/views.py` so `messages.success(...)` executes for all successful add flows; verified toast routing and JS initialization order in `templates/base.html`. Retested on 2026-02-19. Commit: `2e89982`.                                                                                                                                              |
+
+| 10  | Media context processor (`settings.py`)                 | Product images with no image file failed to load placeholder image due to missing media context processor. Expected: `{% MEDIA_URL %}` works in templates and placeholder image loads.                                  | 1) Visit product page or checkout with product missing image.<br>2) Before fix, placeholder image fails to load.<br>3) After fix, add `'django.template.context_processors.media'` to settings.py.<br>4) Placeholder image loads correctly. | Fixed  | Added `'django.template.context_processors.media'` to context processors in settings.py. Verified placeholder image loads in templates.                                                                                                                                    |
+
+# Testing Table
+
+This table summarises key test cases and their results for core project features.
+
+| Test Case                          | Area / Feature | Steps / Description                 | Expected Result              | Actual Result | Status |
+| ---------------------------------- | -------------- | ----------------------------------- | ---------------------------- | ------------- | ------ |
+| Homepage loads                     | Home page      | Visit `/`                           | Page loads, no errors        | As expected   | Passed |
+| Product list loads                 | Products       | Visit `/products/`                  | Product list visible         | As expected   | Passed |
+| Product detail loads               | Products       | Click product from list             | Detail page visible          | As expected   | Passed |
+| Add to bag                         | Bag            | Add product to bag                  | Bag updates                  | As expected   | Passed |
+| Remove from bag                    | Bag            | Remove product from bag             | Bag updates                  | As expected   | Passed |
+| Checkout form renders              | Checkout       | Visit `/checkout/`                  | Form visible                 | As expected   | Passed |
+| User registration                  | Accounts       | Register new user                   | Account created              | As expected   | Passed |
+| Login/logout                       | Accounts       | Login and logout flows              | Auth works                   | As expected   | Passed |
+| Admin access                       | Admin          | Login as superuser, visit `/admin/` | Admin dashboard loads        | As expected   | Passed |
+| Invalid login                      | Accounts       | Attempt login with wrong password   | Error message shown          | As expected   | Passed |
+| Password reset                     | Accounts       | Request password reset email        | Email sent, can reset        | As expected   | Passed |
+| Search products                    | Products       | Use search box with query           | Filtered results shown       | As expected   | Passed |
+| Empty search                       | Products       | Submit empty search                 | Error message, redirect      | As expected   | Passed |
+| Add product with size              | Bag            | Add product with size to bag        | Size shown in bag            | As expected   | Passed |
+| Remove product with size           | Bag            | Remove sized product from bag       | Bag updates                  | As expected   | Passed |
+| Responsive layout (mobile)         | Layout         | View site on mobile device          | Layout adapts, no overlap    | As expected   | Passed |
+| Responsive layout (desktop)        | Layout         | View site on desktop                | Layout adapts, no overlap    | As expected   | Passed |
+| Placeholder image for no product   | Products       | View product with no image          | Placeholder image shown      | As expected   | Passed |
+| Add-to-bag toast notification      | Bag            | Add item to bag                     | Toast notification appears   | As expected   | Passed |
+| Remove-from-bag toast notification | Bag            | Remove item from bag                | Toast notification appears   | As expected   | Passed |
+| Admin create product               | Admin          | Create product in admin             | Product appears in list      | As expected   | Passed |
+| Admin edit product                 | Admin          | Edit product in admin               | Changes visible in list      | As expected   | Passed |
+| Admin delete product               | Admin          | Delete product in admin             | Product removed from list    | As expected   | Passed |
+| Checkout with empty bag            | Checkout       | Try to checkout with empty bag      | Error message, redirect      | As expected   | Passed |
+| Checkout with filled bag           | Checkout       | Checkout with items in bag          | Order form shown             | As expected   | Passed |
+| CSS validation                     | Static files   | Validate base.css                   | No errors/warnings           | As expected   | Passed |
+| HTML validation                    | Templates      | Validate home/products templates    | No errors/warnings           | As expected   | Passed |
+| Lighthouse audit                   | Site           | Run Lighthouse on home/products     | Good scores, no major issues | As expected   | Passed |
 
 
 
