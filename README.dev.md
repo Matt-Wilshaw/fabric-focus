@@ -25,3 +25,8 @@ os.environ.setdefault('STRIPE_PUBLIC_KEY', 'pk_test_...')
 os.environ.setdefault('STRIPE_SECRET_KEY', 'sk_test_...')
 ```
 - For CI / pipelines, set secrets via the pipeline environment variables instead of committing them.
+
+Stripe test cards
+- For quick local testing, see the full test card table in `TESTING.md`.
+- Common examples: `4242 4242 4242 4242` (succeeds), `4000 0025 0000 3155` (requires authentication), `4000 0000 0000 9995` (declined), `6205 5000 0000 0000 04` (UnionPay).
+- Enter any future expiry, any CVC, and any postal code when testing.
