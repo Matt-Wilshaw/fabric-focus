@@ -44,5 +44,7 @@ def webhook(request):
 
     # Fall back to the generic event handler for unrecognised events
     event_handler = event_map.get(event['type'], handler.handle_event)
-    response = event_handler(event)
-    return response
+    event_handler(event)
+
+    print('Success!')
+    return HttpResponse(status=200)
