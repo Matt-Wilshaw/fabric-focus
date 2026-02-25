@@ -19,11 +19,11 @@ Both **manual** and **automated** testing methods may be used to validate the fu
 
 Use these card numbers in test mode. Enter any future expiry date, any CVC, and any postal code.
 
-| Card number | Scenario | How to test |
-|-------------|----------|-------------|
-| 4242424242424242 | Payment succeeds (no authentication) | Fill in the credit card form with this number and any expiry, CVC, and postal code. |
-| 4000002500003155 | Payment requires authentication (3DS) | Fill in the credit card form with this number and complete the authentication when prompted. |
-| 4000000000009995 | Card declined (e.g. insufficient_funds) | Fill in the credit card form with this number and any expiry, CVC, and postal code. |
+| Card number         | Scenario                                | How to test                                                                                                   |
+| ------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 4242424242424242    | Payment succeeds (no authentication)    | Fill in the credit card form with this number and any expiry, CVC, and postal code.                           |
+| 4000002500003155    | Payment requires authentication (3DS)   | Fill in the credit card form with this number and complete the authentication when prompted.                  |
+| 4000000000009995    | Card declined (e.g. insufficient_funds) | Fill in the credit card form with this number and any expiry, CVC, and postal code.                           |
 | 6205500000000000004 | UnionPay (variable length 13–19 digits) | Fill in the credit card form with this number (adjust length if needed) and any expiry, CVC, and postal code. |
 
 Key areas covered in testing include:
