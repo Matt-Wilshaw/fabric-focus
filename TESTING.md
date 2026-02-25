@@ -9,6 +9,12 @@ The testing approach follows a combination of **Behaviour-Driven Development (BD
 
 Both **manual** and **automated** testing methods may be used to validate the functionality, usability, and accessibility of the application.
 
+## Stripe testing
+
+- Mock `stripe.PaymentIntent.create` in unit tests; do not call the real Stripe API during unit testing.
+- For integration tests, provide a test `STRIPE_SECRET_KEY` in the test environment (never commit real or live keys).
+- Developer secrets for local runs can be placed in `env.py` (this repo ignores `env.py`).
+
 Key areas covered in testing include:
 - Navigation and URL routing (home, products, and accounts routes)
 - Product listing template rendering (name/price/rating, and image handling)
