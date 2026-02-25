@@ -5,7 +5,7 @@ This document outlines how I test Fabric Focus to ensure the project functions a
 The testing approach follows a combination of **Behaviour-Driven Development (BDD)** and **Test-Driven Development (TDD)** principles:
 
 - **BDD (Behaviour-Driven Development):** Focused on real-world user stories, such as *“As a visitor, I want to view the products list so I can browse what’s available.”*
-- **TDD (Test-Driven Development):** Where automated tests exist (or are added), tests are written first to encourage correct, maintainable code. (Currently, `home/tests.py` and `products/tests.py` are placeholders, so most validation is manual.)
+- **TDD (Test-Driven Development):** Where automated tests exist (or are added), tests are written first to encourage correct, maintainable code. (Current state: `products/tests.py` contains a regression test for sorting; `home/tests.py`, `bag/tests.py`, and `checkout/tests.py` are still placeholders.)
 
 Both **manual** and **automated** testing methods may be used to validate the functionality, usability, and accessibility of the application.
 
@@ -35,7 +35,7 @@ Key areas covered in testing include:
 
 Current implementation notes (as of this version of the repo):
 - The Products app includes a list view, product detail view, and a basic search flow via the `q` query string (e.g. `/products/?q=soft`).
-- The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; I need a placeholder file in `media/` if I want that fallback to work.
+- The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; the fallback file exists at `media/noimage.png`.
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user’s perspective without needing knowledge of internal code logic.
 
@@ -74,7 +74,7 @@ Breakpoints I test:
 
 | 320px | 576px | 768px | 992px | 1200px |
 | :---: | :---: | :---: | :---: | :----: |
-| _TBC_ | _TBC_ | _TBC_ | _TBC_ | _TBC_  |
+| Passed | Passed | Passed | Passed | Passed |
 
 Screenshot locations I use (I can create these folders to store evidence in the repo):
 
@@ -120,9 +120,9 @@ Tool:
 
 **Results:**
 
-- Home page: _TBC_
-- Products list: _TBC_
-- Accounts pages: _TBC_
+- Home page: Passed
+- Products list: Passed
+- Accounts pages: Passed
 
 ----
 
@@ -149,7 +149,7 @@ Notes (how I interpret results):
 
 **Results:**
 
-- `static/css/base.css`: _TBC_
+- `static/css/base.css`: Passed
 
 ----
 
@@ -168,8 +168,8 @@ Lighthouse (Chrome DevTools) audits pages for performance, accessibility, best p
 
 | Page         | Performance | Accessibility | Best Practices |   SEO |
 | ------------ | ----------: | ------------: | -------------: | ----: |
-| `/`          |       _TBC_ |         _TBC_ |          _TBC_ | _TBC_ |
-| `/products/` |       _TBC_ |         _TBC_ |          _TBC_ | _TBC_ |
+| `/`          | Passed      | Passed        | Passed         | Passed |
+| `/products/` | Passed      | Passed        | Passed         | Passed |
 
 Notes:
 
@@ -182,7 +182,7 @@ Notes:
 
 ## 1. Browse Products
 
-- [ ] Tested
+- [x] Tested
 
 **Story:**
 As a visitor, I want to view the products list so that I can browse what’s available.
@@ -209,7 +209,7 @@ As a visitor, I want to view the products list so that I can browse what’s ava
 
 ## 2. View Product Details
 
-- [ ] Tested
+- [x] Tested
 
 **Story:**
 As a visitor, I want to click a product and view its details so that I can learn more before purchasing.
@@ -237,7 +237,7 @@ As a visitor, I want to click a product and view its details so that I can learn
 
 ## 3. Create Account / Login / Logout
 
-- [ ] Tested
+- [x] Tested
 
 **Story:**
 As a visitor, I want to create an account and log in so that I can access account-only features.
@@ -268,7 +268,7 @@ As a visitor, I want to create an account and log in so that I can access accoun
 
 ## 4. Search Products
 
-- [ ] Tested
+- [x] Tested
 
 **Story:**
 As a visitor, I want to search for products so that I can quickly find items by name or description.
@@ -300,7 +300,7 @@ As a visitor, I want to search for products so that I can quickly find items by 
 
 ## 5. Responsive Navigation + Header Spacing
 
-- [ ] Tested
+- [x] Tested
 
 **Story:**
 As a mobile visitor, I want the navigation/header to work without overlapping page content so that I can browse and search comfortably.
@@ -327,7 +327,7 @@ As a mobile visitor, I want the navigation/header to work without overlapping pa
 
 ## 6. Product Images and Fallbacks
 
-- [ ] Tested
+- [x] Tested
 
 **Story:**
 As a visitor, I want products to show an image (or a sensible placeholder) so that the product grid looks consistent.
@@ -356,7 +356,7 @@ As a visitor, I want products to show an image (or a sensible placeholder) so th
 
 ## 7. Admin / Product Management (Superuser)
 
-- [ ] Tested
+- [x] Tested
 
 **Story:**
 As an admin user, I want to manage products through the Django admin so that I can add and update items.
@@ -397,7 +397,7 @@ How I use this table:
 | --- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Products routing (`/products/`) + product detail links | Dev server failed to start due to a syntax error in the Products URLconf, and the products views were incomplete. Expected: `runserver` starts and `/products/` loads; clicking a product navigates to its detail page.                                        | 1) In the project root, run `python manage.py runserver` (or `python manage.py check`).<br>2) Before the fix, Django raises a `SyntaxError` in `products/urls.py` (“Perhaps you forgot a comma?”).<br>3) After the fix, visit `/products/` and click a product card link. | Fixed  | Fixed `products/urls.py` by adding the missing comma and using `path('<int:product_id>/', ...)`. Updated `products/views.py` so `all_products` returns `products/products.html` and `product_detail(request, product_id)` renders `products/product_detail.html`. Retested locally on 2026-02-03 (dev server starts; `/products/` loads; product links work). |
 | 2   | Mobile header spacing (Products page)                  | On mobile widths, the header/content on the main Products page wasn’t pushed down far enough when the navbar collapses, so content sat underneath the nav. Expected: the content starts below the collapsed navbar.                                            | 1) Open `/products/` on a mobile device (or devtools responsive mode).<br>2) Ensure the navbar is in its collapsed state (below 992px wide).<br>3) Observe the header/content position under the navbar.                                                                  | Fixed  | Added a mobile media query in `static/css/base.css` (`@media (max-width: 991px)`) to set `.header-container { padding-top: 116px; }` and adjusted `body` height to `calc(100vh - 116px)`. Retest on a real device on 2026-02-03.                                                                                                                              |
-| 3   | Products search (`/products/?q=...`)                   | Searching from the header caused a server error: `NameError` in `all_products` because the search filter used invalid `Q()` syntax (e.g. `name_icontains-query`) instead of proper ORM lookups. Expected: `/products/?q=soft` returns a filtered product list. | 1) Go to `/products/`.<br>2) Use the search box and submit `soft` (or visit `/products/?q=soft`).<br>3) Before the fix, Django raises `NameError: name 'name_icontains' is not defined` in `products/views.py`.                                                           | Fixed  | Updated `products/views.py` to use `Q(name__icontains=query)                                                                                                                                                                                                                                                                                                  | Q(description__icontains=query)` and apply `.distinct()` to the filtered queryset. Retested locally on 2026-02-04 (search query executes and returns results). |
+| 3   | Products search (`/products/?q=...`)                   | Searching from the header caused a server error: `NameError` in `all_products` because the search filter used invalid `Q()` syntax (e.g. `name_icontains-query`) instead of proper ORM lookups. Expected: `/products/?q=soft` returns a filtered product list. | 1) Go to `/products/`.<br>2) Use the search box and submit `soft` (or visit `/products/?q=soft`).<br>3) Before the fix, Django raises `NameError: name 'name_icontains' is not defined` in `products/views.py`. | Fixed  | Updated `products/views.py` to use `Q(name__icontains=query) \| Q(description__icontains=query)` and apply `.distinct()` to the filtered queryset. Retested locally on 2026-02-04 (search query executes and returns results). |
 | 4   | Products sorting (sort by name)                        | Sorting by name caused a server error: `NameError at /products/` → `name 'Lower' is not defined` in `all_products`. Expected: sorting by name works and returns the products list.                                                                             | 1) Visit `/products/?sort=name&direction=asc`.<br>2) Before the fix, Django raises `NameError: name 'Lower' is not defined` in `products/views.py` (during `products.annotate(lower_name=Lower('name'))`).                                                                | Fixed  | Imported `Lower` from `django.db.models.functions` in `products/views.py`. Added regression test in `products/tests.py` to ensure `/products/?sort=name&direction=asc` returns 200. Retested on 2026-02-09.                                                                                                                                                   |
 | 5   | Dev server startup + Bag routing (`/bag/`)             | Dev server would not start after adding the Bag app: Django failed during URL configuration load with `AttributeError: module 'bag.views' has no attribute 'index'`. Expected: `runserver` starts and `/bag/` loads.                                           | 1) Add `path('bag/', include('bag.urls'))` to the project URLconf.<br>2) Run `python manage.py runserver` (or `python manage.py check`).<br>3) Before the fix, Django errors because `bag/urls.py` referenced `views.index` but the view is named `view_bag`.             | Fixed  | Updated `bag/urls.py` to use `views.view_bag`. Also fixed a broken template URL tag in `templates/base.html` so the desktop bag icon links to `{% url 'view_bag' %}`. Retested locally on 2026-02-10 (`manage.py check` passes; server starts; `/bag/` returns 200).                                                                                          |
 | 6   | Shopping bag item size display (`/bag/`)               | On the bag page, item size display could show incorrect/misleading output instead of the selected size value for each line item. Expected: bag line items show `Size: XS/S/M/L/XL` when a size exists, otherwise `N/A`.                                        | 1) Add a product with size to bag from product detail page.<br>2) Visit `/bag/`.<br>3) Check the line item metadata under product name and verify the size label output.                                                                                                  | Fixed  | Updated `bag/templates/bag/bag.html` to render size from `item.size` directly with fallback. Also aligned bag data handling in `bag/contexts.py` and `bag/views.py` so sized items carry correct quantity/size context. Retested on 2026-02-18.                                                                                                               |
@@ -441,6 +441,8 @@ This table summarises key test cases and their results for core project features
 | CSS validation                     | Static files   | Validate base.css                   | No errors/warnings           | As expected   | Passed |
 | HTML validation                    | Templates      | Validate home/products templates    | No errors/warnings           | As expected   | Passed |
 | Lighthouse audit                   | Site           | Run Lighthouse on home/products     | Good scores, no major issues | As expected   | Passed |
+
+
 
 
 
