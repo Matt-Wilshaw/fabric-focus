@@ -10,10 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env at project root (if present)
+load_dotenv(str(BASE_DIR / '.env'))
+
+# If an `env.py` exists at project root, import it to set local env defaults
+if (BASE_DIR / 'env.py').is_file():
+    import env  # noqa: F401
 
 
 # Quick-start development settings - unsuitable for production
@@ -179,5 +187,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Stripe keys (set via environment variables in production)
 import os
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_test_51T4SYFGVDzcoRrRriPGIrQ4mCoSw3CXC7L6PjCtaOU1PYeOSvALy7onJ0ol9GXjnTUGCx8YBLLvtfsbkWUAbUl5a00M6uxUpMB')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_placeholder')
+STRIPE_CURRENCY = 'GBP'
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')

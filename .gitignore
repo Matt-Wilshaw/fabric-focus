@@ -74,6 +74,7 @@ staticfiles/
 ## dotenv
 .env
 .env.*
+env.py
 
 ## IDEs and editors
 .vscode/
