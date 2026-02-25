@@ -9,6 +9,28 @@ The testing approach follows a combination of **Behaviour-Driven Development (BD
 
 Both **manual** and **automated** testing methods may be used to validate the functionality, usability, and accessibility of the application.
 
+## Table of Contents
+
+- [Testing](#testing)
+- [Table of Contents](#table-of-contents)
+- [Stripe testing](#stripe-testing)
+- [Stripe webhook command-output evidence](#stripe-webhook-command-output-evidence)
+- [Testing scope and notes](#testing-scope-and-notes)
+- [Responsiveness Testing](#responsiveness-testing)
+- [HTML Validator Testing](#html-validator-testing)
+- [CSS Validator Testing](#css-validator-testing)
+- [Lighthouse Testing](#lighthouse-testing)
+- [User Stories](#user-stories)
+- [1. Browse Products](#1-browse-products)
+- [2. View Product Details](#2-view-product-details)
+- [3. Create Account / Login / Logout](#3-create-account--login--logout)
+- [4. Search Products](#4-search-products)
+- [5. Responsive Navigation + Header Spacing](#5-responsive-navigation--header-spacing)
+- [6. Product Images and Fallbacks](#6-product-images-and-fallbacks)
+- [7. Admin / Product Management (Superuser)](#7-admin--product-management-superuser)
+- [Bug Tracker](#bug-tracker)
+- [Testing Table](#testing-table)
+
 ## Stripe testing
 
 - Mock `stripe.PaymentIntent.create` in unit tests; do not call the real Stripe API during unit testing.
@@ -26,6 +48,66 @@ Use these card numbers in test mode. Enter any future expiry date, any CVC, and 
 | 4000000000009995    | Card declined (e.g. insufficient_funds) | Fill in the credit card form with this number and any expiry, CVC, and postal code.                           |
 | 6205500000000000004 | UnionPay (variable length 13–19 digits) | Fill in the credit card form with this number (adjust length if needed) and any expiry, CVC, and postal code. |
 
+## Stripe webhook command-output evidence
+
+Date run: 2026-02-25
+
+### Environment checks
+
+```powershell
+stripe version
+```
+
+Observed output:
+
+```text
+stripe version 1.37.0
+Checking for new versions...
+```
+
+```powershell
+python manage.py check
+```
+
+Observed output:
+
+```text
+System check identified no issues (0 silenced).
+```
+
+### Webhook endpoint check
+
+```powershell
+python manage.py shell -c "from django.test import Client; c=Client(); r=c.post('/checkout/wh/', data='{}', content_type='application/json', HTTP_HOST='localhost'); print('status=', r.status_code)"
+```
+
+Observed output:
+
+```text
+status= 400
+Bad Request: /checkout/wh/
+```
+
+Note: This 400 is expected for an unsigned test request. Stripe signature verification requires a valid `Stripe-Signature` header and payload.
+
+### Handler method checks
+
+```powershell
+python manage.py shell -c "from django.test import RequestFactory; from checkout.webhook_handler import StripeWH_Handler; req=RequestFactory().post('/checkout/wh/'); h=StripeWH_Handler(req); events=['payment_intent.created','payment_intent.succeeded','payment_intent.payment_failed']; [print(et, '->', (h.handle_event({'type':et}) if et=='payment_intent.created' else h.handle_payment_intent_succeeded({'type':et}) if et=='payment_intent.succeeded' else h.handle_payment_intent_payment_failed({'type':et})).status_code) for et in events]"
+```
+
+Observed output:
+
+```text
+payment_intent.created -> 200
+payment_intent.succeeded -> 200
+payment_intent.payment_failed -> 200
+```
+
+This confirms the webhook handler class methods for unhandled, succeeded, and failed payment-intent events all return HTTP 200 responses.
+
+## Testing scope and notes
+
 Key areas covered in testing include:
 - Navigation and URL routing (home, products, and accounts routes)
 - Product listing template rendering (name/price/rating, and image handling)
@@ -42,22 +124,6 @@ For each user story, **black box testing** is applied — evaluating the system 
 All discovered bugs, fixes, and retests should be documented throughout this file.
 
 For additional project details and technical information, including instructions on running the site, please refer to the [README.md](./README.md)
-
-- [Testing](#testing)
-  - [Responsiveness Testing](#responsiveness-testing)
-  - [HTML Validator Testing](#html-validator-testing)
-  - [CSS Validator Testing](#css-validator-testing)
-  - [Lighthouse Testing](#lighthouse-testing)
-- [User Stories](#user-stories)
-  - [1. Browse Products](#1-browse-products)
-  - [2. View Product Details](#2-view-product-details)
-  - [3. Create Account / Login / Logout](#3-create-account--login--logout)
-  - [4. Search Products](#4-search-products)
-  - [5. Responsive Navigation + Header Spacing](#5-responsive-navigation--header-spacing)
-  - [6. Product Images and Fallbacks](#6-product-images-and-fallbacks)
-  - [7. Admin / Product Management (Superuser)](#7-admin--product-management-superuser)
-- [Bug Tracker](#bug-tracker)
-- [Testing Table](#testing-table)
 
 
 ## Responsiveness Testing
@@ -178,9 +244,9 @@ Notes:
 
 ---
 
-# User Stories
+## User Stories
 
-## 1. Browse Products
+### 1. Browse Products
 
 - [x] Tested
 
@@ -207,7 +273,7 @@ As a visitor, I want to view the products list so that I can browse what’s ava
 
 ---
 
-## 2. View Product Details
+### 2. View Product Details
 
 - [x] Tested
 
@@ -235,7 +301,7 @@ As a visitor, I want to click a product and view its details so that I can learn
 
 ---
 
-## 3. Create Account / Login / Logout
+### 3. Create Account / Login / Logout
 
 - [x] Tested
 
@@ -266,7 +332,7 @@ As a visitor, I want to create an account and log in so that I can access accoun
 
 ---
 
-## 4. Search Products
+### 4. Search Products
 
 - [x] Tested
 
@@ -298,7 +364,7 @@ As a visitor, I want to search for products so that I can quickly find items by 
 
 ---
 
-## 5. Responsive Navigation + Header Spacing
+### 5. Responsive Navigation + Header Spacing
 
 - [x] Tested
 
@@ -325,7 +391,7 @@ As a mobile visitor, I want the navigation/header to work without overlapping pa
 
 ---
 
-## 6. Product Images and Fallbacks
+### 6. Product Images and Fallbacks
 
 - [x] Tested
 
@@ -354,7 +420,7 @@ As a visitor, I want products to show an image (or a sensible placeholder) so th
 
 ---
 
-## 7. Admin / Product Management (Superuser)
+### 7. Admin / Product Management (Superuser)
 
 - [x] Tested
 
@@ -380,7 +446,7 @@ As an admin user, I want to manage products through the Django admin so that I c
 
 ---
 
-# Bug Tracker
+## Bug Tracker
 
 I log bugs here as I find them during manual testing and validation.
 
@@ -407,7 +473,7 @@ How I use this table:
 
 | 10  | Media context processor (`settings.py`)                 | Product images with no image file failed to load placeholder image due to missing media context processor. Expected: `{% MEDIA_URL %}` works in templates and placeholder image loads.                                  | 1) Visit product page or checkout with product missing image.<br>2) Before fix, placeholder image fails to load.<br>3) After fix, add `'django.template.context_processors.media'` to settings.py.<br>4) Placeholder image loads correctly. | Fixed  | Added `'django.template.context_processors.media'` to context processors in settings.py. Verified placeholder image loads in templates.                                                                                                                                    |
 
-# Testing Table
+## Testing Table
 
 This table summarises key test cases and their results for core project features.
 

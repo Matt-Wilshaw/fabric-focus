@@ -1,7 +1,7 @@
 
 # Fabric-Focus
 
-Introduction
+## Introduction
 
 Fabric-Focus is about performance, comfort, and style. By combining carefully selected fabrics, modern designs, and sport-specific functionality, our clothing is made to support you through every workout and active moment.
 
@@ -9,7 +9,7 @@ Whether you're training hard at the gym, heading out for a run, or looking for e
 
 
 
-# Requirements
+## Requirements
 
 This project uses the following key software and Python packages:
 
@@ -21,34 +21,26 @@ This project uses the following key software and Python packages:
 - Bootstrap (via CDN)
 - Other dependencies listed in requirements.txt
 
-# Table of Contents
+## Table of Contents
 
 - [Fabric-Focus](#fabric-focus)
 - [Requirements](#requirements)
 - [Table of Contents](#table-of-contents)
-- [Jesse James Garrett - The Five Planes of User Experience](#jesse-james-garrett--the-five-planes-of-user-experience)
-  - [Project: Fabric-Focus (Sportswear Clothing Shop)](#project-fabric-focus-sportswear-clothing-shop)
-    - [1. Strategy Plane](#1-strategy-plane)
-    - [2. Scope Plane](#2-scope-plane)
-    - [3. Structure Plane](#3-structure-plane)
-    - [4. Skeleton Plane](#4-skeleton-plane)
-    - [5. Surface Plane](#5-surface-plane)
-  - [User Stories](#user-stories)
-  - [Installation / Setup](#installation--setup)
-    - [1. Clone the repository](#1-clone-the-repository)
-    - [2. Create a virtual environment (optional but recommended)](#2-create-a-virtual-environment-optional-but-recommended)
-- [Activate it:](#activate-it)
-- [Windows](#windows)
-- [macOS/Linux](#macoslinux)
-    - [3. Install dependencies](#3-install-dependencies)
-    - [4. Apply database migrations](#4-apply-database-migrations)
-    - [5. Create a superuser (optional, for admin access)](#5-create-a-superuser-optional-for-admin-access)
-    - [6. Run the development server](#6-run-the-development-server)
+- [Jesse James Garrett: The Five Planes of User Experience](#jesse-james-garrett-the-five-planes-of-user-experience)
+- [Project: Fabric-Focus (Sportswear Clothing Shop)](#project-fabric-focus-sportswear-clothing-shop)
+- [1. Strategy Plane](#1-strategy-plane)
+- [2. Scope Plane](#2-scope-plane)
+- [3. Structure Plane](#3-structure-plane)
+- [4. Skeleton Plane](#4-skeleton-plane)
+- [5. Surface Plane](#5-surface-plane)
+- [User Stories](#user-stories)
+- [Installation / Setup](#installation--setup)
 - [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
+- [Frontend](#frontend)
 
 
-# Jesse James Garrett - The Five Planes of User Experience
-## Project: Fabric-Focus (Sportswear Clothing Shop)
+## Jesse James Garrett: The Five Planes of User Experience
+### Project: Fabric-Focus (Sportswear Clothing Shop)
 
 ### 1. Strategy Plane
 The goal of Fabric-Focus is to provide users with a convenient and engaging online platform for purchasing sportswear. The current implementation focuses on secure account access, product discovery, bag management, and checkout.
@@ -189,28 +181,39 @@ The design supports both usability and brand identity, creating a professional a
 Follow these steps to set up Fabric-Focus locally:
 
 ### 1. Clone the repository
+```bash
 git clone https://github.com/your-username/fabric-focus.git
 cd fabric-focus
+```
 
 ### 2. Create a virtual environment (optional but recommended)
+```bash
 python -m venv venv
-# Activate it:
-# Windows
+# Activate it (Windows):
 venv\Scripts\activate
-# macOS/Linux
+# Activate it (macOS/Linux):
 source venv/bin/activate
+```
 
 ### 3. Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
 ### 4. Apply database migrations
+```bash
 python manage.py migrate
+```
 
 ### 5. Create a superuser (optional, for admin access)
+```bash
 python manage.py createsuperuser
+```
 
 ### 6. Run the development server
+```bash
 python manage.py runserver
+```
 
 ### Stripe testing (Stripe CLI - Windows)
 
