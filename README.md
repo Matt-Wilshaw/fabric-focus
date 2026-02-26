@@ -106,38 +106,38 @@ The design supports both usability and brand identity, creating a professional a
 ## User Stories
 
 - **Authentication & Account**
-  - [ ] Visitor: create an account to save details and view orders.
-  - [ ] Registered user: log in with email/password to access the account.
-  - [ ] Registered user: reset password via email to regain access.
+  - [x] Visitor: create an account to save details and view orders.
+  - [x] Registered user: log in with email/password to access the account.
+  - [x] Registered user: reset password via email to regain access.
   - [ ] Account holder: update profile (name, address, phone) for correct shipping.
   - [ ] Account holder: manage multiple shipping addresses.
   - [ ] Account holder: manage saved payment methods securely.
   - [ ] Admin: deactivate/reactivate user accounts to manage abuse.
 
 - **Catalogue, Search & Navigation**
-  - [ ] Shopper: browse categories (men/women/kids/gear) to discover items.
-  - [ ] Shopper: search with filters (size, colour, brand, price) to narrow results.
-  - [ ] Shopper: sort results (relevance, price, newest, rating) to prioritise listings.
+  - [x] Shopper: browse categories (men/women/kids/gear) to discover items.
+  - [x] Shopper: search with filters (size, colour, brand, price) to narrow results.
+  - [x] Shopper: sort results (relevance, price, newest, rating) to prioritise listings.
   - [ ] Shopper: use pagination or infinite scroll for large result sets.
 
 - **Product Pages & Reviews**
-  - [ ] Shopper: view product pages with images, specs, size charts, and availability.
+  - [x] Shopper: view product pages with images, specs, size charts, and availability.
   - [ ] Shopper: read customer reviews and average ratings to assess fit and quality.
   - [ ] Authenticated user: post reviews (rating, text, photos) to share feedback.
   - [ ] Shopper: see recommended/related products for discovery.
   - [ ] Admin: moderate or remove abusive reviews.
 
 - **Cart & Checkout**
-  - [ ] Shopper: add/remove items and change quantities in the cart.
+  - [x] Shopper: add/remove items and change quantities in the cart.
   - [ ] Shopper: save and retrieve cart contents when logged in.
-  - [ ] Shopper: complete a multi-step checkout (shipping -> payment -> review).
-  - [ ] Shopper: view shipping cost estimates before checkout.
+  - [x] Shopper: complete a multi-step checkout (shipping -> payment -> review).
+  - [x] Shopper: view shipping cost estimates before checkout.
   - [ ] Shopper: apply discount codes and see adjusted totals.
   - [ ] Shopper: choose saved or enter new addresses at checkout.
 
 - **Payments & Security**
-  - [ ] Shopper: pay securely (card, Apple/Google Pay, PayPal) using tokenised processing.
-  - [ ] Shopper: receive order confirmation emails/receipts after payment.
+  - [x] Shopper: pay securely (card, Apple/Google Pay, PayPal) using tokenised processing.
+  - [x] Shopper: receive order confirmation emails/receipts after payment.
   - [ ] Admin: view payment status and retry failed payments.
 
 - **Orders & Fulfilment**
@@ -147,22 +147,22 @@ The design supports both usability and brand identity, creating a professional a
   - [ ] Staff: use an orders dashboard to pick, pack, and update shipment status.
 
 - **Notifications & Communication**
-  - [ ] User: receive emails for order receipt, shipping updates, and delivery.
+  - [x] User: receive emails for order receipt, shipping updates, and delivery.
   - [ ] User: opt into SMS/email delivery updates.
 
 - **Admin & Content Management**
-  - [ ] Admin: add/edit/remove products, prices, images, and inventory.
+  - [x] Admin: add/edit/remove products, prices, images, and inventory.
   - [ ] Admin: create and manage discount codes and promotions.
   - [ ] Admin: view sales reports and low-stock alerts.
   - [ ] Admin: configure role-based access for staff accounts.
 
 - **User Experience & Accessibility**
-  - [ ] Shopper: experience responsive pages that work on mobile devices.
+  - [x] Shopper: experience responsive pages that work on mobile devices.
   - [ ] Shopper: access clear size guidance and an easy returns process.
   - [ ] User: use accessible UI (keyboard navigation, screen-reader support).
 
 - **Performance, Privacy & Compliance**
-  - [ ] Stakeholder: ensure fast page loads and CDN for static assets.
+  - [x] Stakeholder: ensure fast page loads and CDN for static assets.
   - [ ] User: control personal data (consent, export, delete) for GDPR/CCPA.
   - [ ] Admin: maintain secure audit logging for critical actions.
 
@@ -188,11 +188,11 @@ cd fabric-focus
 
 ### 2. Create a virtual environment (optional but recommended)
 ```bash
-python -m venv venv
+python -m venv .venv
 # Activate it (Windows):
-venv\Scripts\activate
+.venv\Scripts\activate
 # Activate it (macOS/Linux):
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 ### 3. Install dependencies
