@@ -24,8 +24,5 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
     Create a user profile for new users, and keep it in sync on save.
     """
-    if created:
-        UserProfile.objects.create(user=instance)
-    else:
-        UserProfile.objects.get_or_create(user=instance)
-        instance.userprofile.save()
+    profile, _ = UserProfile.objects.get_or_create(user=instance)
+    profile.save()

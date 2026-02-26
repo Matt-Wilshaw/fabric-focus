@@ -212,6 +212,11 @@ a.category-badge>span.badge:hover {
     color: #17a2b8;
 }
 
+/* Keep search input placeholder aligned with the rest of the site */
+input[name='q']::placeholder {
+    color: #aab7c4;
+}
+
 
 /* -------------------------------- Media Queries */
 
