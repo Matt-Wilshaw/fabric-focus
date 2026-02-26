@@ -11,6 +11,33 @@ var stripePublicKey = $('#id_stripe_public_key').text().slice(1, -1);
 var clientSecret = $('#id_client_secret').text().slice(1, -1);
 var stripe = Stripe(stripePublicKey);
 var elements = stripe.elements();
+
+function toStripeCountryCode(countryValue) {
+    var value = $.trim(countryValue || '');
+    if (!value) return '';
+
+    var normalized = value.toUpperCase();
+    var aliases = {
+        'UNITED KINGDOM': 'GB',
+        'GREAT BRITAIN': 'GB',
+        'UK': 'GB',
+        'ENGLAND': 'GB',
+        'SCOTLAND': 'GB',
+        'WALES': 'GB',
+        'NORTHERN IRELAND': 'GB'
+    };
+
+    if (aliases[normalized]) {
+        return aliases[normalized];
+    }
+
+    if (normalized.length === 2) {
+        return normalized;
+    }
+
+    return normalized;
+}
+
 var style = {
     base: {
         color: '#000',
@@ -26,7 +53,10 @@ var style = {
         iconColor: '#dc3545'
     }
 };
-var card = elements.create('card', { style: style });
+var card = elements.create('card', {
+    style: style,
+    hidePostalCode: true
+});
 card.mount('#card-element');
 
 // Handle realtime validation errors on the card element
@@ -73,7 +103,8 @@ form.addEventListener('submit', function (ev) {
                         line1: $.trim(form.street_address1.value),
                         line2: $.trim(form.street_address2.value),
                         city: $.trim(form.town_or_city.value),
-                        country: $.trim(form.country.value),
+                        country: toStripeCountryCode(form.country.value),
+                        postal_code: $.trim(form.postcode.value),
                         state: $.trim(form.county.value),
                     }
                 }
@@ -85,7 +116,7 @@ form.addEventListener('submit', function (ev) {
                     line1: $.trim(form.street_address1.value),
                     line2: $.trim(form.street_address2.value),
                     city: $.trim(form.town_or_city.value),
-                    country: $.trim(form.country.value),
+                    country: toStripeCountryCode(form.country.value),
                     postal_code: $.trim(form.postcode.value),
                     state: $.trim(form.county.value),
                 }
@@ -114,3 +145,4 @@ form.addEventListener('submit', function (ev) {
         location.reload();
     });
 });
+
