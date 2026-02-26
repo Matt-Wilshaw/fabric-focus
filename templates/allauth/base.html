@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_title %}| {% block head_title %}{% endblock %}{% endblock %}
+
+{% block extra_meta %}
+{{ block.super }}
+{% block extra_head %}{% endblock %}
+{% endblock %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="overlay"></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+{% block extra_body %}{% endblock %}
+{% endblock %}
