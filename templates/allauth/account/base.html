@@ -1,20 +1,25 @@
 {% extends "allauth/base.html" %}
 {% load i18n %}
 
-{% block body %}
-
-{% if messages %}
-<div>
-    <strong>{% trans "Messages:" %}</strong>
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-
 {% block content %}
-{% endblock %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+<div class="overlay"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="allauth-form-inner-content">
+                {% block inner_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
 
-{% endblock %}
+{% block extra_body %}
+{{ block.super }}
+{% endblock extra_body %}
