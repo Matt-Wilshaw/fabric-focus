@@ -36,6 +36,16 @@
     border: 1px solid #000;
 }
 
+#payment-form select,
+#payment-form select option {
+    color: #000;
+}
+
+#payment-form select:invalid,
+#payment-form select option[value=""] {
+    color: #aab7c4;
+}
+
 #loading-overlay {
     display: none;
     position: fixed;

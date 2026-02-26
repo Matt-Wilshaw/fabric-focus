@@ -7,6 +7,7 @@ defusedxml==0.7.1
 django-crispy-forms==1.14.0
 Django==3.2.25
 django-allauth==0.50.0
+django-countries==7.2.1
 idna==3.11
 oauthlib==3.3.1
 pycparser==2.23
@@ -15,7 +16,7 @@ python3-openid==3.2.0
 pytz==2025.2
 requests==2.32.5
 requests-oauthlib==2.0.0
-setuptools==80.9.0
+setuptools==75.8.0
 sqlparse==0.5.5
 urllib3==2.6.3
 wheel==0.45.1

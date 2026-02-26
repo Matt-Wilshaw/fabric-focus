@@ -43,11 +43,13 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'django_countries',
 
     'home',
     'products',
     'bag',
-    'checkout',	
+    'checkout',
+    'profiles',
 
     # Other
     'crispy_forms',
