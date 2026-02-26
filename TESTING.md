@@ -106,6 +106,25 @@ payment_intent.payment_failed -> 200
 
 This confirms the webhook handler class methods for unhandled, succeeded, and failed payment-intent events all return HTTP 200 responses.
 
+### Webhook reconciliation evidence
+
+Date run: 2026-02-26
+
+- Added order traceability fields: `original_bag` and `stripe_pid`.
+- Updated checkout submit flow to persist `stripe_pid` (from client secret) and `original_bag` with the order.
+- Updated webhook success handler to:
+  - Retry order lookup up to 5 times with a 1-second delay.
+  - Match on customer/address/total plus `original_bag` and `stripe_pid`.
+  - Create the order only if no match is found.
+
+Observed dedupe validation output:
+
+```text
+pi=pi_... call1_delta=1 call2_delta=0
+Webhook received: payment_intent.succeeded | SUCCESS: created order in webhook
+Webhook received: payment_intent.succeeded | VERIFIED order already in database
+```
+
 ## Testing scope and notes
 
 Key areas covered in testing include:
@@ -478,6 +497,9 @@ How I use this table:
 | 13  | Stripe country code mapping (`/checkout/`)             | Payment confirmation failed when checkout country text was sent to Stripe (e.g., `United Kingdom`), which expects ISO-3166-1 alpha-2 values (e.g., `GB`). Expected: checkout country is normalized before Stripe call. | 1) Start checkout with country shown as `United Kingdom`.<br>2) Before fix, payment can fail with `Country 'United Kingdom' is unknown`.<br>3) After fix, country is converted to `GB` and payment request is accepted.                                               | Fixed  | Updated `checkout/static/checkout/js/stripe_elements.js` to normalize country aliases (e.g., `UK`, `United Kingdom`) to ISO code `GB` before `stripe.confirmCardPayment`. Retested on 2026-02-26.                                                                              |
 | 14  | Duplicate postcode capture in checkout (`/checkout/`)  | Stripe card UI requested postcode/ZIP in addition to the existing delivery postcode field. Expected: only one postcode input in checkout flow.                                                                 | 1) Open `/checkout/`.<br>2) Before fix, Stripe card element shows an extra ZIP/postcode field.<br>3) After fix, Stripe card field is hidden and checkout postcode is reused in payment data.                                                                        | Fixed  | Updated `checkout/static/checkout/js/stripe_elements.js` to set `hidePostalCode: true` and reuse `form.postcode` for billing/shipping `postal_code`. Retested on 2026-02-26.                                                                                                  |
 | 15  | Success billing formatting (`/checkout/checkout_success/`) | Billing totals on success page displayed without a currency symbol/consistent formatting. Expected: UK currency format with `£` and 2 decimal places for order, delivery, and grand total.                       | 1) Complete an order and view success page billing section.<br>2) Before fix, totals appear as plain decimals.<br>3) After fix, values display as `£xx.xx`.                                                                                                        | Fixed  | Updated `checkout/templates/checkout/checkout_success.html` to render `order_total`, `delivery_cost`, and `grand_total` as `£{{ value|floatformat:2 }}`. Retested on 2026-02-26.                                                                                             |
+| 16  | Webhook/order race condition (`/checkout/wh/`)          | `payment_intent.succeeded` can arrive before checkout view finishes saving, risking duplicate or missing orders. Expected: webhook waits and verifies order before creating.                                                                                   | 1) Complete checkout while webhook is active.<br>2) Before fix, async timing can create inconsistent outcomes.<br>3) After fix, webhook retries lookup (5x, 1s) before fallback creation.                                                                          | Fixed  | Added retry loop in `checkout/webhook_handler.py` so webhook attempts to find order multiple times before creating it. Retested on 2026-02-26.                                                                                                                              |
+| 17  | Webhook order identity matching (`/checkout/wh/`)       | Matching on customer/address/total alone can be ambiguous for repeat purchases. Expected: identify an order by the exact checkout payload + Stripe PaymentIntent ID.                                                                                        | 1) Process payments with similar customer/address values.<br>2) Before fix, matching can be ambiguous.<br>3) After fix, lookup includes `original_bag` and `stripe_pid`.                                                                                           | Fixed  | Added `Order.original_bag` and `Order.stripe_pid` fields (migration `0002_auto_20260226_0822`) and included them in checkout save + webhook lookup/create paths. Retested on 2026-02-26.                                                                                   |
+| 18  | Webhook fallback create path (`/checkout/wh/`)          | If checkout form submission fails after payment confirmation, order can be missing in DB. Expected: webhook creates order from PaymentIntent metadata as fallback.                                                                                           | 1) Simulate missing form submit after payment confirmation.<br>2) Before fix, paid order may not exist in DB.<br>3) After fix, webhook creates order and returns success response.                                                                                   | Fixed  | Implemented webhook fallback creation from metadata bag and shipping/billing details in `checkout/webhook_handler.py`. Retested on 2026-02-26.                                                                                                                            |
 
 ## Testing Table
 
@@ -510,6 +532,8 @@ This table summarises key test cases and their results for core project features
 | Admin delete product               | Admin          | Delete product in admin             | Product removed from list    | As expected   | Passed |
 | Checkout with empty bag            | Checkout       | Try to checkout with empty bag      | Error message, redirect      | As expected   | Passed |
 | Checkout with filled bag           | Checkout       | Checkout with items in bag          | Order form shown             | As expected   | Passed |
+| Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent | First call creates order; second verifies existing | As expected   | Passed |
+| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit | Webhook creates order from metadata | As expected   | Passed |
 | CSS validation                     | Static files   | Validate base.css                   | No errors/warnings           | As expected   | Passed |
 | HTML validation                    | Templates      | Validate home/products templates    | No errors/warnings           | As expected   | Passed |
 | Lighthouse audit                   | Site           | Run Lighthouse on home/products     | Good scores, no major issues | As expected   | Passed |
