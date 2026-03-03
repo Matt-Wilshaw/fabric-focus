@@ -55,7 +55,7 @@ def all_products(request):
         'current_sorting': current_sorting,
     }
 
-    return render(request, 'products/products.html', context)
+    return render(request, 'products/includes/products.html', context)
 
 
 def product_detail(request, product_id):
@@ -67,13 +67,13 @@ def product_detail(request, product_id):
         'product': product,
     }
 
-    return render(request, 'products/product_detail.html', context)
+    return render(request, 'products/includes/product_detail.html', context)
 
 
 def add_product(request):
     """ Add a product to the store """
     form = ProductForm()
-    template = 'products/add_product.html'
+    template = 'products/includes/add_product.html'
     context = {
         'form': form,
     }
