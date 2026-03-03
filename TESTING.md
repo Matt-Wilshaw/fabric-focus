@@ -14,6 +14,7 @@ Both **manual** and **automated** testing methods may be used to validate the fu
 - [Testing](#testing)
 - [Table of Contents](#table-of-contents)
 - [Stripe testing](#stripe-testing)
+- [Account email verification testing](#account-email-verification-testing)
 - [Stripe webhook command-output evidence](#stripe-webhook-command-output-evidence)
 - [Testing scope and notes](#testing-scope-and-notes)
 - [Responsiveness Testing](#responsiveness-testing)
@@ -47,6 +48,13 @@ Use these card numbers in test mode. Enter any future expiry date, any CVC, and 
 | 4000002500003155    | Payment requires authentication (3DS)   | Fill in the credit card form with this number and complete the authentication when prompted.                  |
 | 4000000000009995    | Card declined (e.g. insufficient_funds) | Fill in the credit card form with this number and any expiry, CVC, and postal code.                           |
 | 6205500000000000004 | UnionPay (variable length 13–19 digits) | Fill in the credit card form with this number (adjust length if needed) and any expiry, CVC, and postal code. |
+
+## Account email verification testing
+
+- Local development uses Django's console email backend (`django.core.mail.backends.console.EmailBackend`).
+- Verification emails are printed to the terminal running `manage.py runserver`; no real inbox delivery occurs in local testing.
+- Test accounts can use placeholder addresses (for example `tester@example.com`) because the verification URL is copied from terminal output.
+- Verification is completed by opening the printed `/accounts/confirm-email/<key>/` link in the browser.
 
 ## Stripe webhook command-output evidence
 
@@ -500,6 +508,7 @@ How I use this table:
 | 16  | Webhook/order race condition (`/checkout/wh/`)          | `payment_intent.succeeded` can arrive before checkout view finishes saving, risking duplicate or missing orders. Expected: webhook waits and verifies order before creating.                                                                                   | 1) Complete checkout while webhook is active.<br>2) Before fix, async timing can create inconsistent outcomes.<br>3) After fix, webhook retries lookup (5x, 1s) before fallback creation.                                                                          | Fixed  | Added retry loop in `checkout/webhook_handler.py` so webhook attempts to find order multiple times before creating it. Retested on 2026-02-26.                                                                                                                              |
 | 17  | Webhook order identity matching (`/checkout/wh/`)       | Matching on customer/address/total alone can be ambiguous for repeat purchases. Expected: identify an order by the exact checkout payload + Stripe PaymentIntent ID.                                                                                        | 1) Process payments with similar customer/address values.<br>2) Before fix, matching can be ambiguous.<br>3) After fix, lookup includes `original_bag` and `stripe_pid`.                                                                                           | Fixed  | Added `Order.original_bag` and `Order.stripe_pid` fields (migration `0002_auto_20260226_0822`) and included them in checkout save + webhook lookup/create paths. Retested on 2026-02-26.                                                                                   |
 | 18  | Webhook fallback create path (`/checkout/wh/`)          | If checkout form submission fails after payment confirmation, order can be missing in DB. Expected: webhook creates order from PaymentIntent metadata as fallback.                                                                                           | 1) Simulate missing form submit after payment confirmation.<br>2) Before fix, paid order may not exist in DB.<br>3) After fix, webhook creates order and returns success response.                                                                                   | Fixed  | Implemented webhook fallback creation from metadata bag and shipping/billing details in `checkout/webhook_handler.py`. Retested on 2026-02-26.                                                                                                                            |
+| 19  | Success toast on profile page (`/profile/`)             | Success toast could render checkout bag summary content when viewing profile, which is unrelated and noisy on that page. Expected: profile page toasts should not include bag-summary section.                                                               | 1) Navigate to `/profile/` and trigger a success message.<br>2) Before fix, toast may include bag/total summary section when `grand_total` is present.<br>3) After fix, bag-summary section is hidden on profile page.                                              | Fixed  | Updated `templates/includes/toasts/toast_success.html` to gate bag-summary render with `not on_profile_page`, and set `on_profile_page` in `profiles/views.py` context. Retested on 2026-03-03.                                                                            |
 
 ## Testing Table
 
