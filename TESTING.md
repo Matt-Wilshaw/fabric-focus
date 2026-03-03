@@ -145,6 +145,7 @@ Key areas covered in testing include:
 Current implementation notes (as of this version of the repo):
 - The Products app includes a list view, product detail view, and a basic search flow via the `q` query string (e.g. `/products/?q=soft`).
 - The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; the fallback file exists at `media/noimage.png`.
+- Stock is not currently reserved at add-to-bag time; in high-concurrency scenarios, two users can checkout overlapping items before stock enforcement is applied (residual oversell risk).
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user’s perspective without needing knowledge of internal code logic.
 
