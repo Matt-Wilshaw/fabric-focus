@@ -133,6 +133,18 @@ Webhook received: payment_intent.succeeded | SUCCESS: created order in webhook
 Webhook received: payment_intent.succeeded | VERIFIED order already in database
 ```
 
+Observed profile-integration validation output (webhook parity with checkout view):
+
+```text
+resp1= 200 Webhook received: payment_intent.succeeded | SUCCESS: Created order in webhook
+resp2= 200 Webhook received: payment_intent.succeeded | SUCCESS: Verified order already in database
+counts before/mid/after= 0 1 1
+order_has_profile= True
+saved_defaults= 07123456789 GB SW1A1AA London
+```
+
+This confirms webhook-created orders correctly attach `user_profile` and persist default delivery details when `save_info` is true.
+
 ## Testing scope and notes
 
 Key areas covered in testing include:
