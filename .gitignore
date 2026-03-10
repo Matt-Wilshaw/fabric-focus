@@ -89,7 +89,6 @@ ehthumbs.db
 Desktop.ini
 
 ## Python tools
-.python-version
 .mypy_cache/
 pip-wheel-metadata/
 
