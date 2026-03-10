@@ -83,11 +83,13 @@ h1, h2, h3, h4, .logo-font {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-weight: 600;
+    border-radius: 10px;
 }
 
 .btn-black {
     background: var(--brand-dark);
     color: white;
+    border-radius: 10px;
 }
 
 .btn-outline-black {
@@ -95,6 +97,7 @@ h1, h2, h3, h4, .logo-font {
     color: var(--brand-dark) !important;
     /* use important to override link colors for <a> elements */
     border: 1px solid var(--brand-dark);
+    border-radius: 10px;
 }
 
 .btn-outline-black:hover,
@@ -112,6 +115,32 @@ h1, h2, h3, h4, .logo-font {
 .btn-black:focus {
     background: #c28c2e;
     color: white;
+}
+
+.btn {
+    border-radius: 10px;
+    letter-spacing: 0.03em;
+}
+
+.btn.rounded-0 {
+    border-radius: 10px !important;
+}
+
+.search-btn {
+    border-radius: 0 !important;
+}
+
+.search-btn,
+.search-btn.rounded-0 {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.btn:focus,
+.btn:active {
+    box-shadow: 0 0 0 0.2rem rgba(217, 164, 65, 0.25);
 }
 
 .topnav-wrap {
@@ -205,8 +234,36 @@ a.category-badge>span.badge:hover {
     margin: 0 0.35rem;
 }
 
+/* Remove blue flash on dropdown selection */
+.dropdown-item:active,
+.dropdown-item:focus {
+    background-color: rgba(31, 42, 46, 0.08);
+    color: #1f2a2e;
+}
+
 input[name='q']::placeholder {
     color: #aab7c4;
+}
+
+/* Form refinements */
+.form-control,
+.custom-select {
+    border-radius: 0;
+    border-color: rgba(31, 42, 46, 0.35);
+    box-shadow: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus,
+.custom-select:focus {
+    border-color: var(--brand-dark);
+    box-shadow: 0 0 0 0.2rem rgba(31, 42, 46, 0.15);
+}
+
+label {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    color: #2f3a3f;
 }
 
 /* ------------------------------- bootstrap toasts */
