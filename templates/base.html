@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display:400,600,700&display=swap">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
   {% endblock %}
@@ -50,13 +51,13 @@
 
 <body>
   <header class="container-fluid fixed-top">
-    <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex">
-      <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
+    <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex topnav-wrap">
+      <div class="col-12 col-lg-4 my-auto py-2 py-lg-1 text-center text-lg-left">
         <a href="{% url 'home' %}" class="nav-link main-logo-link">
           <h2 class="logo-font text-black my-0"><strong>Fabric</strong> Focus</h2>
         </a>
       </div>
-      <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+      <div class="col-12 col-lg-4 my-auto py-2 py-lg-1">
         <form method="GET" action="{% url 'products' %}">
           {% csrf_token %}
           <div class="input-group w-100">
@@ -72,7 +73,7 @@
           </div>
         </form>
       </div>
-      <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+      <div class="col-12 col-lg-4 my-auto py-2 py-lg-1">
         <ul class="list-inline list-unstyled text-center text-lg-right my-0">
           <li class="list-inline-item dropdown">
             <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true"
@@ -127,7 +128,7 @@
     </div>
     <div id="delivery-banner" class="row text-center">
       <div class="col bg-black text-white">
-        <h4 class="logo-font my-1">Free delivery on orders over £{{ free_delivery_threshold }}!</h4>
+        <h4 class="delivery-text my-1">Free delivery on orders over £{{ free_delivery_threshold }}</h4>
       </div>
     </div>
   </header>

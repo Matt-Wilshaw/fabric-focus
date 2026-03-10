@@ -2,12 +2,40 @@ html {
     height: 100%;
 }
 
+:root {
+    --brand-dark: #1f2a2e;
+    --brand-dark-hover: #162024;
+    --font-body: 'Lato', sans-serif;
+    --font-display: 'Playfair Display', serif;
+}
+
 body {
     background: url('/media/homepage_background_cropped.jpg') no-repeat center center fixed;
     background-size: cover;
     height: calc(100vh - 164px);
     color: #555;
-    font-family: 'Lato';
+    font-family: var(--font-body);
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: -2;
+}
+
+h1, h2, h3, h4, .logo-font {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+}
+
+.hero-title {
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
 }
 
 /* from Bulma */
@@ -28,27 +56,31 @@ body {
 }
 
 .shop-now-button {
-    background: black;
+    background: #d9a441;
     color: white;
-    min-width: 260px;
+    min-width: 240px;
+    border: 1px solid #d9a441;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
 .btn-black {
-    background: black;
+    background: var(--brand-dark);
     color: white;
 }
 
 .btn-outline-black {
     background: white;
-    color: black !important;
+    color: var(--brand-dark) !important;
     /* use important to override link colors for <a> elements */
-    border: 1px solid black;
+    border: 1px solid var(--brand-dark);
 }
 
 .btn-outline-black:hover,
 .btn-outline-black:active,
 .btn-outline-black:focus {
-    background: black;
+    background: var(--brand-dark);
     color: white !important;
 }
 
@@ -58,8 +90,21 @@ body {
 .btn-black:hover,
 .btn-black:active,
 .btn-black:focus {
-    background: #222;
+    background: #c28c2e;
     color: white;
+}
+
+.topnav-wrap {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.navbar .nav-link {
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.main-logo-link .logo-font {
+    letter-spacing: 0.08em;
 }
 
 .text-black {
@@ -67,11 +112,11 @@ body {
 }
 
 .border-black {
-    border: 1px solid black !important;
+    border: 1px solid var(--brand-dark) !important;
 }
 
 .bg-black {
-    background: #000 !important;
+    background: var(--brand-dark) !important;
 }
 
 .overlay {
@@ -101,6 +146,11 @@ a.category-badge>span.badge:hover {
 .update-link,
 .remove-item {
     cursor: pointer;
+}
+
+.delivery-text {
+    font-family: var(--font-body);
+    letter-spacing: 0;
 }
 
 input[name='q']::placeholder {
