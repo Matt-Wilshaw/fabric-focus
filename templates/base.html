@@ -284,7 +284,7 @@
         log.scrollTop = log.scrollHeight;
       };
 
-      const getResponse = (message) => {
+      const getFallbackResponse = (message) => {
         const lowered = message.toLowerCase();
         for (const item of responses) {
           if (item.match.some((word) => lowered.includes(word))) {
@@ -292,6 +292,43 @@
           }
         }
         return defaultResponse;
+      };
+
+      const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === `${name}=`) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      };
+
+      const getAiResponse = async (message) => {
+        try {
+          const response = await fetch('/style-assistant/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ message })
+          });
+
+          if (!response.ok) {
+            throw new Error('AI response failed');
+          }
+
+          const data = await response.json();
+          return data.reply || getFallbackResponse(message);
+        } catch (error) {
+          return getFallbackResponse(message);
+        }
       };
 
       const openPanel = () => {
@@ -322,7 +359,7 @@
           return;
         }
         addBubble(value, true);
-        addBubble(getResponse(value));
+        getAiResponse(value).then((reply) => addBubble(reply));
         input.value = '';
       });
 
@@ -333,7 +370,7 @@
             return;
           }
           addBubble(value, true);
-          addBubble(getResponse(value));
+          getAiResponse(value).then((reply) => addBubble(reply));
         });
       });
     })();
