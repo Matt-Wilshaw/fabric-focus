@@ -215,6 +215,26 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+## AI Style Assistant (What to Wear)
+
+This project includes a custom "What to wear" assistant widget that talks to an AI model through a Django endpoint. The key idea is to keep the API key server-side and let the browser call your own endpoint.
+
+**Decision summary**
+- Custom integration keeps the widget fully on-brand and lets us add product-aware logic later.
+- API keys are never exposed in the browser.
+
+**How it works**
+1. The widget in `templates/base.html` sends a POST request to `/style-assistant/`.
+2. Django routes that to `home/views.py`, which calls the OpenAI Responses API.
+3. The view returns JSON back to the widget.
+
+**Configuration**
+- Set `OPENAI_API_KEY` in your environment (server-side only).
+- Optional: set `OPENAI_MODEL` to override the default (see `fabric_focus/settings.py`).
+
+**Notes**
+- If the API key is missing, the widget falls back to simple keyword-based responses.
+
 ### Stripe testing (Stripe CLI - Windows)
 
 If you want to test Stripe webhooks locally using the Stripe CLI on Windows, follow these steps.
@@ -272,6 +292,5 @@ Notes:
 ### Frontend
 
 This repository is Django-rendered and does not include a separate `frontend/` React app.
-
 
 
