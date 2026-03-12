@@ -18,6 +18,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-text-size-adjust: 100%;
 }
 
 body::before {
@@ -99,7 +100,6 @@ h4,
 .btn-outline-black {
     background: white;
     color: var(--brand-dark) !important;
-    /* use important to override link colours for <a> elements */
     border: 1px solid var(--brand-dark);
     border-radius: 10px;
 }
@@ -564,9 +564,7 @@ label {
 
 .allauth-form-inner-content p {
     margin-top: 1.5rem;
-    /* mt-4 */
     color: #6c757d;
-    /* text-secondary */
 }
 
 .allauth-form-inner-content input {
@@ -584,7 +582,6 @@ label {
 
 .allauth-form-inner-content button,
 .allauth-form-inner-content input[type='submit'] {
-    /* btn */
     display: inline-block;
     font-weight: 400;
     color: #fff;
@@ -600,8 +597,6 @@ label {
     font-size: 1rem;
     line-height: 1.5;
     border-radius: 0;
-
-    /* standard bootstrap btn transitions */
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
@@ -629,7 +624,6 @@ label {
 
 .allauth-form-inner-content a {
     color: #17a2b8;
-    /* text-info */
 }
 
 /* Product cards */
@@ -748,14 +742,32 @@ label {
     }
 }
 
-/* pad the top a bit when navbar is collapsed on mobile */
+/* Mobile fixes - only affects phones/small screens, desktop unchanged */
 @media (max-width: 991px) {
     .header-container {
         padding-top: 116px;
     }
 
+    /* Fix footer being hidden */
     .site-main {
-        min-height: calc(100vh - 116px - 96px);
+        min-height: auto;
+    }
+
+    /* Fix text size on iPhone */
+    body {
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
     }
 
     .style-assistant {
