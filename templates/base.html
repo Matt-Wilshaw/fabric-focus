@@ -9,15 +9,18 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="{% block meta_description %}Fabric Focus - contemporary fabrics and apparel curated for modern living.{% endblock %}">
+  <meta name="description"
+    content="{% block meta_description %}Fabric Focus - contemporary fabrics and apparel curated for modern living.{% endblock %}">
   <meta property="og:title" content="{% block og_title %}Fabric Focus{% endblock %}">
-  <meta property="og:description" content="{% block og_description %}Fabric Focus - contemporary fabrics and apparel curated for modern living.{% endblock %}">
+  <meta property="og:description"
+    content="{% block og_description %}Fabric Focus - contemporary fabrics and apparel curated for modern living.{% endblock %}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
   <meta property="og:image" content="{% static 'favicon.svg' %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% block twitter_title %}Fabric Focus{% endblock %}">
-  <meta name="twitter:description" content="{% block twitter_description %}Fabric Focus - contemporary fabrics and apparel curated for modern living.{% endblock %}">
+  <meta name="twitter:description"
+    content="{% block twitter_description %}Fabric Focus - contemporary fabrics and apparel curated for modern living.{% endblock %}">
   <meta name="twitter:image" content="{% static 'favicon.svg' %}">
   {% endblock %}
 
@@ -38,8 +41,7 @@
 
   {% block corejs %}
   <!-- Font Awesome (free) -->
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -196,7 +198,7 @@
           <button class="style-assistant__chip" type="button" data-chip="Date night">Date night</button>
           <button class="style-assistant__chip" type="button" data-chip="Warm weather">Warm weather</button>
           <button class="style-assistant__chip" type="button" data-chip="Cool weather">Cool weather</button>
-          <button class="style-assistant__chip" type="button" data-chip="Bold color">Bold color</button>
+          <button class="style-assistant__chip" type="button" data-chip="Bold colour">Bold colour</button>
           <button class="style-assistant__chip" type="button" data-chip="Neutral palette">Neutral palette</button>
         </div>
       </div>
@@ -215,9 +217,11 @@
         <div class="col-12 col-md-6 text-center text-md-right">
           <a class="footer-link" href="mailto:hello@fabricfocus.com">hello@fabricfocus.com</a>
           <span class="footer-sep">|</span>
-          <a class="footer-link" href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+          <a class="footer-link" href="https://instagram.com/" target="_blank" rel="noopener"
+            aria-label="Instagram">Instagram</a>
           <span class="footer-sep">|</span>
-          <a class="footer-link" href="https://pinterest.com/" target="_blank" rel="noopener" aria-label="Pinterest">Pinterest</a>
+          <a class="footer-link" href="https://pinterest.com/" target="_blank" rel="noopener"
+            aria-label="Pinterest">Pinterest</a>
         </div>
       </div>
     </div>
@@ -268,13 +272,13 @@
           text: 'Build a tonal look with ivory, camel, and charcoal. Mix textures like knit, denim, and matte twill.'
         },
         {
-          match: ['bold', 'color', 'statement'],
+          match: ['bold', 'color', 'colour', 'statement'],
           text: 'Start with a strong hue (saffron, cobalt, or olive) and keep the rest neutral. One hero piece is enough.'
         }
       ];
 
       const defaultResponse =
-        'Try a balanced look: soft top, structured bottom, and one texture pop. Want more detail on color or occasion?';
+        'Try a balanced look: soft top, structured bottom, and one texture pop. Want more detail on colour or occasion?';
 
       const addBubble = (text, isUser = false) => {
         const bubble = document.createElement('div');

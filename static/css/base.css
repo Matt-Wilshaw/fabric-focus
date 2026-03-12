@@ -41,7 +41,7 @@ body::before {
     align-items: center;
 }
 
-.home-hero > .row {
+.home-hero>.row {
     width: 100%;
 }
 
@@ -49,7 +49,11 @@ body::before {
     transform: translateY(80px);
 }
 
-h1, h2, h3, h4, .logo-font {
+h1,
+h2,
+h3,
+h4,
+.logo-font {
     font-family: var(--font-display);
     letter-spacing: 0.02em;
 }
@@ -95,7 +99,7 @@ h1, h2, h3, h4, .logo-font {
 .btn-outline-black {
     background: white;
     color: var(--brand-dark) !important;
-    /* use important to override link colors for <a> elements */
+    /* use important to override link colours for <a> elements */
     border: 1px solid var(--brand-dark);
     border-radius: 10px;
 }
@@ -337,7 +341,7 @@ label {
     right: 36px;
 }
 
-/* Convenience classes - colors copied from Bootstrap */
+/* Convenience classes - colours copied from Bootstrap */
 .arrow-primary {
     border-bottom-color: #007bff !important;
 }
@@ -615,6 +619,7 @@ label {
     border-radius: 10px;
     border: 1px solid var(--brand-dark);
 }
+
 .allauth-form-inner-content button.btn.btn-black:hover,
 .allauth-form-inner-content input[type="submit"].btn.btn-black:hover {
     background: #c28c2e;
