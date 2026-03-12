@@ -1,5 +1,7 @@
 # Testing
 
+Live site: https://fabric-focus-f1a8e9ed6562.herokuapp.com/
+
 This document outlines how I test Fabric Focus to ensure the project functions as intended, the user experience is consistent across devices and browsers, and core flows (browsing products and account sign-in/sign-out) behave predictably.
 
 The testing approach follows a combination of **Behaviour-Driven Development (BDD)** and **Test-Driven Development (TDD)** principles:
@@ -178,8 +180,8 @@ Breakpoints I test:
 - **992px:** tablet landscape / laptop
 - **1200px:** desktop
 
-| 320px | 576px | 768px | 992px | 1200px |
-| :---: | :---: | :---: | :---: | :----: |
+| 320px  | 576px  | 768px  | 992px  | 1200px |
+| :----: | :----: | :----: | :----: | :----: |
 | Passed | Passed | Passed | Passed | Passed |
 
 Screenshot locations I use (I can create these folders to store evidence in the repo):
@@ -272,10 +274,10 @@ Lighthouse (Chrome DevTools) audits pages for performance, accessibility, best p
 
 **Results (I record scores here):**
 
-| Page         | Performance | Accessibility | Best Practices |   SEO |
-| ------------ | ----------: | ------------: | -------------: | ----: |
-| `/`          | Passed      | Passed        | Passed         | Passed |
-| `/products/` | Passed      | Passed        | Passed         | Passed |
+| Page         | Performance | Accessibility | Best Practices |    SEO |
+| ------------ | ----------: | ------------: | -------------: | -----: |
+| `/`          |      Passed |        Passed |         Passed | Passed |
+| `/products/` |      Passed |        Passed |         Passed | Passed |
 
 Notes:
 
@@ -503,7 +505,7 @@ How I use this table:
 | --- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Products routing (`/products/`) + product detail links | Dev server failed to start due to a syntax error in the Products URLconf, and the products views were incomplete. Expected: `runserver` starts and `/products/` loads; clicking a product navigates to its detail page.                                        | 1) In the project root, run `python manage.py runserver` (or `python manage.py check`).<br>2) Before the fix, Django raises a `SyntaxError` in `products/urls.py` (“Perhaps you forgot a comma?”).<br>3) After the fix, visit `/products/` and click a product card link. | Fixed  | Fixed `products/urls.py` by adding the missing comma and using `path('<int:product_id>/', ...)`. Updated `products/views.py` so `all_products` returns `products/products.html` and `product_detail(request, product_id)` renders `products/product_detail.html`. Retested locally on 2026-02-03 (dev server starts; `/products/` loads; product links work). |
 | 2   | Mobile header spacing (Products page)                  | On mobile widths, the header/content on the main Products page wasn’t pushed down far enough when the navbar collapses, so content sat underneath the nav. Expected: the content starts below the collapsed navbar.                                            | 1) Open `/products/` on a mobile device (or devtools responsive mode).<br>2) Ensure the navbar is in its collapsed state (below 992px wide).<br>3) Observe the header/content position under the navbar.                                                                  | Fixed  | Added a mobile media query in `static/css/base.css` (`@media (max-width: 991px)`) to set `.header-container { padding-top: 116px; }` and adjusted `body` height to `calc(100vh - 116px)`. Retest on a real device on 2026-02-03.                                                                                                                              |
-| 3   | Products search (`/products/?q=...`)                   | Searching from the header caused a server error: `NameError` in `all_products` because the search filter used invalid `Q()` syntax (e.g. `name_icontains-query`) instead of proper ORM lookups. Expected: `/products/?q=soft` returns a filtered product list. | 1) Go to `/products/`.<br>2) Use the search box and submit `soft` (or visit `/products/?q=soft`).<br>3) Before the fix, Django raises `NameError: name 'name_icontains' is not defined` in `products/views.py`. | Fixed  | Updated `products/views.py` to use `Q(name__icontains=query) \| Q(description__icontains=query)` and apply `.distinct()` to the filtered queryset. Retested locally on 2026-02-04 (search query executes and returns results). |
+| 3   | Products search (`/products/?q=...`)                   | Searching from the header caused a server error: `NameError` in `all_products` because the search filter used invalid `Q()` syntax (e.g. `name_icontains-query`) instead of proper ORM lookups. Expected: `/products/?q=soft` returns a filtered product list. | 1) Go to `/products/`.<br>2) Use the search box and submit `soft` (or visit `/products/?q=soft`).<br>3) Before the fix, Django raises `NameError: name 'name_icontains' is not defined` in `products/views.py`.                                                           | Fixed  | Updated `products/views.py` to use `Q(name__icontains=query) \| Q(description__icontains=query)` and apply `.distinct()` to the filtered queryset. Retested locally on 2026-02-04 (search query executes and returns results).                                                                                                                                |
 | 4   | Products sorting (sort by name)                        | Sorting by name caused a server error: `NameError at /products/` → `name 'Lower' is not defined` in `all_products`. Expected: sorting by name works and returns the products list.                                                                             | 1) Visit `/products/?sort=name&direction=asc`.<br>2) Before the fix, Django raises `NameError: name 'Lower' is not defined` in `products/views.py` (during `products.annotate(lower_name=Lower('name'))`).                                                                | Fixed  | Imported `Lower` from `django.db.models.functions` in `products/views.py`. Added regression test in `products/tests.py` to ensure `/products/?sort=name&direction=asc` returns 200. Retested on 2026-02-09.                                                                                                                                                   |
 | 5   | Dev server startup + Bag routing (`/bag/`)             | Dev server would not start after adding the Bag app: Django failed during URL configuration load with `AttributeError: module 'bag.views' has no attribute 'index'`. Expected: `runserver` starts and `/bag/` loads.                                           | 1) Add `path('bag/', include('bag.urls'))` to the project URLconf.<br>2) Run `python manage.py runserver` (or `python manage.py check`).<br>3) Before the fix, Django errors because `bag/urls.py` referenced `views.index` but the view is named `view_bag`.             | Fixed  | Updated `bag/urls.py` to use `views.view_bag`. Also fixed a broken template URL tag in `templates/base.html` so the desktop bag icon links to `{% url 'view_bag' %}`. Retested locally on 2026-02-10 (`manage.py check` passes; server starts; `/bag/` returns 200).                                                                                          |
 | 6   | Shopping bag item size display (`/bag/`)               | On the bag page, item size display could show incorrect/misleading output instead of the selected size value for each line item. Expected: bag line items show `Size: XS/S/M/L/XL` when a size exists, otherwise `N/A`.                                        | 1) Add a product with size to bag from product detail page.<br>2) Visit `/bag/`.<br>3) Check the line item metadata under product name and verify the size label output.                                                                                                  | Fixed  | Updated `bag/templates/bag/bag.html` to render size from `item.size` directly with fallback. Also aligned bag data handling in `bag/contexts.py` and `bag/views.py` so sized items carry correct quantity/size context. Retested on 2026-02-18.                                                                                                               |
@@ -531,38 +533,38 @@ How I use this table:
 
 This table summarises key test cases and their results for core project features.
 
-| Test Case                          | Area / Feature | Steps / Description                 | Expected Result              | Actual Result | Status |
-| ---------------------------------- | -------------- | ----------------------------------- | ---------------------------- | ------------- | ------ |
-| Homepage loads                     | Home page      | Visit `/`                           | Page loads, no errors        | As expected   | Passed |
-| Product list loads                 | Products       | Visit `/products/`                  | Product list visible         | As expected   | Passed |
-| Product detail loads               | Products       | Click product from list             | Detail page visible          | As expected   | Passed |
-| Add to bag                         | Bag            | Add product to bag                  | Bag updates                  | As expected   | Passed |
-| Remove from bag                    | Bag            | Remove product from bag             | Bag updates                  | As expected   | Passed |
-| Checkout form renders              | Checkout       | Visit `/checkout/`                  | Form visible                 | As expected   | Passed |
-| User registration                  | Accounts       | Register new user                   | Account created              | As expected   | Passed |
-| Login/logout                       | Accounts       | Login and logout flows              | Auth works                   | As expected   | Passed |
-| Admin access                       | Admin          | Login as superuser, visit `/admin/` | Admin dashboard loads        | As expected   | Passed |
-| Invalid login                      | Accounts       | Attempt login with wrong password   | Error message shown          | As expected   | Passed |
-| Password reset                     | Accounts       | Request password reset email        | Email sent, can reset        | As expected   | Passed |
-| Search products                    | Products       | Use search box with query           | Filtered results shown       | As expected   | Passed |
-| Empty search                       | Products       | Submit empty search                 | Error message, redirect      | As expected   | Passed |
-| Add product with size              | Bag            | Add product with size to bag        | Size shown in bag            | As expected   | Passed |
-| Remove product with size           | Bag            | Remove sized product from bag       | Bag updates                  | As expected   | Passed |
-| Responsive layout (mobile)         | Layout         | View site on mobile device          | Layout adapts, no overlap    | As expected   | Passed |
-| Responsive layout (desktop)        | Layout         | View site on desktop                | Layout adapts, no overlap    | As expected   | Passed |
-| Placeholder image for no product   | Products       | View product with no image          | Placeholder image shown      | As expected   | Passed |
-| Add-to-bag toast notification      | Bag            | Add item to bag                     | Toast notification appears   | As expected   | Passed |
-| Remove-from-bag toast notification | Bag            | Remove item from bag                | Toast notification appears   | As expected   | Passed |
-| Admin create product               | Admin          | Create product in admin             | Product appears in list      | As expected   | Passed |
-| Admin edit product                 | Admin          | Edit product in admin               | Changes visible in list      | As expected   | Passed |
-| Admin delete product               | Admin          | Delete product in admin             | Product removed from list    | As expected   | Passed |
-| Checkout with empty bag            | Checkout       | Try to checkout with empty bag      | Error message, redirect      | As expected   | Passed |
-| Checkout with filled bag           | Checkout       | Checkout with items in bag          | Order form shown             | As expected   | Passed |
+| Test Case                          | Area / Feature  | Steps / Description                                          | Expected Result                                    | Actual Result | Status |
+| ---------------------------------- | --------------- | ------------------------------------------------------------ | -------------------------------------------------- | ------------- | ------ |
+| Homepage loads                     | Home page       | Visit `/`                                                    | Page loads, no errors                              | As expected   | Passed |
+| Product list loads                 | Products        | Visit `/products/`                                           | Product list visible                               | As expected   | Passed |
+| Product detail loads               | Products        | Click product from list                                      | Detail page visible                                | As expected   | Passed |
+| Add to bag                         | Bag             | Add product to bag                                           | Bag updates                                        | As expected   | Passed |
+| Remove from bag                    | Bag             | Remove product from bag                                      | Bag updates                                        | As expected   | Passed |
+| Checkout form renders              | Checkout        | Visit `/checkout/`                                           | Form visible                                       | As expected   | Passed |
+| User registration                  | Accounts        | Register new user                                            | Account created                                    | As expected   | Passed |
+| Login/logout                       | Accounts        | Login and logout flows                                       | Auth works                                         | As expected   | Passed |
+| Admin access                       | Admin           | Login as superuser, visit `/admin/`                          | Admin dashboard loads                              | As expected   | Passed |
+| Invalid login                      | Accounts        | Attempt login with wrong password                            | Error message shown                                | As expected   | Passed |
+| Password reset                     | Accounts        | Request password reset email                                 | Email sent, can reset                              | As expected   | Passed |
+| Search products                    | Products        | Use search box with query                                    | Filtered results shown                             | As expected   | Passed |
+| Empty search                       | Products        | Submit empty search                                          | Error message, redirect                            | As expected   | Passed |
+| Add product with size              | Bag             | Add product with size to bag                                 | Size shown in bag                                  | As expected   | Passed |
+| Remove product with size           | Bag             | Remove sized product from bag                                | Bag updates                                        | As expected   | Passed |
+| Responsive layout (mobile)         | Layout          | View site on mobile device                                   | Layout adapts, no overlap                          | As expected   | Passed |
+| Responsive layout (desktop)        | Layout          | View site on desktop                                         | Layout adapts, no overlap                          | As expected   | Passed |
+| Placeholder image for no product   | Products        | View product with no image                                   | Placeholder image shown                            | As expected   | Passed |
+| Add-to-bag toast notification      | Bag             | Add item to bag                                              | Toast notification appears                         | As expected   | Passed |
+| Remove-from-bag toast notification | Bag             | Remove item from bag                                         | Toast notification appears                         | As expected   | Passed |
+| Admin create product               | Admin           | Create product in admin                                      | Product appears in list                            | As expected   | Passed |
+| Admin edit product                 | Admin           | Edit product in admin                                        | Changes visible in list                            | As expected   | Passed |
+| Admin delete product               | Admin           | Delete product in admin                                      | Product removed from list                          | As expected   | Passed |
+| Checkout with empty bag            | Checkout        | Try to checkout with empty bag                               | Error message, redirect                            | As expected   | Passed |
+| Checkout with filled bag           | Checkout        | Checkout with items in bag                                   | Order form shown                                   | As expected   | Passed |
 | Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent | First call creates order; second verifies existing | As expected   | Passed |
-| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit | Webhook creates order from metadata | As expected   | Passed |
-| CSS validation                     | Static files   | Validate base.css                   | No errors/warnings           | As expected   | Passed |
-| HTML validation                    | Templates      | Validate home/products templates    | No errors/warnings           | As expected   | Passed |
-| Lighthouse audit                   | Site           | Run Lighthouse on home/products     | Good scores, no major issues | As expected   | Passed |
+| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit         | Webhook creates order from metadata                | As expected   | Passed |
+| CSS validation                     | Static files    | Validate base.css                                            | No errors/warnings                                 | As expected   | Passed |
+| HTML validation                    | Templates       | Validate home/products templates                             | No errors/warnings                                 | As expected   | Passed |
+| Lighthouse audit                   | Site            | Run Lighthouse on home/products                              | Good scores, no major issues                       | As expected   | Passed |
 
 
 

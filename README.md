@@ -7,6 +7,10 @@ Fabric-Focus is about performance, comfort, and style. By combining carefully se
 
 Whether you're training hard at the gym, heading out for a run, or looking for everyday athletic wear, Fabric-Focus offers reliable, high-quality sportswear designed to move with you. From breathable materials to durable construction, we focus on the details that help you feel confident, comfortable, and ready to perform.
 
+## Live Demo
+
+- Hosted on Heroku: https://fabric-focus-f1a8e9ed6562.herokuapp.com/
+
 
 
 ## Requirements

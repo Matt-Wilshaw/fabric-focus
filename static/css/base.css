@@ -608,6 +608,20 @@ label {
     border-color: #222;
 }
 
+.allauth-form-inner-content button.btn.btn-black,
+.allauth-form-inner-content input[type="submit"].btn.btn-black {
+    background: var(--brand-dark);
+    color: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--brand-dark);
+}
+.allauth-form-inner-content button.btn.btn-black:hover,
+.allauth-form-inner-content input[type="submit"].btn.btn-black:hover {
+    background: #c28c2e;
+    border-color: #c28c2e;
+    color: #fff;
+}
+
 .allauth-form-inner-content a {
     color: #17a2b8;
     /* text-info */
