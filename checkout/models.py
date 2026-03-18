@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from django.db import models
 from django.db.models import Sum
@@ -35,9 +36,11 @@ class Order(models.Model):
 
     def _generate_order_number(self):
         """
-        Generate a random, unique order number using UUID
+        Generate a shorter, human-friendly order number.
         """
-        return uuid.uuid4().hex.upper()
+        date_part = datetime.utcnow().strftime('%y%m%d')
+        random_part = uuid.uuid4().hex[:8].upper()
+        return f'FF-{date_part}-{random_part}'
     
     def update_total(self):
         """
@@ -59,6 +62,9 @@ class Order(models.Model):
         """
         if not self.order_number:
             self.order_number = self._generate_order_number()
+            # Extremely unlikely collision guard.
+            while type(self).objects.filter(order_number=self.order_number).exists():
+                self.order_number = self._generate_order_number()
         super().save(*args, **kwargs)
 
     def __str__(self):
