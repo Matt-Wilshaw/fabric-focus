@@ -3,57 +3,88 @@
 
 ## Introduction
 
-Fabric-Focus is about performance, comfort, and style. By combining carefully selected fabrics, modern designs, and sport-specific functionality, our clothing is made to support you through every workout and active moment.
+Fabric-Focus is about comfort, style, and versatility. By combining carefully selected fabrics, modern designs, and practical everyday function, our clothing is designed to suit all occasions.
 
-Whether you're training hard at the gym, heading out for a run, or looking for everyday athletic wear, Fabric-Focus offers reliable, high-quality sportswear designed to move with you. From breathable materials to durable construction, we focus on the details that help you feel confident, comfortable, and ready to perform.
+Whether you're dressing for work, weekend plans, social events, or relaxed days at home, Fabric-Focus offers reliable, high-quality clothing made to fit your lifestyle. From breathable materials to durable construction, we focus on the details that help you feel confident and comfortable wherever the day takes you.
 
 ## Live Demo
 
 - Hosted on Heroku: https://fabric-focus-f1a8e9ed6562.herokuapp.com/
 
-
-
-## Requirements
-
-This project uses the following key software and Python packages:
-
-- Python 3.x
-- Django 3.2.25
-- django-allauth
-- django-crispy-forms
-- Pillow
-- Bootstrap (via CDN)
-- Other dependencies listed in requirements.txt
-
 ## Table of Contents
 
 - [Fabric-Focus](#fabric-focus)
-- [Requirements](#requirements)
-- [Table of Contents](#table-of-contents)
-- [Jesse James Garrett: The Five Planes of User Experience](#jesse-james-garrett-the-five-planes-of-user-experience)
-- [Project: Fabric-Focus (Sportswear Clothing Shop)](#project-fabric-focus-sportswear-clothing-shop)
-- [1. Strategy Plane](#1-strategy-plane)
-- [2. Scope Plane](#2-scope-plane)
-- [3. Structure Plane](#3-structure-plane)
-- [4. Skeleton Plane](#4-skeleton-plane)
-- [5. Surface Plane](#5-surface-plane)
-- [User Stories](#user-stories)
-- [Installation / Setup](#installation--setup)
-- [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
-- [Frontend](#frontend)
+  - [Introduction](#introduction)
+  - [Live Demo](#live-demo)
+  - [Table of Contents](#table-of-contents)
+  - [Technologies Used](#technologies-used)
+  - [Strategy (Why?)](#strategy-why)
+  - [Scope (What?)](#scope-what)
+    - [Functional Requirements](#functional-requirements)
+    - [Content Requirements](#content-requirements)
+  - [Structure (How is it organised?)](#structure-how-is-it-organised)
+    - [Information Architecture](#information-architecture)
+    - [Skeleton (Layout and Interaction)](#skeleton-layout-and-interaction)
+    - [Surface (Visual Design)](#surface-visual-design)
+  - [Features](#features)
+  - [Admin Access](#admin-access)
+- [Design Choices](#design-choices)
+  - [Wireframes](#wireframes)
+    - [Colour Palette](#colour-palette)
+    - [Typography](#typography)
+    - [Accessibility](#accessibility)
+  - [Testing Overview](#testing-overview)
+    - [Deployed Test Environment](#deployed-test-environment)
+    - [Smoke Test (Production)](#smoke-test-production)
+  - [Development Checklist](#development-checklist)
+  - [Database Structure](#database-structure)
+  - [User Stories](#user-stories)
+  - [Installation / Setup](#installation--setup)
+    - [1. Clone the repository](#1-clone-the-repository)
+    - [2. Create a virtual environment (optional but recommended)](#2-create-a-virtual-environment-optional-but-recommended)
+    - [3. Install dependencies](#3-install-dependencies)
+    - [4. Apply database migrations](#4-apply-database-migrations)
+    - [5. Create a superuser (optional, for admin access)](#5-create-a-superuser-optional-for-admin-access)
+    - [6. Run the development server](#6-run-the-development-server)
+  - [AI Style Assistant (What to Wear)](#ai-style-assistant-what-to-wear)
+    - [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
+    - [Frontend](#frontend)
+  - [Key Outline](#key-outline)
+  - [Future Enhancements](#future-enhancements)
+  - [Fabric-Focus Deployment Guide](#fabric-focus-deployment-guide)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+    - [Tips](#tips)
+  - [Author](#author)
+  - [Credits](#credits)
 
 
-## Jesse James Garrett: The Five Planes of User Experience
-### Project: Fabric-Focus (Sportswear Clothing Shop)
+## Technologies Used
 
-### 1. Strategy Plane
-The goal of Fabric-Focus is to provide users with a convenient and engaging online platform for purchasing sportswear. The current implementation focuses on secure account access, product discovery, bag management, and checkout.
+This project uses the following technologies:
+
+- Backend: Python 3.x, Django 3.2.25
+- Frontend: HTML5, CSS3, JavaScript, Bootstrap (CDN)
+- Database: SQLite (default Django development database)
+- Authentication: django-allauth
+- Forms/UI: django-crispy-forms
+- Media handling: Pillow
+- Payments: Stripe
+- AI integration: OpenAI Responses API (Style Assistant)
+- Deployment: Heroku
+- Dependency management: pip, requirements.txt
+
+
+## Strategy (Why?)
+The goal of Fabric-Focus is to provide users with a convenient and engaging online platform for shopping everyday clothing. The current implementation focuses on secure account access, product discovery, bag management, and checkout.
 
 From a business perspective, Fabric-Focus aims to build brand credibility and encourage repeat purchases.
 
 ---
 
-### 2. Scope Plane
+## Scope (What?)
+
+### Functional Requirements
 The scope plane defines the functional and content requirements of the Fabric-Focus website.
 
 **Functional requirements currently implemented include:**
@@ -68,14 +99,14 @@ The scope plane defines the functional and content requirements of the Fabric-Fo
 - Leaving product reviews and ratings  
 - Commenting on products or reviews (authenticated users only)  
 
-**Content requirements include:**
-- Product descriptions focusing on fabric quality and performance  
+### Content Requirements
+- Product descriptions focusing on fabric quality, fit, and versatility  
 - Brand and company information  
 - Clear feedback messages (e.g. login errors, successful submissions)  
 
 ---
 
-### 3. Structure Plane
+## Structure (How is it organised?)
 The structure plane focuses on how information is organised and how users move through the website.
 
 Fabric-Focus follows a standard e-commerce structure:
@@ -83,9 +114,19 @@ Fabric-Focus follows a standard e-commerce structure:
 - Product Page -> Bag -> Checkout  
 - Login/Register -> User Account  
 
+### Information Architecture
+
+- Home
+- Products listing
+- Product detail
+- Bag
+- Checkout
+- Profile
+- Admin panel
+
 ---
 
-### 4. Skeleton Plane
+### Skeleton (Layout and Interaction)
 The skeleton plane addresses layout, interface design, and interaction elements.
 
 - Navigation and account access are placed consistently across all pages  
@@ -96,18 +137,132 @@ This layout reduces confusion and improves usability.
 
 ---
 
-### 5. Surface Plane
+### Surface (Visual Design)
 The surface plane focuses on the visual design and overall aesthetic of Fabric-Focus.
 
 The interface uses:
-- A modern, sporty colour palette  
+- A modern, versatile colour palette  
 - Clean typography for readability  
 - Visual hierarchy to highlight key actions  
 - Consistent styling across product listings and forms  
 
 The design supports both usability and brand identity, creating a professional and engaging experience suitable for an academic project.
 
-## User Stories
+## Features
+
+- User registration, login, and password reset
+- Product browsing, sorting, and category filtering
+- Product detail pages with imagery, pricing, and size options
+- Bag add/update/remove functionality
+- Stripe checkout and webhook-driven order confirmation
+- Admin product and inventory management
+- Responsive layout across mobile, tablet, and desktop
+
+---
+
+## Admin Access
+
+If you are logged in as an admin user, you can access the Django admin panel to manage products, categories, users, and orders using:
+
+- https://fabric-focus-f1a8e9ed6562.herokuapp.com/admin/
+- `/admin/` (for example, `http://localhost:8000/admin`) for local development
+
+Alternatively, you can go to Product Management from the My Account screen if you want to add a product to the system without using the Django backend.
+
+![Admin Navigation](readme-images/miscellaneous/admin-navigation.png)
+
+---
+
+# Design Choices
+
+## Wireframes
+
+Wireframes and screen references were used to guide responsive layout decisions.
+
+**Desktop Homepage**
+![Desktop homepage](readme-images/desktop/desktop-homepage.png)
+
+**Desktop Product Detail**
+![Desktop product detail](readme-images/desktop/product-detail.png)
+
+**Desktop Checkout**
+![Desktop checkout](readme-images/desktop/desktop-checkout.png)
+
+**Desktop Register**
+![Desktop register](readme-images/desktop/desktop-register.png)
+
+**Desktop Product Management**
+![Desktop admin](readme-images/desktop/desktop-product-management.png)
+
+**Mobile and Tablet Homepage**
+![Mobile and tablet homepage](readme-images/mobile-tablet/mobile-tablet-homepage.png)
+
+**Mobile and Tablet Product Detail**
+![Mobile and tablet product detail](readme-images/mobile-tablet/mobile-tablet-product-detail.png)
+
+**Mobile and Tablet Checkout**
+![Mobile and tablet checkout](readme-images/mobile-tablet/mobile-tablet-checkout.png)
+
+**Mobile and Tablet Register**
+![Mobile and tablet register](readme-images/mobile-tablet/mobile-tablet-register.png)
+
+**Mobile and Tablet Product Management**
+![Mobile and tablet admin](readme-images/mobile-tablet/mobile-tablet-product-management.png)
+
+### Colour Palette
+
+Fabric-Focus uses a dark neutral base with warm gold accents.
+
+- **Brand Dark** (`#1f2a2e`): Primary dark UI elements and headings.
+- **Brand Dark Hover** (`#162024`): Hover state for dark interactive components.
+- **Gold Accent** (`#d9a441`): Main call-to-action emphasis.
+- **Gold Accent Hover/Alt** (`#c28c2e`): Accent hover/border variant.
+- **Body Text Neutral** (`#555555`): Default readable body content colour.
+
+These values are taken from the current `static/css/base.css` theme variables and rules.
+
+### Typography
+
+- **Display Font:** Playfair Display (used for branded headings)
+- **Body Font:** Lato (used for readable body copy)
+
+This pairing keeps the store visually premium while preserving readability.
+
+### Accessibility
+
+- Responsive design supported by Bootstrap layout patterns.
+- Clear page hierarchy through semantic headings.
+- Consistent user feedback messages for form and checkout actions.
+- Strong contrast usage in key CTA and navigation elements.
+
+---
+
+## Testing Overview
+
+Testing focuses on end-to-end shopping flows, account access, checkout reliability, and responsive behaviour.
+
+For complete testing evidence and validation results, see `TESTING.md`.
+
+### Deployed Test Environment
+
+Production (Heroku) app: https://fabric-focus-f1a8e9ed6562.herokuapp.com/
+
+Use this environment for end-to-end checks (account flow, browsing, bag, checkout, and order confirmation). If the dyno is idle, the first request may take a few seconds.
+
+### Smoke Test (Production)
+
+Run these quick checks after deployment:
+
+1. Home page renders correctly (hero, nav, categories).
+2. Product listing loads with image, name, and price.
+3. Add an item to bag and confirm totals update.
+4. Checkout page loads delivery form and payment area.
+5. Complete a Stripe test payment and verify confirmation.
+6. Confirm admin/product management access for superuser.
+
+---
+
+## Development Checklist
 
 - **Authentication & Account**
   - [x] Visitor: create an account to save details and view orders.
@@ -177,6 +332,49 @@ The design supports both usability and brand identity, creating a professional a
 - **Extras / Future**
   - [ ] Shopper: create wishlists and gift registries.
   - [ ] Shopper: subscribe to back-in-stock alerts for out-of-stock items.
+
+
+## Database Structure
+
+Fabric-Focus uses relational Django models across catalogue, checkout, and profile domains.
+
+- **Category**: groups products and supports navigation filters.
+- **Product**: core catalogue entity with pricing, ratings, and media.
+- **UserProfile**: stores default customer delivery details.
+- **Order**: checkout snapshot with delivery, totals, and Stripe payment intent id.
+- **OrderLineItem**: links orders to products with quantity and optional size.
+
+Key relationships:
+- One Category -> many Products
+- One UserProfile -> many Orders
+- One Order -> many OrderLineItems
+
+---
+
+## User Stories
+
+- **Authentication & Account**
+  - [x] Visitor: create an account to save details and view orders.
+  - [x] Registered user: log in with email/password to access the account.
+  - [x] Registered user: reset password via email to regain access.
+  - [ ] Account holder: update profile details for accurate shipping.
+
+- **Catalogue, Search & Navigation**
+  - [x] Shopper: browse categories to discover items.
+  - [x] Shopper: search by product name and description.
+  - [x] Shopper: sort by price, rating, and category.
+  - [ ] Shopper: use pagination for large result sets.
+
+- **Cart & Checkout**
+  - [x] Shopper: add/remove items and update quantities in bag.
+  - [x] Shopper: complete checkout securely.
+  - [ ] Shopper: save and restore bag when logged in.
+  - [ ] Shopper: apply discount codes.
+
+- **Orders & Fulfilment**
+  - [ ] User: view order history and statuses.
+  - [ ] User: access shipment tracking links.
+  - [ ] User: submit returns requests.
 
 
 
@@ -296,5 +494,61 @@ Notes:
 ### Frontend
 
 This repository is Django-rendered and does not include a separate `frontend/` React app.
+
+---
+
+## Key Outline
+
+- Django-rendered e-commerce site with product browsing, bag, and checkout.
+- Stripe payment flow with webhook support.
+- User profile support for delivery defaults and repeat purchasing.
+- Admin tools for catalogue and content management.
+
+## Future Enhancements
+
+- Product reviews and rating submissions.
+- Discount and promotion management.
+- Improved order tracking experience.
+- Wishlist and back-in-stock notifications.
+- Analytics and conversion reporting.
+
+---
+
+## Fabric-Focus Deployment Guide
+
+### Prerequisites
+
+- Heroku account
+- GitHub repository access
+- Stripe keys
+- Optional PostgreSQL add-on for production
+
+### Steps
+
+1. Create a Heroku app.
+2. Set required environment variables (`SECRET_KEY`, Stripe keys, optional `DATABASE_URL`, `OPENAI_API_KEY`).
+3. Ensure `requirements.txt` and `Procfile` are committed.
+4. Push code to Heroku.
+5. Run migrations on Heroku.
+6. Verify static assets, checkout, and webhook flow.
+
+### Tips
+
+- Keep `DEBUG=False` in production.
+- Never commit real secret keys.
+- Run smoke tests immediately after deployment.
+
+---
+
+## Author
+
+Developed as part of a web development learning project.
+
+## Credits
+
+- Django and Bootstrap documentation
+- Stripe API and Stripe CLI documentation
+- OpenAI platform documentation
+- Project assets and implementation by the Fabric-Focus project author
 
 
