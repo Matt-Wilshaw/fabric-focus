@@ -4,6 +4,15 @@ from decimal import Decimal
 from django.conf import settings
 from products.models import Product
 
+
+def _normalize_quantity(raw_quantity):
+    """Return a positive integer quantity or ``None`` when invalid."""
+    try:
+        quantity = int(raw_quantity)
+    except (TypeError, ValueError):
+        return None
+    return quantity if quantity > 0 else None
+
 def bag_contents(request):
     """Build bag line items and totals for global template context."""
 
@@ -28,18 +37,30 @@ def bag_contents(request):
 
         # Non-sized products: quantity is stored directly as an integer.
         if isinstance(item_data, int):
-            total += item_data * product.price
-            product_count += item_data
+            quantity = _normalize_quantity(item_data)
+            if quantity is None:
+                bag.pop(item_id, None)
+                bag_updated = True
+                continue
+
+            total += quantity * product.price
+            product_count += quantity
             bag_items.append({
                 'item_id': item_id,
-                'quantity': item_data,
+                'quantity': quantity,
                 'product': product,
-                'lineitem_total': item_data * product.price,
+                'lineitem_total': quantity * product.price,
             })
             
         elif isinstance(item_data, dict) and isinstance(item_data.get('items_by_size'), dict):
             # Size-aware products: quantities are tracked per selected size.
-            for size, quantity in item_data['items_by_size'].items():
+            invalid_size_entries = []
+            for size, raw_quantity in item_data['items_by_size'].items():
+                quantity = _normalize_quantity(raw_quantity)
+                if quantity is None:
+                    invalid_size_entries.append(size)
+                    continue
+
                 total += quantity * product.price
                 product_count += quantity
                 bag_items.append({
@@ -49,6 +70,15 @@ def bag_contents(request):
                     'size': size,
                     'lineitem_total': quantity * product.price,
                 })
+
+            if invalid_size_entries:
+                for size in invalid_size_entries:
+                    item_data['items_by_size'].pop(size, None)
+                bag_updated = True
+
+            if not item_data['items_by_size']:
+                bag.pop(item_id, None)
+                bag_updated = True
         else:
             bag.pop(item_id, None)
             bag_updated = True
