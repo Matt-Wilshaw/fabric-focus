@@ -31,6 +31,7 @@ Both **manual** and **automated** testing methods may be used to validate the fu
 - [5. Responsive Navigation + Header Spacing](#5-responsive-navigation--header-spacing)
 - [6. Product Images and Fallbacks](#6-product-images-and-fallbacks)
 - [7. Admin / Product Management (Superuser)](#7-admin--product-management-superuser)
+- [8. Add-to-Bag Redirect Stability (Regression)](#8-add-to-bag-redirect-stability-regression)
 - [Bug Tracker](#bug-tracker)
 - [Testing Table](#testing-table)
 
@@ -488,6 +489,40 @@ As an admin user, I want to manage products through the Django admin so that I c
 
 ---
 
+### 8. Add-to-Bag Redirect Stability (Regression)
+
+- [x] Tested
+
+**Story:**
+As a shopper, I want product detail pages to remain stable after adding an item to the bag so that I can continue browsing without server errors.
+
+**Acceptance criteria:**
+
+- Given I am on a product detail page (for example `/products/2/`)
+- When I submit Add to Bag
+- Then the POST to `/bag/add/<id>/` returns a redirect (`302`)
+- And the redirected product detail page returns `200` (no `500`)
+
+**Manual test steps:**
+
+1. Open `/products/<id>/`.
+2. Choose a size when applicable and submit Add to Bag.
+3. Confirm `/bag/add/<id>/` returns `302`.
+4. Confirm the next GET to `/products/<id>/` returns `200`.
+5. Repeat for multiple products to reduce false confidence from a single-item check.
+
+**Regression evidence (2026-03-19):**
+
+- Root cause: malformed template block structure in `templates/includes/toasts/toast_success.html`.
+- Symptom pattern: issue triggered after successful Add to Bag because success-message toast rendering hit a template parsing error.
+- Fix: corrected the conditional tag structure in the success toast template.
+- Verification:
+	- Production flow validated across product IDs `1-12`.
+	- For all sampled IDs: `GET /products/<id>/ = 200`, `POST /bag/add/<id>/ = 302`, redirected `GET /products/<id>/ = 200`.
+	- Recent Heroku log window showed no new `status=500` or `TemplateSyntaxError` entries during retest.
+
+---
+
 ## Bug Tracker
 
 I log bugs here as I find them during manual testing and validation.
@@ -530,43 +565,45 @@ How I use this table:
 | 23  | Bag size render (`/bag/`)                             | Bag page displayed the literal template tag `{{ item.size|upper }}` instead of the actual size value. Expected: bag shows the selected size.                                                                                                                     | 1) Add a sized product to the bag.<br>2) Visit `/bag/`.<br>3) Before fix, size line renders the literal template tag instead of the size value.                                                                                                                         | Fixed  | Updated `bag/templates/bag/bag.html` to keep the size template tag on one line so it renders correctly. Retested on 2026-03-11.                                                                                                                                                                                |
 | 24  | Checkout success template regression (`/checkout/checkout_success/`) | Checkout completion raised `TemplateSyntaxError` (`Invalid block tag on line 76: 'endfor', expected 'elif', 'else' or 'endif'`) when rendering order line items. Expected: success page renders after payment completes.                                    | 1) Complete an order and redirect to `/checkout/checkout_success/<order_number>`.<br>2) Before fix, Django throws a template parsing error referencing line 76 and mismatched block tags.<br>3) After fix, success page renders and displays order summary correctly. | Fixed  | Rewrote the `item.product_size` conditional block in `checkout/templates/checkout/checkout_success.html` to clean multiline `{% if %} ... {% endif %}` syntax (removed malformed split-tag formatting). Verified with `manage.py check` and page render retest on 2026-03-18. |
 | 25  | Success email placeholder render (`/checkout/checkout_success/`) | Success page showed the literal string `{{ order.email }}` instead of the customer email in the confirmation sentence. Expected: render the actual saved order email address.                                                                               | 1) Complete checkout and land on `/checkout/checkout_success/<order_number>`.<br>2) Before fix, page text displays `A confirmation email will be sent to {{ order.email }}` literally.<br>3) After fix, sentence shows the real email value.                      | Fixed  | Normalized the confirmation sentence tag in `checkout/templates/checkout/checkout_success.html` to a clean one-line interpolation (`{{ order.email }}`) to avoid malformed/split template token rendering. Retested on 2026-03-18 with `manage.py check` and checkout success view. |
+| 26  | Product detail post-add redirect (`/products/<id>/`) | Intermittent `500` occurred on product detail immediately after successful Add to Bag redirect. Expected: Add to Bag returns `302` and redirected product detail returns `200`. | 1) Open `/products/2/`.<br>2) Submit Add to Bag.<br>3) Before fix, redirected GET to `/products/2/` intermittently returned `500`.<br>4) After fix, flow remains `302` -> `200` consistently. | Fixed  | Root cause was malformed template control-flow tags in `templates/includes/toasts/toast_success.html` (triggered when success messages rendered after add-to-bag). Corrected template tag structure. Retested in production across product IDs `1-12` on 2026-03-19; sampled flows returned `200/302/200` with no fresh `status=500`/`TemplateSyntaxError` in recent logs. |
 
 ## Testing Table
 
 This table summarises key test cases and their results for core project features.
 
-| Test Case                          | Area / Feature  | Steps / Description                                          | Expected Result                                    | Actual Result | Status |
-| ---------------------------------- | --------------- | ------------------------------------------------------------ | -------------------------------------------------- | ------------- | ------ |
-| Homepage loads                     | Home page       | Visit `/`                                                    | Page loads, no errors                              | As expected   | Passed |
-| Product list loads                 | Products        | Visit `/products/`                                           | Product list visible                               | As expected   | Passed |
-| Product detail loads               | Products        | Click product from list                                      | Detail page visible                                | As expected   | Passed |
-| Add to bag                         | Bag             | Add product to bag                                           | Bag updates                                        | As expected   | Passed |
-| Remove from bag                    | Bag             | Remove product from bag                                      | Bag updates                                        | As expected   | Passed |
-| Checkout form renders              | Checkout        | Visit `/checkout/`                                           | Form visible                                       | As expected   | Passed |
-| User registration                  | Accounts        | Register new user                                            | Account created                                    | As expected   | Passed |
-| Login/logout                       | Accounts        | Login and logout flows                                       | Auth works                                         | As expected   | Passed |
-| Admin access                       | Admin           | Login as superuser, visit `/admin/`                          | Admin dashboard loads                              | As expected   | Passed |
-| Invalid login                      | Accounts        | Attempt login with wrong password                            | Error message shown                                | As expected   | Passed |
-| Password reset                     | Accounts        | Request password reset email                                 | Email sent, can reset                              | As expected   | Passed |
-| Search products                    | Products        | Use search box with query                                    | Filtered results shown                             | As expected   | Passed |
-| Empty search                       | Products        | Submit empty search                                          | Error message, redirect                            | As expected   | Passed |
-| Add product with size              | Bag             | Add product with size to bag                                 | Size shown in bag                                  | As expected   | Passed |
-| Remove product with size           | Bag             | Remove sized product from bag                                | Bag updates                                        | As expected   | Passed |
-| Responsive layout (mobile)         | Layout          | View site on mobile device                                   | Layout adapts, no overlap                          | As expected   | Passed |
-| Responsive layout (desktop)        | Layout          | View site on desktop                                         | Layout adapts, no overlap                          | As expected   | Passed |
-| Placeholder image for no product   | Products        | View product with no image                                   | Placeholder image shown                            | As expected   | Passed |
-| Add-to-bag toast notification      | Bag             | Add item to bag                                              | Toast notification appears                         | As expected   | Passed |
-| Remove-from-bag toast notification | Bag             | Remove item from bag                                         | Toast notification appears                         | As expected   | Passed |
-| Admin create product               | Admin           | Create product in admin                                      | Product appears in list                            | As expected   | Passed |
-| Admin edit product                 | Admin           | Edit product in admin                                        | Changes visible in list                            | As expected   | Passed |
-| Admin delete product               | Admin           | Delete product in admin                                      | Product removed from list                          | As expected   | Passed |
-| Checkout with empty bag            | Checkout        | Try to checkout with empty bag                               | Error message, redirect                            | As expected   | Passed |
-| Checkout with filled bag           | Checkout        | Checkout with items in bag                                   | Order form shown                                   | As expected   | Passed |
-| Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent | First call creates order; second verifies existing | As expected   | Passed |
-| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit         | Webhook creates order from metadata                | As expected   | Passed |
-| CSS validation                     | Static files    | Validate base.css                                            | No errors/warnings                                 | As expected   | Passed |
-| HTML validation                    | Templates       | Validate home/products templates                             | No errors/warnings                                 | As expected   | Passed |
-| Lighthouse audit                   | Site            | Run Lighthouse on home/products                              | Good scores, no major issues                       | As expected   | Passed |
+| Test Case                          | Area / Feature  | Steps / Description                                           | Expected Result                                     | Actual Result | Status |
+| ---------------------------------- | --------------- | ------------------------------------------------------------- | --------------------------------------------------- | ------------- | ------ |
+| Homepage loads                     | Home page       | Visit `/`                                                     | Page loads, no errors                               | As expected   | Passed |
+| Product list loads                 | Products        | Visit `/products/`                                            | Product list visible                                | As expected   | Passed |
+| Product detail loads               | Products        | Click product from list                                       | Detail page visible                                 | As expected   | Passed |
+| Add to bag                         | Bag             | Add product to bag                                            | Bag updates                                         | As expected   | Passed |
+| Remove from bag                    | Bag             | Remove product from bag                                       | Bag updates                                         | As expected   | Passed |
+| Checkout form renders              | Checkout        | Visit `/checkout/`                                            | Form visible                                        | As expected   | Passed |
+| User registration                  | Accounts        | Register new user                                             | Account created                                     | As expected   | Passed |
+| Login/logout                       | Accounts        | Login and logout flows                                        | Auth works                                          | As expected   | Passed |
+| Admin access                       | Admin           | Login as superuser, visit `/admin/`                           | Admin dashboard loads                               | As expected   | Passed |
+| Invalid login                      | Accounts        | Attempt login with wrong password                             | Error message shown                                 | As expected   | Passed |
+| Password reset                     | Accounts        | Request password reset email                                  | Email sent, can reset                               | As expected   | Passed |
+| Search products                    | Products        | Use search box with query                                     | Filtered results shown                              | As expected   | Passed |
+| Empty search                       | Products        | Submit empty search                                           | Error message, redirect                             | As expected   | Passed |
+| Add product with size              | Bag             | Add product with size to bag                                  | Size shown in bag                                   | As expected   | Passed |
+| Remove product with size           | Bag             | Remove sized product from bag                                 | Bag updates                                         | As expected   | Passed |
+| Responsive layout (mobile)         | Layout          | View site on mobile device                                    | Layout adapts, no overlap                           | As expected   | Passed |
+| Responsive layout (desktop)        | Layout          | View site on desktop                                          | Layout adapts, no overlap                           | As expected   | Passed |
+| Placeholder image for no product   | Products        | View product with no image                                    | Placeholder image shown                             | As expected   | Passed |
+| Add-to-bag toast notification      | Bag             | Add item to bag                                               | Toast notification appears                          | As expected   | Passed |
+| Product detail after add redirect  | Products/Bag    | From `/products/<id>/`, submit Add to Bag and follow redirect | POST returns `302`; redirected detail returns `200` | As expected   | Passed |
+| Remove-from-bag toast notification | Bag             | Remove item from bag                                          | Toast notification appears                          | As expected   | Passed |
+| Admin create product               | Admin           | Create product in admin                                       | Product appears in list                             | As expected   | Passed |
+| Admin edit product                 | Admin           | Edit product in admin                                         | Changes visible in list                             | As expected   | Passed |
+| Admin delete product               | Admin           | Delete product in admin                                       | Product removed from list                           | As expected   | Passed |
+| Checkout with empty bag            | Checkout        | Try to checkout with empty bag                                | Error message, redirect                             | As expected   | Passed |
+| Checkout with filled bag           | Checkout        | Checkout with items in bag                                    | Order form shown                                    | As expected   | Passed |
+| Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent  | First call creates order; second verifies existing  | As expected   | Passed |
+| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit          | Webhook creates order from metadata                 | As expected   | Passed |
+| CSS validation                     | Static files    | Validate base.css                                             | No errors/warnings                                  | As expected   | Passed |
+| HTML validation                    | Templates       | Validate home/products templates                              | No errors/warnings                                  | As expected   | Passed |
+| Lighthouse audit                   | Site            | Run Lighthouse on home/products                               | Good scores, no major issues                        | As expected   | Passed |
 
 
 
