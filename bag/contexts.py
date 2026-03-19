@@ -27,9 +27,16 @@ def bag_contents(request):
     bag_updated = False
 
     for item_id, item_data in list(bag.items()):
+        # Guard against malformed keys in older or corrupted sessions.
+        try:
+            normalized_item_id = int(item_id)
+        except (TypeError, ValueError):
+            bag.pop(item_id, None)
+            bag_updated = True
+            continue
 
         # Stale product ids can remain in older sessions; clean them up safely.
-        product = Product.objects.filter(pk=item_id).first()
+        product = Product.objects.filter(pk=normalized_item_id).first()
         if not product:
             bag.pop(item_id, None)
             bag_updated = True

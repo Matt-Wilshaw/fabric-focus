@@ -5,6 +5,15 @@ from products.models import Product
 
 # Create your views here.
 
+
+def _get_bag(request):
+    """Return the session bag as a dictionary and self-heal invalid payloads."""
+    bag = request.session.get('bag', {})
+    if isinstance(bag, dict):
+        return bag
+    request.session['bag'] = {}
+    return request.session['bag']
+
 def view_bag(request):
     """ A view that renders the bag contents page """
 
@@ -22,7 +31,7 @@ def add_to_bag(request, item_id):
     size = None
     if 'product_size' in request.POST:
         size = request.POST['product_size']
-    bag = request.session.get('bag', {})
+    bag = _get_bag(request)
 
     if size:
         if item_id in list(bag.keys()):
@@ -57,7 +66,7 @@ def adjust_bag(request, item_id):
     size = None
     if 'product_size' in request.POST:
         size = request.POST['product_size']
-    bag = request.session.get('bag', {})
+    bag = _get_bag(request)
 
     if size:
         if quantity > 0:
@@ -90,7 +99,7 @@ def remove_from_bag(request, item_id):
         size = None
         if 'product_size' in request.POST:
             size = request.POST['product_size']
-        bag = request.session.get('bag', {})
+        bag = _get_bag(request)
 
         if size:
             del bag[item_id]['items_by_size'][size]
