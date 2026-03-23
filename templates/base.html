@@ -95,7 +95,7 @@
                 <p class="my-0">My Account</p>
               </div>
             </a>
-            <div class="dropdown-menu border-0" aria-labelledby="user-options">
+            <div class="dropdown-menu border-0" role="menu" aria-labelledby="user-options">
               {% if request.user.is_authenticated %}
               {% if request.user.is_superuser %}
               {% url 'add_product' as add_product_url %}
@@ -140,7 +140,7 @@
     </div>
     <div id="delivery-banner" class="row text-center">
       <div class="col text-white delivery-banner">
-        <h4 class="delivery-text my-1">Free delivery on orders over £{{ free_delivery_threshold }}</h4>
+        <h3 class="delivery-text my-1">Free delivery on orders over £{{ free_delivery_threshold }}</h3>
       </div>
     </div>
   </header>
@@ -229,7 +229,7 @@
 
   {% block postloadjs %}
 
-  <script type="text/javascript">
+  <script>
     $('.toast').toast('show');
 
     (function () {
