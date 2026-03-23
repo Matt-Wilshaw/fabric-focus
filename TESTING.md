@@ -34,13 +34,7 @@ Both **manual** and **automated** testing methods may be used to validate the fu
     - [Account login (`/accounts/login/`) validation snapshot](#account-login-accountslogin-validation-snapshot)
     - [Account signup (`/accounts/signup/`) validation snapshot](#account-signup-accountssignup-validation-snapshot)
   - [CSS Validator Testing](#css-validator-testing)
-    - [Homepage (`/`) CSS validation snapshot](#homepage--css-validation-snapshot)
-    - [Products list (`/products/`) CSS validation snapshot](#products-list-products-css-validation-snapshot)
-    - [Product detail (`/products/2/`) CSS validation snapshot](#product-detail-products2-css-validation-snapshot)
-    - [Bag (`/bag/`) CSS validation snapshot](#bag-bag-css-validation-snapshot)
-    - [Checkout (`/checkout/`) CSS validation snapshot](#checkout-checkout-css-validation-snapshot)
-    - [Account login (`/accounts/login/`) CSS validation snapshot](#account-login-accountslogin-css-validation-snapshot)
-    - [Account signup (`/accounts/signup/`) CSS validation snapshot](#account-signup-accountssignup-css-validation-snapshot)
+    - [CSS validation summary by page](#css-validation-summary-by-page)
   - [Lighthouse Testing](#lighthouse-testing)
   - [User Stories](#user-stories)
     - [1. Browse Products](#1-browse-products)
@@ -421,96 +415,17 @@ CSS validation was carried out using the [W3C CSS Validation Service](https://ji
 
 **Validator settings:** CSS Level 3 + SVG
 
-### Homepage (`/`) CSS validation snapshot
+### CSS validation summary by page
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
-
-🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-
-| Metric   | Value |
-| -------- | ----- |
-| Errors   | 0     |
-| Warnings | 738   |
-
-**Summary:** 0 errors · 738 warnings
-
-### Products list (`/products/`) CSS validation snapshot
-
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/`
-
-🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-
-| Metric   | Value |
-| -------- | ----- |
-| Errors   | 0     |
-| Warnings | 738   |
-
-**Summary:** 0 errors · 738 warnings
-
-### Product detail (`/products/2/`) CSS validation snapshot
-
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/`
-
-🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-
-| Metric   | Value |
-| -------- | ----- |
-| Errors   | 0     |
-| Warnings | 738   |
-
-**Summary:** 0 errors · 738 warnings
-
-### Bag (`/bag/`) CSS validation snapshot
-
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/`
-
-🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-
-| Metric   | Value |
-| -------- | ----- |
-| Errors   | 0     |
-| Warnings | 738   |
-
-**Summary:** 0 errors · 738 warnings
-
-### Checkout (`/checkout/`) CSS validation snapshot
-
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/`
-
-🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-
-| Metric   | Value |
-| -------- | ----- |
-| Errors   | 0     |
-| Warnings | 738   |
-
-**Summary:** 0 errors · 738 warnings
-
-### Account login (`/accounts/login/`) CSS validation snapshot
-
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/`
-
-🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-
-| Metric   | Value |
-| -------- | ----- |
-| Errors   | 0     |
-| Warnings | 738   |
-
-**Summary:** 0 errors · 738 warnings
-
-### Account signup (`/accounts/signup/`) CSS validation snapshot
-
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/`
-
-🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-
-| Metric   | Value |
-| -------- | ----- |
-| Errors   | 0     |
-| Warnings | 738   |
-
-**Summary:** 0 errors · 738 warnings
+| Page                | Full validator result                                                                                                                                                                           | Errors | Warnings |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------- |
+| `/`                 | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)                 | 0      | 738      |
+| `/products/`        | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)        | 0      | 738      |
+| `/products/2/`      | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)      | 0      | 738      |
+| `/bag/`             | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)             | 0      | 738      |
+| `/checkout/`        | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)        | 0      | 738      |
+| `/accounts/login/`  | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)  | 0      | 738      |
+| `/accounts/signup/` | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en) | 0      | 738      |
 
 > Note: all pages reported `0` CSS errors. The warning count is high and largely originates from third-party framework and vendor styles loaded by the site.
 
