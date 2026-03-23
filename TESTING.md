@@ -34,6 +34,13 @@ Both **manual** and **automated** testing methods may be used to validate the fu
     - [Account login (`/accounts/login/`) validation snapshot](#account-login-accountslogin-validation-snapshot)
     - [Account signup (`/accounts/signup/`) validation snapshot](#account-signup-accountssignup-validation-snapshot)
   - [CSS Validator Testing](#css-validator-testing)
+    - [Homepage (`/`) CSS validation snapshot](#homepage--css-validation-snapshot)
+    - [Products list (`/products/`) CSS validation snapshot](#products-list-products-css-validation-snapshot)
+    - [Product detail (`/products/2/`) CSS validation snapshot](#product-detail-products2-css-validation-snapshot)
+    - [Bag (`/bag/`) CSS validation snapshot](#bag-bag-css-validation-snapshot)
+    - [Checkout (`/checkout/`) CSS validation snapshot](#checkout-checkout-css-validation-snapshot)
+    - [Account login (`/accounts/login/`) CSS validation snapshot](#account-login-accountslogin-css-validation-snapshot)
+    - [Account signup (`/accounts/signup/`) CSS validation snapshot](#account-signup-accountssignup-css-validation-snapshot)
   - [Lighthouse Testing](#lighthouse-testing)
   - [User Stories](#user-stories)
     - [1. Browse Products](#1-browse-products)
@@ -412,17 +419,100 @@ HTML validation was carried out using the [W3C Markup Validation Service](https:
 
 CSS validation was carried out using the [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/).
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/`
-
 **Validator settings:** CSS Level 3 + SVG
+
+### Homepage (`/`) CSS validation snapshot
+
+**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
+
+🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+
+| Metric   | Value |
+| -------- | ----- |
+| Errors   | 0     |
+| Warnings | 738   |
+
+**Summary:** 0 errors · 738 warnings
+
+### Products list (`/products/`) CSS validation snapshot
+
+**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/`
+
+🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+
+| Metric   | Value |
+| -------- | ----- |
+| Errors   | 0     |
+| Warnings | 738   |
+
+**Summary:** 0 errors · 738 warnings
+
+### Product detail (`/products/2/`) CSS validation snapshot
+
+**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/`
 
 🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
 
-| Result | Details         |
-| ------ | --------------- |
-| ✅ Pass | No errors found |
+| Metric   | Value |
+| -------- | ----- |
+| Errors   | 0     |
+| Warnings | 738   |
 
-> The W3C CSS Validator returned no errors for this page. All CSS passed validation to CSS Level 3 + SVG standard.
+**Summary:** 0 errors · 738 warnings
+
+### Bag (`/bag/`) CSS validation snapshot
+
+**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/`
+
+🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+
+| Metric   | Value |
+| -------- | ----- |
+| Errors   | 0     |
+| Warnings | 738   |
+
+**Summary:** 0 errors · 738 warnings
+
+### Checkout (`/checkout/`) CSS validation snapshot
+
+**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/`
+
+🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+
+| Metric   | Value |
+| -------- | ----- |
+| Errors   | 0     |
+| Warnings | 738   |
+
+**Summary:** 0 errors · 738 warnings
+
+### Account login (`/accounts/login/`) CSS validation snapshot
+
+**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/`
+
+🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+
+| Metric   | Value |
+| -------- | ----- |
+| Errors   | 0     |
+| Warnings | 738   |
+
+**Summary:** 0 errors · 738 warnings
+
+### Account signup (`/accounts/signup/`) CSS validation snapshot
+
+**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/`
+
+🔗 [View full validation result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+
+| Metric   | Value |
+| -------- | ----- |
+| Errors   | 0     |
+| Warnings | 738   |
+
+**Summary:** 0 errors · 738 warnings
+
+> Note: all pages reported `0` CSS errors. The warning count is high and largely originates from third-party framework and vendor styles loaded by the site.
 
 ----
 
@@ -733,36 +823,36 @@ How I use this table:
 
 This table summarises key test cases and their results for core project features.
 
-| Test Case                          | Area / Feature  | Steps / Description                                                                                                     | Expected Result                                     | Actual Result                                                                                                                                         | Status     |
-| ---------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| Homepage loads                     | Home page       | Visit `/`                                                                                                               | Page loads, no errors                               | As expected                                                                                                                                           | Passed     |
-| Product list loads                 | Products        | Visit `/products/`                                                                                                      | Product list visible                                | As expected                                                                                                                                           | Passed     |
-| Product detail loads               | Products        | Click product from list                                                                                                 | Detail page visible                                 | As expected                                                                                                                                           | Passed     |
-| Add to bag                         | Bag             | Add product to bag                                                                                                      | Bag updates                                         | As expected                                                                                                                                           | Passed     |
-| Remove from bag                    | Bag             | Remove product from bag                                                                                                 | Bag updates                                         | As expected                                                                                                                                           | Passed     |
-| Checkout form renders              | Checkout        | Visit `/checkout/`                                                                                                      | Form visible                                        | As expected                                                                                                                                           | Passed     |
-| User registration                  | Accounts        | Register new user                                                                                                       | Account created                                     | As expected                                                                                                                                           | Passed     |
-| Login/logout                       | Accounts        | Login and logout flows                                                                                                  | Auth works                                          | As expected                                                                                                                                           | Passed     |
-| Admin access                       | Admin           | Login as superuser, visit `/admin/`                                                                                     | Admin dashboard loads                               | As expected                                                                                                                                           | Passed     |
-| Invalid login                      | Accounts        | Attempt login with wrong password                                                                                       | Error message shown                                 | As expected                                                                                                                                           | Passed     |
-| Password reset                     | Accounts        | Request password reset email                                                                                            | Email sent, can reset                               | As expected                                                                                                                                           | Passed     |
-| Search products                    | Products        | Use search box with query                                                                                               | Filtered results shown                              | As expected                                                                                                                                           | Passed     |
-| Empty search                       | Products        | Submit empty search                                                                                                     | Error message, redirect                             | As expected                                                                                                                                           | Passed     |
-| Add product with size              | Bag             | Add product with size to bag                                                                                            | Size shown in bag                                   | As expected                                                                                                                                           | Passed     |
-| Remove product with size           | Bag             | Remove sized product from bag                                                                                           | Bag updates                                         | As expected                                                                                                                                           | Passed     |
-| Responsive layout (mobile)         | Layout          | View site on mobile device                                                                                              | Layout adapts, no overlap                           | As expected                                                                                                                                           | Passed     |
-| Responsive layout (desktop)        | Layout          | View site on desktop                                                                                                    | Layout adapts, no overlap                           | As expected                                                                                                                                           | Passed     |
-| Placeholder image for no product   | Products        | View product with no image                                                                                              | Placeholder image shown                             | As expected                                                                                                                                           | Passed     |
-| Add-to-bag toast notification      | Bag             | Add item to bag                                                                                                         | Toast notification appears                          | As expected                                                                                                                                           | Passed     |
-| Product detail after add redirect  | Products/Bag    | From `/products/<id>/`, submit Add to Bag and follow redirect                                                           | POST returns `302`; redirected detail returns `200` | As expected                                                                                                                                           | Passed     |
-| Remove-from-bag toast notification | Bag             | Remove item from bag                                                                                                    | Toast notification appears                          | As expected                                                                                                                                           | Passed     |
-| Admin create product               | Admin           | Create product in admin                                                                                                 | Product appears in list                             | As expected                                                                                                                                           | Passed     |
-| Admin edit product                 | Admin           | Edit product in admin                                                                                                   | Changes visible in list                             | As expected                                                                                                                                           | Passed     |
-| Admin delete product               | Admin           | Delete product in admin                                                                                                 | Product removed from list                           | As expected                                                                                                                                           | Passed     |
-| Checkout with empty bag            | Checkout        | Try to checkout with empty bag                                                                                          | Error message, redirect                             | As expected                                                                                                                                           | Passed     |
-| Checkout with filled bag           | Checkout        | Checkout with items in bag                                                                                              | Order form shown                                    | As expected                                                                                                                                           | Passed     |
-| Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent                                                            | First call creates order; second verifies existing  | As expected                                                                                                                                           | Passed     |
-| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit                                                                    | Webhook creates order from metadata                 | As expected                                                                                                                                           | Passed     |
-| CSS validation                     | Static files    | W3C CSS Validator on `/products/2/` (CSS Level 3 + SVG)                                                                 | No errors found                                     | No errors found                                                                                                                                       | ✅ Passed   |
-| HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/` | Valid markup                                        | 11-12 errors, 2-4 warnings across pages — mostly shared navbar semantics and script-type warnings (see HTML Validator section for per-page breakdown) | ⚠️ See note |
-| Lighthouse audit                   | Site            | Run Lighthouse on home/products                                                                                         | Good scores, no major issues                        | As expected                                                                                                                                           | Passed     |
+| Test Case                          | Area / Feature  | Steps / Description                                                                                                                        | Expected Result                                     | Actual Result                                                                                                                                         | Status     |
+| ---------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| Homepage loads                     | Home page       | Visit `/`                                                                                                                                  | Page loads, no errors                               | As expected                                                                                                                                           | Passed     |
+| Product list loads                 | Products        | Visit `/products/`                                                                                                                         | Product list visible                                | As expected                                                                                                                                           | Passed     |
+| Product detail loads               | Products        | Click product from list                                                                                                                    | Detail page visible                                 | As expected                                                                                                                                           | Passed     |
+| Add to bag                         | Bag             | Add product to bag                                                                                                                         | Bag updates                                         | As expected                                                                                                                                           | Passed     |
+| Remove from bag                    | Bag             | Remove product from bag                                                                                                                    | Bag updates                                         | As expected                                                                                                                                           | Passed     |
+| Checkout form renders              | Checkout        | Visit `/checkout/`                                                                                                                         | Form visible                                        | As expected                                                                                                                                           | Passed     |
+| User registration                  | Accounts        | Register new user                                                                                                                          | Account created                                     | As expected                                                                                                                                           | Passed     |
+| Login/logout                       | Accounts        | Login and logout flows                                                                                                                     | Auth works                                          | As expected                                                                                                                                           | Passed     |
+| Admin access                       | Admin           | Login as superuser, visit `/admin/`                                                                                                        | Admin dashboard loads                               | As expected                                                                                                                                           | Passed     |
+| Invalid login                      | Accounts        | Attempt login with wrong password                                                                                                          | Error message shown                                 | As expected                                                                                                                                           | Passed     |
+| Password reset                     | Accounts        | Request password reset email                                                                                                               | Email sent, can reset                               | As expected                                                                                                                                           | Passed     |
+| Search products                    | Products        | Use search box with query                                                                                                                  | Filtered results shown                              | As expected                                                                                                                                           | Passed     |
+| Empty search                       | Products        | Submit empty search                                                                                                                        | Error message, redirect                             | As expected                                                                                                                                           | Passed     |
+| Add product with size              | Bag             | Add product with size to bag                                                                                                               | Size shown in bag                                   | As expected                                                                                                                                           | Passed     |
+| Remove product with size           | Bag             | Remove sized product from bag                                                                                                              | Bag updates                                         | As expected                                                                                                                                           | Passed     |
+| Responsive layout (mobile)         | Layout          | View site on mobile device                                                                                                                 | Layout adapts, no overlap                           | As expected                                                                                                                                           | Passed     |
+| Responsive layout (desktop)        | Layout          | View site on desktop                                                                                                                       | Layout adapts, no overlap                           | As expected                                                                                                                                           | Passed     |
+| Placeholder image for no product   | Products        | View product with no image                                                                                                                 | Placeholder image shown                             | As expected                                                                                                                                           | Passed     |
+| Add-to-bag toast notification      | Bag             | Add item to bag                                                                                                                            | Toast notification appears                          | As expected                                                                                                                                           | Passed     |
+| Product detail after add redirect  | Products/Bag    | From `/products/<id>/`, submit Add to Bag and follow redirect                                                                              | POST returns `302`; redirected detail returns `200` | As expected                                                                                                                                           | Passed     |
+| Remove-from-bag toast notification | Bag             | Remove item from bag                                                                                                                       | Toast notification appears                          | As expected                                                                                                                                           | Passed     |
+| Admin create product               | Admin           | Create product in admin                                                                                                                    | Product appears in list                             | As expected                                                                                                                                           | Passed     |
+| Admin edit product                 | Admin           | Edit product in admin                                                                                                                      | Changes visible in list                             | As expected                                                                                                                                           | Passed     |
+| Admin delete product               | Admin           | Delete product in admin                                                                                                                    | Product removed from list                           | As expected                                                                                                                                           | Passed     |
+| Checkout with empty bag            | Checkout        | Try to checkout with empty bag                                                                                                             | Error message, redirect                             | As expected                                                                                                                                           | Passed     |
+| Checkout with filled bag           | Checkout        | Checkout with items in bag                                                                                                                 | Order form shown                                    | As expected                                                                                                                                           | Passed     |
+| Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent                                                                               | First call creates order; second verifies existing  | As expected                                                                                                                                           | Passed     |
+| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit                                                                                       | Webhook creates order from metadata                 | As expected                                                                                                                                           | Passed     |
+| CSS validation                     | Static files    | W3C CSS Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/` (CSS Level 3 + SVG) | No CSS errors found                                 | 0 errors on all tested pages; 738 warnings per page (mainly third-party/vendor CSS)                                                                   | ✅ Passed   |
+| HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/`                    | Valid markup                                        | 11-12 errors, 2-4 warnings across pages — mostly shared navbar semantics and script-type warnings (see HTML Validator section for per-page breakdown) | ⚠️ See note |
+| Lighthouse audit                   | Site            | Run Lighthouse on home/products                                                                                                            | Good scores, no major issues                        | As expected                                                                                                                                           | Passed     |
