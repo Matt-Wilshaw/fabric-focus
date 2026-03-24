@@ -524,6 +524,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 ## Known Limitations at Submission
 
 - Automated testing coverage is currently limited outside the Products app; test modules in Home, Bag, Checkout, and Profiles still require full implementation.
+- The homepage Shop Now CTA currently has a known text-contrast issue (white text on gold background) identified in Lighthouse accessibility checks.
 - Accessibility validation includes practical project-level checks, but a full assistive-technology audit across all user flows has not yet been completed.
 
 ## Future Enhancements
