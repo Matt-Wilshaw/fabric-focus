@@ -61,7 +61,7 @@ def _fallback_response(message):
             ),
         },
         {
-            "match": ["bold", "color", "statement"],
+            "match": ["bold", "color", "colour", "statement"],
             "text": (
                 "Start with a strong hue (saffron, cobalt, or olive) "
                 "and keep the rest neutral. One hero piece is enough."
@@ -74,7 +74,7 @@ def _fallback_response(message):
             return item["text"]
     return (
         "Try a balanced look: soft top, structured bottom, and one texture pop. "
-        "Want more detail on color or occasion?"
+        "Want more detail on colour or occasion?"
     )
 
 
