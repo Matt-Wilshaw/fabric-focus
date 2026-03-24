@@ -234,13 +234,13 @@ Breakpoints I test:
 | :----: | :----: | :----: | :----: | :----: |
 | Passed | Passed | Passed | Passed | Passed |
 
-Screenshot locations used for responsiveness evidence:
+Responsiveness evidence currently stored in the repository:
 
-- `testing-images/responsiveness/320/`
-- `testing-images/responsiveness/576/`
-- `testing-images/responsiveness/768/`
-- `testing-images/responsiveness/992/`
-- `testing-images/responsiveness/1200/`
+- `readme-images/mobile-tablet/mobile-tablet-homepage.png`
+- `readme-images/mobile-tablet/mobile-tablet-product-detail.png`
+- `readme-images/mobile-tablet/mobile-tablet-checkout.png`
+- `readme-images/mobile-tablet/mobile-tablet-register.png`
+- `readme-images/mobile-tablet/mobile-tablet-product-management.png`
 
 **Manual test steps:**
 
@@ -252,7 +252,7 @@ Screenshot locations used for responsiveness evidence:
   - Header and navigation remain usable
   - Product list cards/rows don't overflow
   - Text remains readable and buttons/links are tappable
-6. Capture screenshots and save them into the folders above.
+6. Capture screenshots and save them in a project evidence folder (for example `testing-images/` or `readme-images/`) before linking them in this document.
 
 ----
 

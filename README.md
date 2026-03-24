@@ -43,10 +43,11 @@ Whether you're dressing for work, weekend plans, social events, or relaxed days 
     - [1. Clone the repository](#1-clone-the-repository)
     - [2. Create a virtual environment (optional but recommended)](#2-create-a-virtual-environment-optional-but-recommended)
     - [3. Install dependencies](#3-install-dependencies)
-    - [4. Apply database migrations](#4-apply-database-migrations)
-    - [5. Create a superuser (optional, for admin access)](#5-create-a-superuser-optional-for-admin-access)
-    - [6. Run the development server](#6-run-the-development-server)
-    - [7. Run automated tests](#7-run-automated-tests)
+    - [4. Configure local environment variables](#4-configure-local-environment-variables)
+    - [5. Apply database migrations](#5-apply-database-migrations)
+    - [6. Create a superuser (optional, for admin access)](#6-create-a-superuser-optional-for-admin-access)
+    - [7. Run the development server](#7-run-the-development-server)
+    - [8. Run automated tests](#8-run-automated-tests)
   - [AI Style Assistant (What to Wear)](#ai-style-assistant-what-to-wear)
     - [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
     - [Frontend](#frontend)
@@ -65,16 +66,18 @@ Whether you're dressing for work, weekend plans, social events, or relaxed days 
 
 This project uses the following technologies:
 
-- Backend: Python 3.x, Django 3.2.25
-- Frontend: HTML5, CSS3, JavaScript, Bootstrap (CDN)
-- Database: SQLite (default Django development database)
-- Authentication: django-allauth
-- Forms/UI: django-crispy-forms
-- Media handling: Pillow
-- Payments: Stripe
-- AI integration: Google Gemini API (Style Assistant)
-- Deployment: Heroku
-- Dependency management: pip, requirements.txt
+- Language and framework: Python 3.11, Django 3.2.25
+- Frontend stack: HTML5, CSS3, JavaScript, Bootstrap 4.4.1 (CDN), jQuery 3.5.1, Font Awesome 5.15.4
+- Databases: SQLite (local default) and PostgreSQL via `DATABASE_URL` in production
+- Authentication and accounts: django-allauth
+- Forms and UI helpers: django-crispy-forms
+- Country fields and validation: django-countries
+- Media and static handling: Pillow, WhiteNoise, django-storages, boto3 (AWS S3 when `USE_AWS` is enabled)
+- Payments: Stripe (Stripe.js on frontend, stripe Python SDK on backend, webhook integration)
+- AI integration: Google Gemini API (google-generativeai via the style assistant endpoint)
+- HTTP client usage: requests (server-side call to Gemini API)
+- Deployment and runtime: Heroku, gunicorn, dj-database-url
+- Dependency management: pip with requirements.txt
 
 
 ## Strategy (Why?)
@@ -408,22 +411,42 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Apply database migrations
+### 4. Configure local environment variables
+
+This project loads local development environment values from `env.py` if the file exists.
+
+Minimum variables for local development:
+
+- `SECRET_KEY`: Django secret key for your local instance.
+- `DEVELOPMENT=1`: enables Django debug mode locally.
+- `STRIPE_PUBLIC_KEY` and `STRIPE_SECRET_KEY`: required for Stripe checkout tests.
+
+Optional variables:
+
+- `STRIPE_WH_SECRET`: needed for local Stripe webhook signature verification.
+- `GEMINI_API_KEY`: enables the AI style assistant endpoint.
+- `GEMINI_MODEL`: overrides the default model (`gemini-2.5-flash`).
+- `ALLOWED_HOSTS`: comma-separated hostnames (default: `localhost,127.0.0.1`).
+- `CSRF_TRUSTED_ORIGINS`: comma-separated trusted origins for CSRF checks.
+
+Production note: do not set `DEVELOPMENT` in production. In this project, debug mode is controlled by the presence of `DEVELOPMENT`.
+
+### 5. Apply database migrations
 ```bash
 python manage.py migrate
 ```
 
-### 5. Create a superuser (optional, for admin access)
+### 6. Create a superuser (optional, for admin access)
 ```bash
 python manage.py createsuperuser
 ```
 
-### 6. Run the development server
+### 7. Run the development server
 ```bash
 python manage.py runserver
 ```
 
-### 7. Run automated tests
+### 8. Run automated tests
 ```bash
 python manage.py test
 ```
@@ -557,7 +580,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 
 ### Tips
 
-- Keep `DEBUG=False` in production.
+- Do not set `DEVELOPMENT` in production (that keeps debug mode off in this project).
 - Never commit real secret keys.
 - Run smoke tests immediately after deployment.
 - Use `.python-version` (for example `3.11`) to define the Python runtime on Heroku; `runtime.txt` is deprecated.
