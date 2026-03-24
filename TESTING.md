@@ -277,7 +277,7 @@ Fixes applied on 2026-03-24:
 Retest status:
 
 - `manage.py check` passes after the cleanup.
-- A fresh W3C validator rerun against the deployed pages still needs to be captured before final submission so the historical error counts below can be replaced with post-fix evidence.
+- A post-deploy W3C validator JSON API rerun was captured on 2026-03-24 and confirmed zero errors, zero warnings, and zero info messages across the tested pages.
 
 ### Homepage (`/`) validation snapshot
 

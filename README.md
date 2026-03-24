@@ -46,10 +46,12 @@ Whether you're dressing for work, weekend plans, social events, or relaxed days 
     - [4. Apply database migrations](#4-apply-database-migrations)
     - [5. Create a superuser (optional, for admin access)](#5-create-a-superuser-optional-for-admin-access)
     - [6. Run the development server](#6-run-the-development-server)
+    - [7. Run automated tests](#7-run-automated-tests)
   - [AI Style Assistant (What to Wear)](#ai-style-assistant-what-to-wear)
     - [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
     - [Frontend](#frontend)
   - [Key Outline](#key-outline)
+  - [Known Limitations at Submission](#known-limitations-at-submission)
   - [Future Enhancements](#future-enhancements)
   - [Fabric-Focus Deployment Guide](#fabric-focus-deployment-guide)
     - [Prerequisites](#prerequisites)
@@ -388,7 +390,7 @@ Follow these steps to set up Fabric-Focus locally:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/fabric-focus.git
+git clone https://github.com/Matt-Wilshaw/fabric-focus.git
 cd fabric-focus
 ```
 
@@ -419,6 +421,16 @@ python manage.py createsuperuser
 ### 6. Run the development server
 ```bash
 python manage.py runserver
+```
+
+### 7. Run automated tests
+```bash
+python manage.py test
+```
+
+Optional: run tests for a single app while iterating.
+```bash
+python manage.py test products
 ```
 
 ## AI Style Assistant (What to Wear)
@@ -507,6 +519,12 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 - Stripe payment flow with webhook support.
 - User profile support for delivery defaults and repeat purchasing.
 - Admin tools for catalogue and content management.
+
+## Known Limitations at Submission
+
+- Bug tracker item 20 in the testing report is still marked `Retest Needed` pending a final manual recheck of add-product flow with an image-less product.
+- Placeholder automated test modules still exist in some apps (`home/tests.py`, `bag/tests.py`, `checkout/tests.py`, and `profiles/tests.py`).
+- Accessibility checks are practical project-level checks; a full assistive-technology audit across all user flows has not yet been completed.
 
 ## Future Enhancements
 
