@@ -559,6 +559,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 - Keep `DEBUG=False` in production.
 - Never commit real secret keys.
 - Run smoke tests immediately after deployment.
+- Use `.python-version` (for example `3.11`) to define the Python runtime on Heroku; `runtime.txt` is deprecated.
 
 ---
 
