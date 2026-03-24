@@ -209,13 +209,13 @@ Observed output summary:
 
 Core customer flows checked: home, products list/detail, bag actions, login/logout, and checkout page render.
 
-| Browser / Profile            | Result     | Notes |
-| ---------------------------- | ---------- | ----- |
-| Chrome (desktop)             | Passed     | Primary manual test browser used throughout the project. |
-| Edge (desktop)               | Passed     | Core navigation and form flows matched Chrome behaviour. |
-| Firefox (desktop)            | Passed     | No layout or interaction regressions found in core flows. |
+| Browser / Profile            | Result     | Notes                                                                  |
+| ---------------------------- | ---------- | ---------------------------------------------------------------------- |
+| Chrome (desktop)             | Passed     | Primary manual test browser used throughout the project.               |
+| Edge (desktop)               | Passed     | Core navigation and form flows matched Chrome behaviour.               |
+| Firefox (desktop)            | Passed     | No layout or interaction regressions found in core flows.              |
 | Chrome mobile emulation      | Passed     | Used during responsiveness checks at 320/576/768/992/1200 breakpoints. |
-| Mobile Safari (iOS hardware) | Not tested | Not included in this test cycle. |
+| Mobile Safari (iOS hardware) | Not tested | Not included in this test cycle.                                       |
 
 
 ## Responsiveness Testing
