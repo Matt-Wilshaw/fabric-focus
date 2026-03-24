@@ -35,6 +35,7 @@ Both **manual** and **automated** testing methods may be used to validate the fu
     - [Account signup (`/accounts/signup/`) validation snapshot](#account-signup-accountssignup-validation-snapshot)
   - [CSS Validator Testing](#css-validator-testing)
     - [CSS validation summary by page](#css-validation-summary-by-page)
+  - [Accessibility Testing](#accessibility-testing)
   - [Lighthouse Testing](#lighthouse-testing)
   - [User Stories](#user-stories)
     - [1. Browse Products](#1-browse-products)
@@ -223,6 +224,37 @@ Screenshot locations used for responsiveness evidence:
 ## HTML Validator Testing
 
 HTML validation was carried out using the [W3C Markup Validation Service](https://validator.w3.org/).
+
+### Final validation summary
+
+Final validation rerun date: 2026-03-24
+
+The deployed Heroku site was revalidated after the shared-template cleanup and final heading/link fixes. All tested pages now return zero HTML validation messages.
+
+Key fixes included:
+
+- removing invalid dropdown `aria-labelledby` usage from shared header/navigation templates
+- renaming the mobile account dropdown trigger so IDs remain unique
+- replacing product-management subheadings with paragraph text
+- correcting the style-assistant heading order
+- removing the trailing slash from the shared Font Awesome stylesheet tag
+
+Verification:
+
+- `manage.py check` passed after the changes
+- the deployed site was checked via the W3C validator JSON API after deployment
+
+| Page | Full validator result | Errors | Warnings | Info |
+| ---- | --------------------- | ------ | -------- | ---- |
+| `/` | [View result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2F) | 0 | 0 | 0 |
+| `/products/` | [View result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fproducts%2F) | 0 | 0 | 0 |
+| `/products/2/` | [View result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fproducts%2F2%2F) | 0 | 0 | 0 |
+| `/bag/` | [View result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fbag%2F) | 0 | 0 | 0 |
+| `/checkout/` | [View result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fcheckout%2F) | 0 | 0 | 0 |
+| `/accounts/login/` | [View result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Faccounts%2Flogin%2F) | 0 | 0 | 0 |
+| `/accounts/signup/` | [View result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Faccounts%2Fsignup%2F) | 0 | 0 | 0 |
+
+Historical validator output from before the cleanup is retained below for traceability.
 
 ### Validation cleanup summary
 
@@ -434,6 +466,8 @@ CSS validation was carried out using the [W3C CSS Validation Service](https://ji
 
 **Validator settings:** CSS Level 3 + SVG
 
+Latest live rerun date: 2026-03-24
+
 ### CSS validation summary by page
 
 | Page                | Full validator result                                                                                                                                                                           | Errors | Warnings |
@@ -446,13 +480,44 @@ CSS validation was carried out using the [W3C CSS Validation Service](https://ji
 | `/accounts/login/`  | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)  | 0      | 738      |
 | `/accounts/signup/` | [View result](https://jigsaw.w3.org/css-validator/validator?uri=https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en) | 0      | 738      |
 
-> Note: all pages reported `0` CSS errors. The warning count is high and largely originates from third-party framework and vendor styles loaded by the site.
+> Note: all tested pages reported `0` CSS errors on the live rerun. The `738` warnings are largely informational and come from CSS variables, vendor extensions, Bootstrap, and Font Awesome rather than unresolved stylesheet errors in the project CSS.
+
+----
+
+## Accessibility Testing
+
+Accessibility was reviewed through a combination of manual checks, semantic validation, and interface inspection.
+
+Checks completed:
+
+- Verified final HTML validation results returned `0` errors, `0` warnings, and `0` info messages across the tested pages.
+- Confirmed product imagery includes `alt` text and decorative icons use `aria-hidden` or accessible labels where appropriate.
+- Checked key form-driven pages (`/checkout/`, `/accounts/login/`, `/accounts/signup/`, `/profile/`) for readable labels, error messaging, and visible submit controls.
+- Reviewed keyboard-reachable interactive elements in the shared header, account menu, bag actions, checkout flow, and authentication forms.
+- Manually checked that core CTA, navigation, and feedback components maintain readable contrast against their backgrounds.
+
+Outcome:
+
+- Markup quality improved as part of the HTML validation fixes on 2026-03-24.
+- A Lighthouse mobile audit of the homepage on 2026-03-24 returned an accessibility score of `95` and flagged one contrast issue on the `Shop Now` CTA button.
+- The reported contrast issue was: white text on the gold CTA background did not meet the expected `4.5:1` contrast ratio on the homepage hero button.
+- A formal assistive-technology audit (for example, a full screen-reader test across all flows) has not been completed, so this section should be understood as a practical project-level accessibility review rather than a full WCAG conformance audit.
 
 ----
 
 ## Lighthouse Testing
 
 Lighthouse (Chrome DevTools) audits pages for performance, accessibility, best practices, and SEO.
+
+Latest captured audit: 2026-03-24
+
+Test profile used:
+
+- Device profile: mobile
+- Browser: Chrome DevTools Lighthouse 13.0.2
+- Run mode: navigation
+- Test environment: mobile emulation with Lighthouse's default throttling profile
+- URL tested: `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
 
 **How to run Lighthouse:**
 
@@ -465,14 +530,52 @@ Lighthouse (Chrome DevTools) audits pages for performance, accessibility, best p
 
 | Page         | Performance                  | Accessibility                | Best Practices               | SEO                          |
 | ------------ | ---------------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
-| `/`          | Fresh numeric score pending  | Fresh numeric score pending  | Fresh numeric score pending  | Fresh numeric score pending  |
+| `/`          | 79                           | 95                           | 100                          | 100                          |
 | `/products/` | Fresh numeric score pending  | Fresh numeric score pending  | Fresh numeric score pending  | Fresh numeric score pending  |
 
 Notes:
 
 - Scores can vary between runs (network conditions, cold cache, background processes).
 - For consistency, I run audits in an Incognito window with extensions disabled.
-- Before submission, this table should contain numeric Lighthouse scores rather than pass/fail wording.
+- Lighthouse remains a final manual evidence step because scores fluctuate by environment and automated external API access was not reliable during documentation cleanup.
+- The homepage row above is now supported by a captured mobile Lighthouse JSON report dated 2026-03-24.
+- The `/products/` row remains pending until its matching Lighthouse capture is recorded.
+
+### Homepage (`/`) mobile Lighthouse evidence
+
+Report metadata:
+
+- URL tested: `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
+- Lighthouse version: `13.0.2`
+- Fetch time: `2026-03-24T08:17:17.483Z`
+- Form factor: mobile
+- Browser profile: Chrome 146 mobile emulation
+
+Summary scores captured on 2026-03-24:
+
+- Performance: `79`
+- Accessibility: `95`
+- Best Practices: `100`
+- SEO: `100`
+
+Supporting evidence from the same report:
+
+- First Contentful Paint: `3.8 s`
+- Largest Contentful Paint: `3.8 s`
+- Speed Index: `3.8 s`
+- Total Blocking Time: `105.5 ms`
+- Time to Interactive: `5.3 s`
+- Cumulative Layout Shift: `0.001`
+- Max Potential First Input Delay: `261 ms`
+- Initial server response time: `55 ms`
+
+Key findings called out by Lighthouse:
+
+- Accessibility: one contrast issue on the homepage `Shop Now` button was reported.
+- Accessibility proof: Lighthouse flagged `a.shop-now-button` at a contrast ratio of `2.24:1`, where `4.5:1` was expected for normal text.
+- Performance: total page weight was approximately `8,024 KiB`.
+- Performance: the largest payload contributor was the homepage hero background image (`homepage_background_cropped.jpg`), at roughly `7.5 MB`.
+- Performance: render-blocking resources, unused JavaScript, and unused CSS were identified as the main optimisation opportunities in the audit.
 
 ---
 
@@ -753,7 +856,7 @@ How I use this table:
 | 24  | Checkout success template regression (`/checkout/checkout_success/`) | Checkout completion raised `TemplateSyntaxError` (`Invalid block tag on line 76: 'endfor', expected 'elif', 'else' or 'endif'`) when rendering order line items. Expected: success page renders after payment completes.                                       | 1) Complete an order and redirect to `/checkout/checkout_success/<order_number>`.<br>2) Before fix, Django throws a template parsing error referencing line 76 and mismatched block tags.<br>3) After fix, success page renders and displays order summary correctly.     | Fixed                                                                                                                                           | Rewrote the `item.product_size` conditional block in `checkout/templates/checkout/checkout_success.html` to clean multiline `{% if %} ... {% endif %}` syntax (removed malformed split-tag formatting). Verified with `manage.py check` and page render retest on 2026-03-18.                                                                                              |
 | 25  | Success email placeholder render (`/checkout/checkout_success/`)     | Success page showed the literal string `{{ order.email }}` instead of the customer email in the confirmation sentence. Expected: render the actual saved order email address.                                                                                  | 1) Complete checkout and land on `/checkout/checkout_success/<order_number>`.<br>2) Before fix, page text displays `A confirmation email will be sent to {{ order.email }}` literally.<br>3) After fix, sentence shows the real email value.                              | Fixed                                                                                                                                           | Normalized the confirmation sentence tag in `checkout/templates/checkout/checkout_success.html` to a clean one-line interpolation (`{{ order.email }}`) to avoid malformed/split template token rendering. Retested on 2026-03-18 with `manage.py check` and checkout success view.                                                                                        |
 | 26  | Product detail post-add redirect (`/products/<id>/`)                 | Intermittent `500` occurred on product detail immediately after successful Add to Bag redirect. Expected: Add to Bag returns `302` and redirected product detail returns `200`.                                                                                | 1) Open `/products/2/`.<br>2) Submit Add to Bag.<br>3) Before fix, redirected GET to `/products/2/` intermittently returned `500`.<br>4) After fix, flow remains `302` -> `200` consistently.                                                                             | Fixed                                                                                                                                           | Root cause was malformed template control-flow tags in `templates/includes/toasts/toast_success.html` (triggered when success messages rendered after add-to-bag). Corrected template tag structure. Retested in production across product IDs `1-12` on 2026-03-19; sampled flows returned `200/302/200` with no fresh `status=500`/`TemplateSyntaxError` in recent logs. |
-| 27  | Shared template HTML validation cleanup                              | W3C validation snapshots showed repeated shared-template issues across multiple pages, mainly invalid `aria-labelledby` usage on generic dropdown containers and heading-order skips in product-management templates. Expected: shared templates use valid markup and are ready for a fresh validator rerun. | 1) Review validator findings across `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, and `/accounts/signup/`.<br>2) Trace repeated issues back to shared navigation templates and product-management headings.<br>3) Apply markup cleanup.<br>4) Run local checks and queue a fresh W3C validator pass on the deployed pages. | Fixed locally / Retest pending                                                                                                                  | Removed invalid `aria-labelledby` attributes from shared dropdown menu containers in `templates/base.html`, `templates/includes/main-nav.html`, and `templates/includes/mobile-top-header.html`. Replaced `<h5>` subheadings with muted paragraph text in product-management templates. Verified locally with `manage.py check` on 2026-03-24; fresh external W3C validator evidence still to be captured for submission. |
+| 27  | Shared template HTML validation cleanup                              | W3C validation snapshots showed repeated shared-template issues across multiple pages, mainly invalid `aria-labelledby` usage on generic dropdown containers and heading-order skips in product-management templates. Expected: shared templates use valid markup and pass a fresh validator rerun.        | 1) Review validator findings across `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, and `/accounts/signup/`.<br>2) Trace repeated issues back to shared navigation templates and product-management headings.<br>3) Apply markup cleanup.<br>4) Revalidate the deployed pages after deployment.                     | Fixed and verified                                                                                                                               | Removed invalid `aria-labelledby` attributes from shared dropdown menu containers, replaced product-management `<h5>` subheadings with paragraph text, corrected the style-assistant heading order, and removed the trailing slash from the shared Font Awesome `<link>` tag. Verified with `manage.py check` and a post-deploy W3C validator JSON API rerun on 2026-03-24: all tested pages returned 0 errors, 0 warnings, and 0 info messages. |
 
 ## Testing Table
 
@@ -790,5 +893,5 @@ This table summarises key test cases and their results for core project features
 | Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent                                                                               | First call creates order; second verifies existing  | As expected                                                                                                                                           | Passed     |
 | Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit                                                                                       | Webhook creates order from metadata                 | As expected                                                                                                                                           | Passed     |
 | CSS validation                     | Static files    | W3C CSS Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/` (CSS Level 3 + SVG) | No CSS errors found                                 | 0 errors on all tested pages; 738 warnings per page (mainly third-party/vendor CSS)                                                                   | ✅ Passed   |
-| HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/`                    | Valid markup                                        | Historical validator snapshots showed repeated shared-template issues. Shared markup cleanup was applied on 2026-03-24; fresh deployed validator evidence still needs to be captured.     | Retest needed |
-| Lighthouse audit                   | Site            | Run Lighthouse on home/products                                                                                                            | Numeric scores recorded for submission              | Audit procedure is documented, but fresh numeric scores still need to be captured and entered.                                                        | Retest needed |
+| HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/`                    | Valid markup                                        | Post-deploy validator rerun on 2026-03-24 returned 0 errors, 0 warnings, and 0 info messages on all tested pages.                                   | Passed |
+| Lighthouse audit                   | Site            | Run Lighthouse on home/products                                                                                                            | Numeric scores recorded for submission              | Homepage mobile Lighthouse scores were captured on 2026-03-24 and documented above; the `/products/` Lighthouse capture is still pending.          | Partial pass  |

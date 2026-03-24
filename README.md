@@ -235,6 +235,7 @@ This pairing keeps the store visually premium while preserving readability.
 - Shared template markup reviewed and cleaned up following validator findings.
 - Consistent user feedback messages for form and checkout actions.
 - Strong contrast usage in key CTA and navigation elements.
+- HTML validation evidence and practical accessibility review are documented in [TESTING.md](./TESTING.md).
 
 ---
 
