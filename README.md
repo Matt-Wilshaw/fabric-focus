@@ -151,11 +151,12 @@ The design supports both usability and brand identity, creating a professional a
 ## Features
 
 - User registration, login, and password reset
-- Product browsing, sorting, and category filtering
-- Product detail pages with imagery, pricing, and size options
+- Product browsing, search, sorting, and category filtering
+- Product detail pages with imagery, pricing, descriptions, and size options where applicable
 - Bag add/update/remove functionality
 - Stripe checkout and webhook-driven order confirmation
-- Admin product and inventory management
+- Profile management with saved delivery defaults and order history
+- Admin product and category management
 - Responsive layout across mobile, tablet, and desktop
 
 ---
@@ -231,7 +232,7 @@ This pairing keeps the store visually premium while preserving readability.
 ### Accessibility
 
 - Responsive design supported by Bootstrap layout patterns.
-- Clear page hierarchy through semantic headings.
+- Shared template markup reviewed and cleaned up following validator findings.
 - Consistent user feedback messages for form and checkout actions.
 - Strong contrast usage in key CTA and navigation elements.
 
@@ -241,7 +242,7 @@ This pairing keeps the store visually premium while preserving readability.
 
 Testing focuses on end-to-end shopping flows, account access, checkout reliability, and responsive behaviour.
 
-For complete testing evidence and validation results, see `TESTING.md`.
+For complete testing evidence and validation results, see [TESTING.md](./TESTING.md).
 
 ### Deployed Test Environment
 
@@ -268,19 +269,19 @@ Run these quick checks after deployment:
   - [x] Visitor: create an account to save details and view orders.
   - [x] Registered user: log in with email/password to access the account.
   - [x] Registered user: reset password via email to regain access.
-  - [ ] Account holder: update profile (name, address, phone) for correct shipping.
+  - [x] Account holder: update profile (name, address, phone) for correct shipping.
   - [ ] Account holder: manage multiple shipping addresses.
   - [ ] Account holder: manage saved payment methods securely.
   - [ ] Admin: deactivate/reactivate user accounts to manage abuse.
 
 - **Catalogue, Search & Navigation**
-  - [x] Shopper: browse categories (men/women/kids/gear) to discover items.
-  - [x] Shopper: search with filters (size, colour, brand, price) to narrow results.
-  - [x] Shopper: sort results (relevance, price, newest, rating) to prioritise listings.
+  - [x] Shopper: browse categories to discover items.
+  - [x] Shopper: search by keyword and browse by category to narrow results.
+  - [x] Shopper: sort results by price, rating, name, and category.
   - [ ] Shopper: use pagination or infinite scroll for large result sets.
 
 - **Product Pages & Reviews**
-  - [x] Shopper: view product pages with images, specs, size charts, and availability.
+  - [x] Shopper: view product pages with images, descriptions, pricing, and size options where applicable.
   - [ ] Shopper: read customer reviews and average ratings to assess fit and quality.
   - [ ] Authenticated user: post reviews (rating, text, photos) to share feedback.
   - [ ] Shopper: see recommended/related products for discovery.
@@ -289,28 +290,29 @@ Run these quick checks after deployment:
 - **Cart & Checkout**
   - [x] Shopper: add/remove items and change quantities in the cart.
   - [ ] Shopper: save and retrieve cart contents when logged in.
-  - [x] Shopper: complete a multi-step checkout (shipping -> payment -> review).
+  - [x] Shopper: complete checkout with delivery details and card payment.
   - [x] Shopper: view shipping cost estimates before checkout.
   - [ ] Shopper: apply discount codes and see adjusted totals.
   - [ ] Shopper: choose saved or enter new addresses at checkout.
 
 - **Payments & Security**
-  - [x] Shopper: pay securely (card, Apple/Google Pay, PayPal) using tokenised processing.
-  - [x] Shopper: receive order confirmation emails/receipts after payment.
+  - [x] Shopper: pay securely by card using Stripe.
+  - [x] Shopper: receive order confirmation after payment.
   - [ ] Admin: view payment status and retry failed payments.
 
 - **Orders & Fulfilment**
-  - [ ] User: view order history with statuses (processing, shipped, delivered).
+  - [x] User: view order history.
+  - [ ] User: view order statuses (processing, shipped, delivered).
   - [ ] User: access shipment tracking links for shipped orders.
   - [ ] User: request returns and view return status and instructions.
   - [ ] Staff: use an orders dashboard to pick, pack, and update shipment status.
 
 - **Notifications & Communication**
-  - [x] User: receive emails for order receipt, shipping updates, and delivery.
+  - [x] User: receive order confirmation messaging after checkout.
   - [ ] User: opt into SMS/email delivery updates.
 
 - **Admin & Content Management**
-  - [x] Admin: add/edit/remove products, prices, images, and inventory.
+  - [x] Admin: add/edit/remove products, prices, images, and categories.
   - [ ] Admin: create and manage discount codes and promotions.
   - [ ] Admin: view sales reports and low-stock alerts.
   - [ ] Admin: configure role-based access for staff accounts.
@@ -357,12 +359,12 @@ Key relationships:
   - [x] Visitor: create an account to save details and view orders.
   - [x] Registered user: log in with email/password to access the account.
   - [x] Registered user: reset password via email to regain access.
-  - [ ] Account holder: update profile details for accurate shipping.
+  - [x] Account holder: update profile details for accurate shipping.
 
 - **Catalogue, Search & Navigation**
   - [x] Shopper: browse categories to discover items.
   - [x] Shopper: search by product name and description.
-  - [x] Shopper: sort by price, rating, and category.
+  - [x] Shopper: sort by price, rating, name, and category.
   - [ ] Shopper: use pagination for large result sets.
 
 - **Cart & Checkout**
@@ -372,7 +374,8 @@ Key relationships:
   - [ ] Shopper: apply discount codes.
 
 - **Orders & Fulfilment**
-  - [ ] User: view order history and statuses.
+  - [x] User: view order history.
+  - [ ] User: view order statuses.
   - [ ] User: access shipment tracking links.
   - [ ] User: submit returns requests.
 

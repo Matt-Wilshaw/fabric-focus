@@ -95,7 +95,7 @@
                 <p class="my-0">My Account</p>
               </div>
             </a>
-            <div class="dropdown-menu border-0" role="menu" aria-labelledby="user-options">
+            <div class="dropdown-menu border-0">
               {% if request.user.is_authenticated %}
               {% if request.user.is_superuser %}
               {% url 'add_product' as add_product_url %}
