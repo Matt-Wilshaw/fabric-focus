@@ -523,9 +523,8 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 
 ## Known Limitations at Submission
 
-- Bug tracker item 20 in the testing report is still marked `Retest Needed` pending a final manual recheck of add-product flow with an image-less product.
-- Placeholder automated test modules still exist in some apps (`home/tests.py`, `bag/tests.py`, `checkout/tests.py`, and `profiles/tests.py`).
-- Accessibility checks are practical project-level checks; a full assistive-technology audit across all user flows has not yet been completed.
+- Automated testing coverage is currently limited outside the Products app; test modules in Home, Bag, Checkout, and Profiles still require full implementation.
+- Accessibility validation includes practical project-level checks, but a full assistive-technology audit across all user flows has not yet been completed.
 
 ## Future Enhancements
 
