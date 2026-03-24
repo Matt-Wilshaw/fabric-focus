@@ -72,7 +72,7 @@ This project uses the following technologies:
 - Forms/UI: django-crispy-forms
 - Media handling: Pillow
 - Payments: Stripe
-- AI integration: OpenAI Responses API (Style Assistant)
+- AI integration: Google Gemini API (Style Assistant)
 - Deployment: Heroku
 - Dependency management: pip, requirements.txt
 
@@ -443,15 +443,16 @@ This project includes a custom "What to wear" assistant widget that talks to an 
 
 **How it works**
 1. The widget in `templates/base.html` sends a POST request to `/style-assistant/`.
-2. Django routes that to `home/views.py`, which calls the OpenAI Responses API.
+2. Django routes that to `home/views.py`, which calls the Gemini generateContent API.
 3. The view returns JSON back to the widget.
 
 **Configuration**
-- Set `OPENAI_API_KEY` in your environment (server-side only).
-- Optional: set `OPENAI_MODEL` to override the default (see `fabric_focus/settings.py`).
+- Set `GEMINI_API_KEY` in your environment (server-side only).
+- Optional: set `GEMINI_MODEL` to override the default (see `fabric_focus/settings.py`).
 
 **Notes**
 - If the API key is missing, the widget falls back to simple keyword-based responses.
+- The assistant panel includes an on-screen disclaimer asking users to double-check important details, as AI suggestions can occasionally be inaccurate.
 
 ### Stripe testing (Stripe CLI - Windows)
 
@@ -548,7 +549,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 ### Steps
 
 1. Create a Heroku app.
-2. Set required environment variables (`SECRET_KEY`, Stripe keys, optional `DATABASE_URL`, `OPENAI_API_KEY`).
+2. Set required environment variables (`SECRET_KEY`, Stripe keys, optional `DATABASE_URL`, `GEMINI_API_KEY`).
 3. Ensure `requirements.txt` and `Procfile` are committed.
 4. Push code to Heroku.
 5. Run migrations on Heroku.
@@ -571,7 +572,7 @@ Developed as part of a web development learning project.
 
 - Django and Bootstrap documentation
 - Stripe API and Stripe CLI documentation
-- OpenAI platform documentation
+- Google AI / Gemini API documentation
 - Project assets and implementation by the Fabric-Focus project author
 
 
