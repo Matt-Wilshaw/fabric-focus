@@ -24,6 +24,8 @@ Both **manual** and **automated** testing methods may be used to validate the fu
     - [Handler method checks](#handler-method-checks)
     - [Webhook reconciliation evidence](#webhook-reconciliation-evidence)
   - [Testing scope and notes](#testing-scope-and-notes)
+  - [Automated Test Execution Evidence](#automated-test-execution-evidence)
+  - [Browser Compatibility Matrix](#browser-compatibility-matrix)
   - [Responsiveness Testing](#responsiveness-testing)
   - [HTML Validator Testing](#html-validator-testing)
     - [Final validation summary](#final-validation-summary)
@@ -185,6 +187,35 @@ For each user story, **black box testing** is applied — evaluating the system 
 All discovered bugs, fixes, and retests should be documented throughout this file.
 
 For additional project details and technical information, including instructions on running the site, please refer to the [README.md](./README.md)
+
+## Automated Test Execution Evidence
+
+Date run: 2026-03-24
+
+Command executed:
+
+```powershell
+C:/Projects/fabric-focus/.venv/Scripts/python.exe manage.py test
+```
+
+Observed output summary:
+
+- Test database created and destroyed successfully.
+- Django system check reported no issues.
+- `Ran 1 test in 0.151s`
+- Final status: `OK`
+
+## Browser Compatibility Matrix
+
+Core customer flows checked: home, products list/detail, bag actions, login/logout, and checkout page render.
+
+| Browser / Profile            | Result     | Notes |
+| ---------------------------- | ---------- | ----- |
+| Chrome (desktop)             | Passed     | Primary manual test browser used throughout the project. |
+| Edge (desktop)               | Passed     | Core navigation and form flows matched Chrome behaviour. |
+| Firefox (desktop)            | Passed     | No layout or interaction regressions found in core flows. |
+| Chrome mobile emulation      | Passed     | Used during responsiveness checks at 320/576/768/992/1200 breakpoints. |
+| Mobile Safari (iOS hardware) | Not tested | Not included in this test cycle. |
 
 
 ## Responsiveness Testing
@@ -885,7 +916,7 @@ How I use this table:
 | 26  | Product detail post-add redirect (`/products/<id>/`)                 | Intermittent `500` occurred on product detail immediately after successful Add to Bag redirect. Expected: Add to Bag returns `302` and redirected product detail returns `200`.                                                                                                                     | 1) Open `/products/2/`.<br>2) Submit Add to Bag.<br>3) Before fix, redirected GET to `/products/2/` intermittently returned `500`.<br>4) After fix, flow remains `302` -> `200` consistently.                                                                                                                                 | Fixed              | Root cause was malformed template control-flow tags in `templates/includes/toasts/toast_success.html` (triggered when success messages rendered after add-to-bag). Corrected template tag structure. Retested in production across product IDs `1-12` on 2026-03-19; sampled flows returned `200/302/200` with no fresh `status=500`/`TemplateSyntaxError` in recent logs.                                                                       |
 | 27  | Shared template HTML validation cleanup                              | W3C validation snapshots showed repeated shared-template issues across multiple pages, mainly invalid `aria-labelledby` usage on generic dropdown containers and heading-order skips in product-management templates. Expected: shared templates use valid markup and pass a fresh validator rerun. | 1) Review validator findings across `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, and `/accounts/signup/`.<br>2) Trace repeated issues back to shared navigation templates and product-management headings.<br>3) Apply markup cleanup.<br>4) Revalidate the deployed pages after deployment. | Fixed and verified | Removed invalid `aria-labelledby` attributes from shared dropdown menu containers, replaced product-management `<h5>` subheadings with paragraph text, corrected the style-assistant heading order, and removed the trailing slash from the shared Font Awesome `<link>` tag. Verified with `manage.py check` and a post-deploy W3C validator JSON API rerun on 2026-03-24: all tested pages returned 0 errors, 0 warnings, and 0 info messages. |
 | 28  | Bag size render regression (`/bag/`)                                 | Regression of Bug #23 on production: bag page displayed the literal template tag (`{{ item.size\|upper }}`) instead of rendering the selected size value. Expected: bag shows the actual selected size (or `N/A` when no size applies).                                                             | 1) Add a sized product to bag on production.<br>2) Visit `/bag/`.<br>3) Observe size line rendering literal template text instead of value.                                                                                                                                                                                   | Fixed              | Referenced Bug #23 and reapplied a defensive template fix in `bag/templates/bag/bag.html` by normalizing the size conditional block to explicit multiline syntax (`{% if item.product.has_sizes and item.size %}{{ item.size\|upper }}{% else %}N/A{% endif %}`). Deployed to Heroku and retested on production on 2026-03-24: bag size now renders correctly.                                                                                   |
-| 29  | Homepage CTA contrast (`/`)                                          | Lighthouse reported insufficient contrast on the homepage Shop Now CTA. Expected: button text/background meet at least `4.5:1` for normal text.                                                                                                                                                    | 1) Run Lighthouse on `/` in mobile mode.<br>2) Open Accessibility audits and inspect the colour-contrast finding for `a.shop-now-button`.<br>3) Confirm reported ratio is below expected threshold.                                                                                                                           | Open               | Pending design update to adjust button colour pairing (or typography treatment) so the CTA meets contrast guidance while preserving the page visual style.                                                                                                                                                                                                                                                                                       |
+| 29  | Homepage CTA contrast (`/`)                                          | Lighthouse reported insufficient contrast on the homepage Shop Now CTA. Expected: button text/background meet at least `4.5:1` for normal text.                                                                                                                                                     | 1) Run Lighthouse on `/` in mobile mode.<br>2) Open Accessibility audits and inspect the colour-contrast finding for `a.shop-now-button`.<br>3) Confirm reported ratio is below expected threshold.                                                                                                                           | Open               | Pending design update to adjust button colour pairing (or typography treatment) so the CTA meets contrast guidance while preserving the page visual style.                                                                                                                                                                                                                                                                                       |
 
 ## Testing Table
 
