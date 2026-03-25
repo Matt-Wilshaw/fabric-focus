@@ -5,7 +5,6 @@ present under the project's `media/` folder) and orphaned files.
 """
 
 import json
-import os
 from pathlib import Path
 
 workspace = Path(__file__).resolve().parents[1]
@@ -22,7 +21,10 @@ for p in products:
         referenced.append(img.strip())
 
 referenced_set = set(referenced)
-media_files = set([p.name for p in media_dir.iterdir() if p.is_file()]) if media_dir.exists() else set()
+if media_dir.exists():
+    media_files = {p.name for p in media_dir.iterdir() if p.is_file()}
+else:
+    media_files = set()
 
 missing = sorted(referenced_set - media_files)
 present = sorted(referenced_set & media_files)
@@ -40,6 +42,10 @@ print('orphan_media_sample=' + str(orphan_media[:50]))
 # Also save full lists to files for review (handy for committing evidence).
 out = workspace / 'scripts' / 'image_check_results.json'
 with out.open('w', encoding='utf-8') as f:
-    json.dump({'missing': missing, 'present': present, 'orphan_media': orphan_media}, f, indent=2)
+    json.dump(
+        {'missing': missing, 'present': present, 'orphan_media': orphan_media},
+        f,
+        indent=2,
+    )
 
 print(f"Wrote full results to {out}")

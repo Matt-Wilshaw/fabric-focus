@@ -13,6 +13,7 @@ def _normalize_quantity(raw_quantity):
         return None
     return quantity if quantity > 0 else None
 
+
 def bag_contents(request):
     """Build bag line items and totals for global template context."""
 
@@ -58,8 +59,11 @@ def bag_contents(request):
                 'product': product,
                 'lineitem_total': quantity * product.price,
             })
-            
-        elif isinstance(item_data, dict) and isinstance(item_data.get('items_by_size'), dict):
+
+        elif (
+            isinstance(item_data, dict)
+            and isinstance(item_data.get('items_by_size'), dict)
+        ):
             # Size-aware products: quantities are tracked per selected size.
             invalid_size_entries = []
             for size, raw_quantity in item_data['items_by_size'].items():
@@ -95,15 +99,17 @@ def bag_contents(request):
 
     # Delivery is free over the configured threshold; otherwise percentage-based.
     if total < settings.FREE_DELIVERY_THRESHOLD:
-        delivery = total * Decimal(settings.STANDARD_DELIVERY_PERCENTAGE / 100)
+        delivery = total * Decimal(
+            settings.STANDARD_DELIVERY_PERCENTAGE / 100
+        )
         free_delivery_delta = settings.FREE_DELIVERY_THRESHOLD - total
     else:
         delivery = 0
         free_delivery_delta = 0
-    
+
     # Final checkout amount shown to the customer.
     grand_total = delivery + total
-    
+
     # Context is injected into templates via Django's context processor mechanism.
     context = {
         'bag_items': bag_items,

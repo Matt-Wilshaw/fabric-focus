@@ -5,7 +5,7 @@ This is a quick analysis script used during data clean-up.
 
 import json
 from pathlib import Path
-from collections import defaultdict, Counter
+from collections import defaultdict
 
 workspace = Path('.')
 json_path = workspace / 'products' / 'fixtures' / 'products.json'
