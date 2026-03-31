@@ -110,6 +110,10 @@
 </div>
 {% endblock %}
 
+{% block style_assistant %}
+{% include 'includes/style-assistant.html' %}
+{% endblock %}
+
 {% block postloadjs %}
 {{ block.super }}
 {% include 'products/includes/quantity_input_script.html' %}

@@ -61,7 +61,7 @@
   <title>Fabric Focus {% block extra_title %}{% endblock %}</title>
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
   <header class="container-fluid fixed-top">
     <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex topnav-wrap">
       <div class="col-12 col-lg-4 my-auto py-2 py-lg-1 text-center text-lg-left">
@@ -171,47 +171,8 @@
     {% endblock %}
   </main>
 
-  <section class="style-assistant" aria-live="polite">
-    <button class="style-assistant__toggle" type="button" aria-expanded="false" aria-controls="style-assistant-panel">
-      <span class="style-assistant__toggle-text">What to wear?</span>
-      <i class="fas fa-magic style-assistant__toggle-icon" aria-hidden="true"></i>
-    </button>
-    <div id="style-assistant-panel" class="style-assistant__panel" hidden>
-      <div class="style-assistant__header">
-        <div>
-          <p class="style-assistant__eyebrow">Fabric Focus</p>
-          <h2 class="style-assistant__title">What to wear assistant</h2>
-        </div>
-        <button class="style-assistant__close" type="button" aria-label="Close assistant">
-          <i class="fas fa-times" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="style-assistant__body">
-        <div class="style-assistant__log" id="style-assistant-log">
-          <div class="style-assistant__bubble style-assistant__bubble--bot">
-            Tell me the vibe and I will suggest an outfit. Pick a few options below or type your own.
-          </div>
-        </div>
-        <div class="style-assistant__chips">
-          <button class="style-assistant__chip" type="button" data-chip="Casual weekend">Casual weekend</button>
-          <button class="style-assistant__chip" type="button" data-chip="Work meeting">Work meeting</button>
-          <button class="style-assistant__chip" type="button" data-chip="Date night">Date night</button>
-          <button class="style-assistant__chip" type="button" data-chip="Warm weather">Warm weather</button>
-          <button class="style-assistant__chip" type="button" data-chip="Cool weather">Cool weather</button>
-          <button class="style-assistant__chip" type="button" data-chip="Bold colour">Bold colour</button>
-          <button class="style-assistant__chip" type="button" data-chip="Neutral palette">Neutral palette</button>
-        </div>
-        <p class="small text-muted mb-0">
-          Helpful tip: Please double-check important details, as assistant suggestions can occasionally be inaccurate.
-        </p>
-      </div>
-      <form class="style-assistant__form" id="style-assistant-form">
-        <input class="style-assistant__input" type="text" id="style-assistant-input"
-          placeholder="Example: brunch outfit, light layers, love linen" aria-label="Outfit request">
-        <button class="style-assistant__send" type="submit">Send</button>
-      </form>
-    </div>
-  </section>
+  {% block style_assistant %}
+  {% endblock %}
 
   <footer class="site-footer mt-5">
     <div class="container py-4">
