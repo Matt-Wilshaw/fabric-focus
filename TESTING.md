@@ -22,6 +22,7 @@ At submission stage:
 - Lighthouse checks have been captured for key pages
 - Stripe checkout and webhook behaviour have been tested in test mode
 - automated Django test coverage exists for several core flows and is documented transparently below
+- order confirmation in the current project is on-screen and by email only; no SMS notification service is implemented
 
 ## Table of Contents
 
@@ -194,6 +195,7 @@ Current implementation notes (as of this version of the repo):
 - The Products app includes a list view, product detail view, and a basic search flow via the `q` query string (e.g. `/products/?q=soft`).
 - The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; the fallback file exists at `media/noimage.png`.
 - Stock is not currently reserved at add-to-bag time; in high-concurrency scenarios, two users can checkout overlapping items before stock enforcement is applied (residual oversell risk).
+- The checkout flow collects a phone number for delivery/contact details, but the project does not currently send SMS confirmations or delivery text updates.
 - Automated unit/integration coverage is still modest relative to the full project scope, so manual regression testing remains an important part of the submission evidence.
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user's perspective without needing knowledge of internal code logic.
