@@ -1030,3 +1030,55 @@ label {
         padding-top: 0.75rem;
     }
 }
+
+@media (max-width: 360px) {
+    .navbar {
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+    }
+
+    .navbar-toggler {
+        padding: 0.2rem 0.35rem;
+    }
+
+    .navbar-toggler-icon {
+        width: 1.1em;
+        height: 1.1em;
+    }
+
+    .mobile-header-icons {
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .mobile-header-icons .list-inline-item {
+        margin-right: 0;
+    }
+
+    .mobile-header-icons .nav-link {
+        padding: 0.25rem 0.2rem;
+    }
+
+    .mobile-header-icons .nav-link i {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .navbar {
+        padding-left: 0.3rem;
+        padding-right: 0.3rem;
+    }
+
+    .navbar-toggler {
+        padding: 0.15rem 0.3rem;
+    }
+
+    .mobile-header-icons .nav-link {
+        padding: 0.2rem 0.1rem;
+    }
+
+    .mobile-header-icons .nav-link i {
+        font-size: 0.9rem;
+    }
+}
