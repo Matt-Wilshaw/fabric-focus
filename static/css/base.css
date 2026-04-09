@@ -826,7 +826,7 @@ label {
 
     .home-page .site-footer {
         margin-top: 0 !important;
-        background: #fff;
+        background: rgba(255, 255, 255, 0.92);
         padding-bottom: env(safe-area-inset-bottom, 0);
     }
 
@@ -960,11 +960,27 @@ label {
 }
 
 @media (max-width: 575px) {
+    .site-footer .container {
+        padding-top: 1rem !important;
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0)) !important;
+    }
+
     .footer-desktop {
         display: none;
     }
 
     .footer-mobile {
         display: flex;
+        justify-content: center;
+        row-gap: 0.5rem;
+        margin: 0;
+    }
+
+    .footer-mobile .col-12.mb-2 {
+        margin-bottom: 0 !important;
+    }
+
+    .home-page .site-footer {
+        margin-top: auto !important;
     }
 }
