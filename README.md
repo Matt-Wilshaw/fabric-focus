@@ -183,6 +183,8 @@ Alternatively, you can go to Product Management from the My Account screen if yo
 
 ## Design Choices
 
+Design decisions were guided by the goal of making the site feel clean, modern, and easy to use across all standard Bootstrap breakpoints. The interface uses a restrained palette, consistent button styling, and familiar e-commerce patterns so that product browsing and checkout remain straightforward on both desktop and mobile devices.
+
 ## Wireframes
 
 Wireframes and screen references were used to guide responsive layout decisions.
@@ -549,7 +551,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 
 ## Known Limitations at Submission
 
-- Automated testing coverage is currently limited outside the Products app; test modules in Home, Bag, Checkout, and Profiles still require full implementation.
+- Automated test coverage is still modest relative to the full project scope. Core flows now have basic Django test coverage, but broader regression coverage across profiles, admin actions, and edge cases would strengthen long-term maintainability.
 - The homepage Shop Now CTA currently has a known text-contrast issue (white text on gold background) identified in Lighthouse accessibility checks.
 - Accessibility validation includes practical project-level checks, but a full assistive-technology audit across all user flows has not yet been completed.
 

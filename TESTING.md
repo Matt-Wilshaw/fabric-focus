@@ -10,7 +10,7 @@ Testing in this project combines:
 - targeted automated regression testing where coverage currently exists
 - validator, Lighthouse, and compatibility checks to support front-end quality evidence
 
-Automated coverage is currently limited, so this file acts as the main evidence log for practical testing completed during development and before submission.
+Automated coverage is still modest compared with the full project scope, so this file also acts as the main evidence log for practical testing completed during development and before submission.
 
 ## Submission Summary
 
@@ -21,7 +21,7 @@ At submission stage:
 - HTML and CSS validation evidence has been recorded
 - Lighthouse checks have been captured for key pages
 - Stripe checkout and webhook behaviour have been tested in test mode
-- automated Django test coverage exists, but is currently modest and documented transparently below
+- automated Django test coverage exists for several core flows and is documented transparently below
 
 ## Table of Contents
 
@@ -194,7 +194,7 @@ Current implementation notes (as of this version of the repo):
 - The Products app includes a list view, product detail view, and a basic search flow via the `q` query string (e.g. `/products/?q=soft`).
 - The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; the fallback file exists at `media/noimage.png`.
 - Stock is not currently reserved at add-to-bag time; in high-concurrency scenarios, two users can checkout overlapping items before stock enforcement is applied (residual oversell risk).
-- Automated unit/integration coverage is currently modest, so manual regression testing remains an important part of the submission evidence.
+- Automated unit/integration coverage is still modest relative to the full project scope, so manual regression testing remains an important part of the submission evidence.
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user's perspective without needing knowledge of internal code logic.
 
@@ -204,7 +204,7 @@ For additional project details and technical information, including instructions
 
 ## Automated Test Execution Evidence
 
-Date run: 2026-03-24
+Date run: 2026-04-09
 
 Command executed:
 
@@ -216,7 +216,7 @@ Observed output summary:
 
 - Test database created and destroyed successfully.
 - Django system check reported no issues.
-- `Ran 1 test in 0.151s`
+- `Ran 9 tests in 1.385s`
 - Final status: `OK`
 
 ## Browser Compatibility Matrix
