@@ -108,6 +108,12 @@
     color: #555;
 }
 
+.checkout-success-page a[href^="tel"],
+.checkout-success-page a[x-apple-data-detectors] {
+    color: inherit;
+    text-decoration: none;
+}
+
 .order-summary-row-total .order-summary-label,
 .order-summary-row-total .order-summary-value {
     font-size: 1.05rem;

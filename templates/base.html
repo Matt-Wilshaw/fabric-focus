@@ -215,6 +215,32 @@
     $('.toast').toast('show');
 
     (function () {
+      const dismissibleToast = document.querySelector('.toast[data-dismiss-on-scroll="true"]');
+      if (!dismissibleToast) {
+        return;
+      }
+
+      const startY = window.scrollY || window.pageYOffset || 0;
+      const scrollThreshold = 50;
+
+      function dismissToastOnScroll() {
+        const currentY = window.scrollY || window.pageYOffset || 0;
+        if (Math.abs(currentY - startY) < scrollThreshold) {
+          return;
+        }
+
+        $(dismissibleToast).toast('hide');
+        window.removeEventListener('scroll', dismissToastOnScroll);
+      }
+
+      dismissibleToast.addEventListener('hidden.bs.toast', function () {
+        window.removeEventListener('scroll', dismissToastOnScroll);
+      }, { once: true });
+
+      window.addEventListener('scroll', dismissToastOnScroll, { passive: true });
+    })();
+
+    (function () {
       const assistant = document.querySelector('.style-assistant');
       if (!assistant) {
         return;
