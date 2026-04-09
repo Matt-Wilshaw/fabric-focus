@@ -1,23 +1,27 @@
-
 # Fabric-Focus
 
-## Introduction
+Fabric-Focus is a full-stack Django e-commerce project created as an assessment submission. It delivers a complete online shopping flow for a contemporary clothing store, from product discovery through to bag management, Stripe checkout, account handling, order history, and superuser product management.
 
-Fabric-Focus is about comfort, style, and versatility. By combining carefully selected fabrics, modern designs, and practical everyday function, our clothing is designed to suit all occasions.
+The project aims to demonstrate:
 
-Whether you're dressing for work, weekend plans, social events, or relaxed days at home, Fabric-Focus offers reliable, high-quality clothing made to fit your lifestyle. From breathable materials to durable construction, we focus on the details that help you feel confident and comfortable wherever the day takes you.
+- full-stack Django development across multiple apps
+- secure account and checkout flows
+- responsive front-end design across standard Bootstrap breakpoints
+- CRUD functionality for store administration
+- documented testing, validation, and deployment evidence suitable for assessment review
 
 ## Live Demo
 
 - Hosted on Heroku: https://fabric-focus-f1a8e9ed6562.herokuapp.com/
+- GitHub repository: https://github.com/Matt-Wilshaw/fabric-focus
 
 ## Table of Contents
 
 - [Fabric-Focus](#fabric-focus)
-  - [Introduction](#introduction)
   - [Live Demo](#live-demo)
   - [Table of Contents](#table-of-contents)
   - [Technologies Used](#technologies-used)
+  - [Project Goals](#project-goals)
   - [Strategy (Why?)](#strategy-why)
   - [Scope (What?)](#scope-what)
     - [Functional Requirements](#functional-requirements)
@@ -28,38 +32,36 @@ Whether you're dressing for work, weekend plans, social events, or relaxed days 
     - [Surface (Visual Design)](#surface-visual-design)
   - [Features](#features)
   - [Admin Access](#admin-access)
-- [Design Choices](#design-choices)
+  - [Design Choices](#design-choices)
   - [Wireframes](#wireframes)
-    - [Colour Palette](#colour-palette)
-    - [Typography](#typography)
-    - [Accessibility](#accessibility)
+  - [Colour Palette](#colour-palette)
+  - [Typography](#typography)
+  - [Accessibility](#accessibility)
   - [Testing Overview](#testing-overview)
-    - [Deployed Test Environment](#deployed-test-environment)
-    - [Smoke Test (Production)](#smoke-test-production)
+  - [Deployed Test Environment](#deployed-test-environment)
+  - [Smoke Test (Production)](#smoke-test-production)
   - [Development Checklist](#development-checklist)
   - [Database Structure](#database-structure)
   - [User Stories](#user-stories)
   - [Installation / Setup](#installation--setup)
-    - [1. Clone the repository](#1-clone-the-repository)
-    - [2. Create a virtual environment (optional but recommended)](#2-create-a-virtual-environment-optional-but-recommended)
-    - [3. Install dependencies](#3-install-dependencies)
-    - [4. Configure local environment variables](#4-configure-local-environment-variables)
-    - [5. Apply database migrations](#5-apply-database-migrations)
-    - [6. Create a superuser (optional, for admin access)](#6-create-a-superuser-optional-for-admin-access)
-    - [7. Run the development server](#7-run-the-development-server)
-    - [8. Run automated tests](#8-run-automated-tests)
   - [AI Style Assistant (What to Wear)](#ai-style-assistant-what-to-wear)
-    - [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
-    - [Frontend](#frontend)
   - [Key Outline](#key-outline)
   - [Known Limitations at Submission](#known-limitations-at-submission)
   - [Future Enhancements](#future-enhancements)
   - [Fabric-Focus Deployment Guide](#fabric-focus-deployment-guide)
-    - [Prerequisites](#prerequisites)
-    - [Steps](#steps)
-    - [Tips](#tips)
   - [Author](#author)
   - [Credits](#credits)
+
+## Project Goals
+
+This submission was built to evidence the core requirements of a full-stack commerce project. The primary goals are to:
+
+- provide an end-to-end customer journey from browsing to checkout
+- demonstrate Django model, view, template, and form handling across a multi-app project
+- integrate Stripe securely for card payments and webhook handling
+- support authenticated user features such as registration, login, profile updates, and order history
+- provide superuser product management for catalogue maintenance
+- document testing, validation, responsive design, and deployment clearly enough for assessment review
 
 
 ## Technologies Used
@@ -179,7 +181,7 @@ Alternatively, you can go to Product Management from the My Account screen if yo
 
 ---
 
-# Design Choices
+## Design Choices
 
 ## Wireframes
 

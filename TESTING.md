@@ -2,18 +2,31 @@
 
 Live site: https://fabric-focus-f1a8e9ed6562.herokuapp.com/
 
-This document outlines how I test Fabric Focus to ensure the project functions as intended, the user experience is consistent across devices and browsers, and core flows (browsing products and account sign-in/sign-out) behave predictably.
+This document records the testing evidence for Fabric Focus as an assessment submission. It is intended to demonstrate that the application has been checked for functionality, responsiveness, validation, accessibility, and the main customer journey from browsing through to checkout.
 
-The testing approach follows a combination of **Behaviour-Driven Development (BDD)** and **Test-Driven Development (TDD)** principles:
+Testing in this project combines:
 
-- **BDD (Behaviour-Driven Development):** Focused on real-world user stories, such as *"As a visitor, I want to view the products list so I can browse what's available."*
-- **TDD (Test-Driven Development):** Where automated tests exist (or are added), tests are written first to encourage correct, maintainable code. (Current state: `products/tests.py` contains a regression test for sorting; `home/tests.py`, `bag/tests.py`, `checkout/tests.py`, and `profiles/tests.py` are still placeholders.)
+- manual end-to-end testing of real user flows
+- targeted automated regression testing where coverage currently exists
+- validator, Lighthouse, and compatibility checks to support front-end quality evidence
 
-Both **manual** and **automated** testing methods may be used to validate the functionality, usability, and accessibility of the application.
+Automated coverage is currently limited, so this file acts as the main evidence log for practical testing completed during development and before submission.
+
+## Submission Summary
+
+At submission stage:
+
+- core customer flows have been manually tested on the deployed application
+- responsive checks have been carried out across standard Bootstrap breakpoints
+- HTML and CSS validation evidence has been recorded
+- Lighthouse checks have been captured for key pages
+- Stripe checkout and webhook behaviour have been tested in test mode
+- automated Django test coverage exists, but is currently modest and documented transparently below
 
 ## Table of Contents
 
 - [Testing](#testing)
+  - [Submission Summary](#submission-summary)
   - [Table of Contents](#table-of-contents)
   - [Stripe testing](#stripe-testing)
     - [Test card numbers](#test-card-numbers)
@@ -181,6 +194,7 @@ Current implementation notes (as of this version of the repo):
 - The Products app includes a list view, product detail view, and a basic search flow via the `q` query string (e.g. `/products/?q=soft`).
 - The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; the fallback file exists at `media/noimage.png`.
 - Stock is not currently reserved at add-to-bag time; in high-concurrency scenarios, two users can checkout overlapping items before stock enforcement is applied (residual oversell risk).
+- Automated unit/integration coverage is currently modest, so manual regression testing remains an important part of the submission evidence.
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user's perspective without needing knowledge of internal code logic.
 

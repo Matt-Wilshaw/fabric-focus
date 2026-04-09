@@ -1399,12 +1399,14 @@ label {
     }
 
     .mobile-header-bag-total {
-        display: block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         margin-top: 0 !important;
         padding: 0.12rem 0.38rem;
         font-size: clamp(0.64rem, 2.4vw, 0.76rem);
         font-weight: 600;
-        line-height: 1.1;
+        line-height: 1;
         white-space: nowrap;
     }
 
