@@ -806,6 +806,23 @@ label {
     margin-top: 0;
 }
 
+.page-title-block {
+    padding-top: 1.25rem;
+}
+
+.page-title-block hr,
+.allauth-form-inner-content hr {
+    border: 0;
+    border-top: 1px solid rgba(31, 42, 46, 0.14);
+    margin: 0.85rem 0 1.15rem;
+}
+
+.page-title-block h2.logo-font,
+.allauth-form-inner-content h2.logo-font {
+    margin-bottom: 1rem !important;
+    color: var(--brand-dark);
+}
+
 .allauth-form-inner-content input {
     border-color: #000;
     border-radius: 0;
@@ -1089,6 +1106,14 @@ label {
 
     .header-container {
         padding-top: 164px;
+    }
+
+    .allauth-page .allauth-form-inner-content {
+        padding-top: 5rem;
+    }
+
+    .page-title-block {
+        padding-top: 2rem;
     }
 
     .home-page .hero-copy {

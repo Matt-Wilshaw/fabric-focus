@@ -585,7 +585,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
    - AI assistant: `GEMINI_API_KEY` and optional `GEMINI_MODEL`
    - Host/security: optional `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `HEROKU_APP_NAME`, `SECURE_SSL_REDIRECT`, `SECURE_HSTS_SECONDS`
    - AWS/S3 if used in production: `USE_AWS`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
-   - Email sending if using SMTP verification/reset emails: `EMAIL_HOST_USER`, `EMAIL_HOST_PASS`, optional `DEFAULT_FROM_EMAIL`
+   - Email sending for verification/reset emails in production: `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` (or legacy `EMAIL_HOST_PASS`), optional `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USE_TLS`, `EMAIL_USE_SSL`, `DEFAULT_FROM_EMAIL`, `SERVER_EMAIL`
 3. Ensure `requirements.txt` and `Procfile` are committed.
 4. Push code to Heroku.
 5. Run migrations on Heroku.
@@ -594,6 +594,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 ### Tips
 
 - Do not set `DEVELOPMENT` in production (that keeps debug mode off in this project).
+- In production, email must be configured or the app now fails fast on startup instead of silently sending password-reset emails to the console.
 - Never commit real secret keys.
 - Run smoke tests immediately after deployment.
 - Use `.python-version` (for example `3.11`) to define the Python runtime on Heroku; `runtime.txt` is deprecated.
