@@ -992,3 +992,41 @@ label {
         margin-top: auto !important;
     }
 }
+
+@media (max-width: 368px) {
+    .header-container {
+        padding-top: 132px;
+    }
+
+    .navbar {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .mobile-header-icons {
+        flex-wrap: nowrap;
+    }
+
+    .mobile-header-icons .list-inline-item {
+        margin-right: 0.1rem;
+    }
+
+    .mobile-header-icons .nav-link {
+        padding-left: 0.35rem;
+        padding-right: 0.35rem;
+    }
+
+    .mobile-header-icons .nav-link p {
+        display: none;
+    }
+
+    .home-page .home-hero {
+        min-height: calc(100svh - 132px - 96px);
+        min-height: calc(100dvh - 132px - 96px);
+        padding-top: 1.75rem;
+    }
+
+    .home-page .hero-copy {
+        padding-top: 0.75rem;
+    }
+}
