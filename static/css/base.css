@@ -826,8 +826,16 @@ label {
 
     .home-page .site-footer {
         margin-top: 0 !important;
-        background: rgba(255, 255, 255, 0.92);
+        background: #fff;
         padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+
+    .site-footer {
+        background: #fff;
+    }
+
+    .site-footer .container {
+        background: #fff;
     }
 
     /* Fix text size on iPhone */
@@ -957,13 +965,6 @@ label {
     .bag-page .overlay {
         background: #fff;
     }
-}
-
-@media (max-width: 575px) {
-    .site-footer .container {
-        padding-top: 1rem !important;
-        padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0)) !important;
-    }
 
     .footer-desktop {
         display: none;
@@ -978,6 +979,13 @@ label {
 
     .footer-mobile .col-12.mb-2 {
         margin-bottom: 0 !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .site-footer .container {
+        padding-top: 1rem !important;
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0)) !important;
     }
 
     .home-page .site-footer {
