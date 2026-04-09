@@ -1,13 +1,11 @@
-<ul class="list-inline list-unstyled d-flex align-items-center my-0 ml-auto mobile-header-icons">
-    <li class="list-inline-item">
-        <a class="text-black nav-link d-block d-lg-none" href="#" id="mobile-search" data-toggle="dropdown"
+<ul class="list-inline list-unstyled d-flex d-lg-none align-items-center my-0 ml-auto mobile-header-icons">
+    <li class="list-inline-item dropdown">
+        <a class="text-black nav-link d-block d-lg-none mobile-header-link" href="#" id="mobile-search" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <div class="text-center">
-                <div><i class="fas fa-search fa-lg"></i></div>
-                <p class="my-0">Search</p>
-            </div>
+            <span class="mobile-header-icon-wrap"><i class="fas fa-search fa-lg"></i></span>
+            <span class="mobile-header-label">Search</span>
         </a>
-        <div class="dropdown-menu border-0 w-100 p-3 rounded-0 my-0">
+        <div class="dropdown-menu border-0 w-100 p-3 rounded-0 my-0 mobile-search-dropdown">
             <form class="form" method="GET" action="{% url 'products' %}">
                 <div class="input-group w-100">
                     <input class="form-control border border-black rounded-0" type="text" name="q"
@@ -25,14 +23,12 @@
         </div>
     </li>
     <li class="list-inline-item dropdown">
-        <a class="text-black nav-link d-block d-lg-none" href="#" id="user-options-mobile" data-toggle="dropdown"
+        <a class="text-black nav-link d-block d-lg-none mobile-header-link" href="#" id="user-options-mobile" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <div class="text-center">
-                <div><i class="fas fa-user fa-lg"></i></div>
-                <p class="my-0">My Account</p>
-            </div>
+            <span class="mobile-header-icon-wrap"><i class="fas fa-user fa-lg"></i></span>
+            <span class="mobile-header-label">My Account</span>
         </a>
-        <div class="dropdown-menu border-0">
+        <div class="dropdown-menu border-0 mobile-account-dropdown">
             {% if request.user.is_authenticated %}
             {% if request.user.is_superuser %}
             {% url 'add_product' as add_product_url %}
@@ -48,18 +44,16 @@
         </div>
     </li>
     <li class="list-inline-item">
-        <a class="{% if grand_total %}text-primary font-weight-bold{% else %}text-black{% endif %} nav-link d-block d-lg-none"
+        <a class="text-black nav-link d-block d-lg-none mobile-header-link mobile-header-link--bag {% if grand_total %}mobile-header-link--bag-active{% endif %}"
             href="{% url 'view_bag' %}">
-            <div class="text-center">
-                <div><i class="fas fa-shopping-bag fa-lg"></i></div>
-                <p class="my-0">
-                    {% if grand_total %}
-                    £{{ grand_total|floatformat:2 }}
-                    {% else %}
-                    £0.00
-                    {% endif %}
-                </p>
-            </div>
+            <span class="mobile-header-icon-wrap"><i class="fas fa-shopping-cart fa-lg"></i></span>
+            <span class="mobile-header-bag-total">
+                {% if grand_total %}
+                £{{ grand_total|floatformat:2 }}
+                {% else %}
+                £0.00
+                {% endif %}
+            </span>
         </a>
     </li>
 </ul>
