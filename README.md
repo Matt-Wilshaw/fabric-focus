@@ -239,7 +239,7 @@ This pairing keeps the store visually premium while preserving readability.
 - Responsive design supported by Bootstrap layout patterns.
 - Shared template markup reviewed and cleaned up following validator findings.
 - Consistent user feedback messages for form and checkout actions.
-- Strong contrast usage in key CTA and navigation elements.
+- Most navigation and interface elements use clear contrast, with one known homepage CTA contrast issue still tracked at submission.
 - HTML validation evidence and practical accessibility review are documented in [TESTING.md](./TESTING.md).
 
 ---
@@ -463,9 +463,10 @@ This project includes a custom "What to wear" assistant widget that talks to an 
 **Decision summary**
 - Custom integration keeps the widget fully on-brand and lets us add product-aware logic later.
 - API keys are never exposed in the browser.
+- The assistant is intentionally shown only on product browsing pages (`/products/` and product detail pages), where outfit guidance is most relevant.
 
 **How it works**
-1. The widget in `templates/base.html` sends a POST request to `/style-assistant/`.
+1. The widget partial in `templates/includes/style-assistant.html` is included on the products list and product detail templates.
 2. Django routes that to `home/views.py`, which calls the Gemini generateContent API.
 3. The view returns JSON back to the widget.
 
@@ -572,7 +573,14 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 ### Steps
 
 1. Create a Heroku app.
-2. Set required environment variables (`SECRET_KEY`, Stripe keys, optional `DATABASE_URL`, `GEMINI_API_KEY`).
+2. Set required environment variables.
+   - Core: `SECRET_KEY`
+   - Database: `DATABASE_URL` (for Postgres production setups)
+   - Stripe: `STRIPE_PUBLIC_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WH_SECRET`
+   - AI assistant: `GEMINI_API_KEY` and optional `GEMINI_MODEL`
+   - Host/security: optional `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `HEROKU_APP_NAME`, `SECURE_SSL_REDIRECT`, `SECURE_HSTS_SECONDS`
+   - AWS/S3 if used in production: `USE_AWS`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+   - Email sending if using SMTP verification/reset emails: `EMAIL_HOST_USER`, `EMAIL_HOST_PASS`, optional `DEFAULT_FROM_EMAIL`
 3. Ensure `requirements.txt` and `Procfile` are committed.
 4. Push code to Heroku.
 5. Run migrations on Heroku.

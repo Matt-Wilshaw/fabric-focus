@@ -215,7 +215,7 @@ Core customer flows checked: home, products list/detail, bag actions, login/logo
 | Edge (desktop)               | Passed     | Core navigation and form flows matched Chrome behaviour.               |
 | Firefox (desktop)            | Passed     | No layout or interaction regressions found in core flows.              |
 | Chrome mobile emulation      | Passed     | Used during responsiveness checks at 320/576/768/992/1200 breakpoints. |
-| Mobile Safari (iOS hardware) | Not tested | Not included in this test cycle.                                       |
+| Mobile Safari (iOS hardware) | Limited retest passed | Follow-up retest on 2026-03-31 focused on homepage horizontal overflow and mobile layout behaviour after the iPhone-reported bug fix. Full end-to-end Safari regression coverage was not repeated across every user flow. |
 
 
 ## Responsiveness Testing
