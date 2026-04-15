@@ -240,11 +240,26 @@ This pairing keeps the store visually premium while preserving readability.
 
 ### Accessibility
 
-- Responsive design supported by Bootstrap layout patterns.
-- Shared template markup reviewed and cleaned up following validator findings.
-- Consistent user feedback messages for form and checkout actions.
-- Most navigation and interface elements use clear contrast, with one known homepage CTA contrast issue still tracked at submission.
-- HTML validation evidence and practical accessibility review are documented in [TESTING.md](./TESTING.md).
+Accessibility work in this project is documented transparently as a practical review rather than a formal conformance certification.
+
+Confirmed checks:
+
+- Responsive layouts were checked across standard Bootstrap breakpoints.
+- Shared template markup was cleaned up and revalidated after validator findings.
+- Core form-driven journeys include visible labels, feedback messages, and keyboard-reachable controls.
+- Lighthouse accessibility checks were captured for key pages and documented in [TESTING.md](./TESTING.md).
+
+Partially audited:
+
+- Keyboard navigation was manually reviewed on core shopping/account flows.
+- Contrast was reviewed in practical testing, with one known homepage CTA contrast issue still tracked.
+
+Not yet fully audited:
+
+- A full WCAG 2.1/2.2 AA audit across every page/state has not been completed.
+- A full screen-reader matrix (for example NVDA/JAWS/VoiceOver across all journeys) has not been completed.
+
+See [TESTING.md](./TESTING.md) for dated evidence and the current accessibility status.
 
 ---
 

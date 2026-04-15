@@ -54,6 +54,10 @@ At submission stage:
   - [CSS Validator Testing](#css-validator-testing)
     - [CSS validation summary by page](#css-validation-summary-by-page)
   - [Accessibility Testing](#accessibility-testing)
+    - [Screen Reader Evidence Log](#screen-reader-evidence-log)
+    - [Keyboard-only Result (Representative)](#keyboard-only-result-representative)
+    - [Contrast Evidence Log](#contrast-evidence-log)
+    - [Known Accessibility Issues](#known-accessibility-issues)
   - [Lighthouse Testing](#lighthouse-testing)
     - [Homepage (`/`) mobile Lighthouse evidence](#homepage--mobile-lighthouse-evidence)
     - [Products (`/products/`) mobile Lighthouse evidence](#products-products-mobile-lighthouse-evidence)
@@ -225,12 +229,12 @@ Observed output summary:
 
 Core customer flows checked: home, products list/detail, bag actions, login/logout, and checkout page render.
 
-| Browser / Profile            | Result     | Notes                                                                  |
-| ---------------------------- | ---------- | ---------------------------------------------------------------------- |
-| Chrome (desktop)             | Passed     | Primary manual test browser used throughout the project.               |
-| Edge (desktop)               | Passed     | Core navigation and form flows matched Chrome behaviour.               |
-| Firefox (desktop)            | Passed     | No layout or interaction regressions found in core flows.              |
-| Chrome mobile emulation      | Passed     | Used during responsiveness checks at 320/576/768/992/1200 breakpoints. |
+| Browser / Profile            | Result                | Notes                                                                                                                                                                                                                     |
+| ---------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chrome (desktop)             | Passed                | Primary manual test browser used throughout the project.                                                                                                                                                                  |
+| Edge (desktop)               | Passed                | Core navigation and form flows matched Chrome behaviour.                                                                                                                                                                  |
+| Firefox (desktop)            | Passed                | No layout or interaction regressions found in core flows.                                                                                                                                                                 |
+| Chrome mobile emulation      | Passed                | Used during responsiveness checks at 320/576/768/992/1200 breakpoints.                                                                                                                                                    |
 | Mobile Safari (iOS hardware) | Limited retest passed | Follow-up retest on 2026-03-31 focused on homepage horizontal overflow and mobile layout behaviour after the iPhone-reported bug fix. Full end-to-end Safari regression coverage was not repeated across every user flow. |
 
 
@@ -537,24 +541,68 @@ Latest live rerun date: 2026-03-24
 
 ## Accessibility Testing
 
-Accessibility was reviewed through a combination of manual checks, semantic validation, and interface inspection.
+Accessibility was reviewed through manual checks, semantic validation, and Lighthouse snapshots. This section explicitly separates what is confirmed, partially audited, and not yet fully audited.
 
-Checks completed:
+Accessibility test environment (representative run):
 
-- Verified final HTML validation results returned `0` errors, `0` warnings, and `0` info messages across the tested pages.
-- Confirmed product imagery includes `alt` text and decorative icons use `aria-hidden` or accessible labels where appropriate.
-- Checked key form-driven pages (`/checkout/`, `/accounts/login/`, `/accounts/signup/`, `/profile/`) for readable labels, error messaging, and visible submit controls.
-- Reviewed keyboard-reachable interactive elements in the shared header, account menu, bag actions, checkout flow, and authentication forms.
-- Manually checked that core CTA, navigation, and feedback components maintain readable contrast against their backgrounds.
-- Verified the style assistant panel displays a visible disclaimer prompting users to double-check important details before relying on suggestions.
+- Date: 2026-04-15
+- OS: Windows
+- Screen reader: NVDA 2025.3.3
+- Browser: Google Chrome 146.0.7680.178
 
-Outcome:
+Confirmed checks:
+
+- Final HTML validation reruns returned `0` errors, `0` warnings, and `0` info messages across the tested pages.
+- Product imagery includes `alt` text and decorative icons use `aria-hidden` or accessible labels where appropriate.
+- Key form-driven pages (`/checkout/`, `/accounts/login/`, `/accounts/signup/`, `/profile/`) were checked for visible labels, validation feedback, and submit controls.
+- Core interactive components were manually checked for keyboard reachability (shared header, account menu, bag actions, checkout flow, authentication forms).
+- The style assistant panel includes a visible disclaimer prompting users to double-check important details.
+- Windows high-contrast checks were captured as supporting evidence (`readme-images/miscellaneous/accessibility-contrast-test.png` and `readme-images/miscellaneous/accessibility-contrast-test2.png`).
+
+Partially audited:
+
+- Practical contrast checks were completed on core flows.
+- Lighthouse mobile snapshots were captured on key pages.
+- One known contrast issue remains open: white text on the homepage `Shop Now` gold CTA does not meet the expected `4.5:1` ratio.
+
+Not yet fully audited:
+
+- A formal WCAG 2.1/2.2 AA conformance audit across all templates, states, and error paths.
+- A complete screen-reader test matrix (for example NVDA/JAWS/VoiceOver) across end-to-end user journeys.
+- Automated accessibility checks in CI (for example axe/pa11y) are not currently configured.
+
+Outcome summary:
 
 - Markup quality improved as part of the HTML validation fixes on 2026-03-24.
-- A Lighthouse mobile audit of the homepage on 2026-03-24 returned an accessibility score of `95` and flagged one contrast issue on the `Shop Now` CTA button.
-- The reported contrast issue was: white text on the gold CTA background did not meet the expected `4.5:1` contrast ratio on the homepage hero button.
-- This issue is tracked in the Bug Tracker as item `29` (Open).
-- A formal assistive-technology audit (for example, a full screen-reader test across all flows) has not been completed, so this section should be understood as a practical project-level accessibility review rather than a full WCAG conformance audit.
+- Homepage Lighthouse mobile accessibility score on 2026-03-24: `95`.
+- The known CTA contrast issue is tracked in the Bug Tracker as item `29` (Open).
+
+### Screen Reader Evidence Log
+
+Representative desktop evidence captured for this submission:
+
+| Assistive tech | Platform/browser                | Page/flow tested                  | Evidence file path                                    | Result                  | Notes                                                                                                                                           |
+| -------------- | ------------------------------- | --------------------------------- | ----------------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| NVDA           | Windows + Chrome 146.0.7680.178 | Home navigation and header menus  | `readme-images/miscellaneous/nvda-screen-reader.png`  | Passed (representative) | Screenshot captured with NVDA output visible during navigation checks. This is a representative sample rather than a full screen-reader matrix. |
+| NVDA           | Windows + Chrome 146.0.7680.178 | Product imagery/tag announcements | `readme-images/miscellaneous/nvda-screen-reader2.png` | Passed (representative) | Additional representative screenshot showing NVDA announcements for product imagery/tag-related content.                                        |
+
+### Keyboard-only Result (Representative)
+
+- Keyboard tab navigation reached primary navigation, account controls, bag actions, and form controls in representative desktop checks.
+- Visible focus indicators were present on tested interactive elements.
+- No keyboard trap was observed during the representative checks.
+
+### Contrast Evidence Log
+
+| Check type                | Platform        | Evidence file path                                             | Result                  | Notes                                                                                |
+| ------------------------- | --------------- | -------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------ |
+| High contrast mode review | Windows desktop | `readme-images/miscellaneous/accessibility-contrast-test.png`  | Passed (representative) | Visual proof captured during high-contrast testing of key interface elements.        |
+| High contrast mode review | Windows desktop | `readme-images/miscellaneous/accessibility-contrast-test2.png` | Passed (representative) | Additional supporting screenshot captured during the same practical contrast checks. |
+
+### Known Accessibility Issues
+
+- Homepage `Shop Now` CTA contrast remains below the expected `4.5:1` ratio in Lighthouse and is tracked in the Bug Tracker as item `29` (Open).
+- Evidence in this section is representative and practical; a full WCAG conformance audit and full assistive-technology matrix are still pending.
 
 ----
 
@@ -934,7 +982,7 @@ How I use this table:
 | 28  | Bag size render regression (`/bag/`)                                 | Regression of Bug #23 on production: bag page displayed the literal template tag (`{{ item.size\|upper }}`) instead of rendering the selected size value. Expected: bag shows the actual selected size (or `N/A` when no size applies).                                                             | 1) Add a sized product to bag on production.<br>2) Visit `/bag/`.<br>3) Observe size line rendering literal template text instead of value.                                                                                                                                                                                   | Fixed              | Referenced Bug #23 and reapplied a defensive template fix in `bag/templates/bag/bag.html` by normalizing the size conditional block to explicit multiline syntax (`{% if item.product.has_sizes and item.size %}{{ item.size\|upper }}{% else %}N/A{% endif %}`). Deployed to Heroku and retested on production on 2026-03-24: bag size now renders correctly.                                                                                   |
 | 29  | Homepage CTA contrast (`/`)                                          | Lighthouse reported insufficient contrast on the homepage Shop Now CTA. Expected: button text/background meet at least `4.5:1` for normal text.                                                                                                                                                     | 1) Run Lighthouse on `/` in mobile mode.<br>2) Open Accessibility audits and inspect the colour-contrast finding for `a.shop-now-button`.<br>3) Confirm reported ratio is below expected threshold.                                                                                                                           | Open               | Pending design update to adjust button colour pairing (or typography treatment) so the CTA meets contrast guidance while preserving the page visual style.                                                                                                                                                                                                                                                                                       |
 | 30  | Mobile navigation home route (`collapsed main nav`)                  | On mobile, users had no obvious way to navigate back to Home from the collapsed main menu. Expected: a clear Home link appears at the top of the collapsed navigation list.                                                                                                                         | 1) Open the site on a mobile viewport (`<992px`).<br>2) Open the hamburger menu.<br>3) Before fix, there is no direct Home item in the main nav list.<br>4) After fix, Home appears as the first nav item and routes to `/`.                                                                                                  | Fixed              | Added a Home nav item at the top of `templates/includes/main-nav.html` using `{% url 'home' %}` (`id="home-link"`), with the existing divider pattern preserved before category/dropdown items.                                                                                                                                                                                                                                                  |
-| 31  | Homepage mobile horizontal elastic overflow (`/`)                    | On iPhone/mobile Safari, the homepage could stretch or rubber-band horizontally while `/products/` remained stable. Expected: homepage stays constrained to the viewport width with no sideways elastic movement.                                                                                  | 1) Open `/` on iPhone or Safari mobile emulation.<br>2) Swipe horizontally on the homepage.<br>3) Before fix, the page can feel elastically wider than the viewport.<br>4) After fix, the page remains constrained with no horizontal stretch.                                                                              | Fixed              | Updated `static/css/base.css` to apply `overflow-x: hidden` at the root and disable the fixed body background on screens under `992px` with `background-attachment: scroll`. Deployed to Heroku and verified production returned `200` on 2026-03-31.                                                                                                                                                                                          |
+| 31  | Homepage mobile horizontal elastic overflow (`/`)                    | On iPhone/mobile Safari, the homepage could stretch or rubber-band horizontally while `/products/` remained stable. Expected: homepage stays constrained to the viewport width with no sideways elastic movement.                                                                                   | 1) Open `/` on iPhone or Safari mobile emulation.<br>2) Swipe horizontally on the homepage.<br>3) Before fix, the page can feel elastically wider than the viewport.<br>4) After fix, the page remains constrained with no horizontal stretch.                                                                                | Fixed              | Updated `static/css/base.css` to apply `overflow-x: hidden` at the root and disable the fixed body background on screens under `992px` with `background-attachment: scroll`. Deployed to Heroku and verified production returned `200` on 2026-03-31.                                                                                                                                                                                            |
 
 ## Testing Table
 
