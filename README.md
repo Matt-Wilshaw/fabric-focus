@@ -568,7 +568,6 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 
 - Automated test coverage is still modest relative to the full project scope. Core flows now have basic Django test coverage, but broader regression coverage across profiles, admin actions, and edge cases would strengthen long-term maintainability.
 - Order confirmation is currently provided on-screen and by email. Although a phone number is collected during checkout for delivery/contact details, the project does not send SMS confirmations or text-message delivery updates.
-- The homepage Shop Now CTA currently has a known text-contrast issue (white text on gold background) identified in Lighthouse accessibility checks.
 - Accessibility validation includes practical project-level checks, but a full assistive-technology audit across all user flows has not yet been completed.
 
 ## Future Enhancements

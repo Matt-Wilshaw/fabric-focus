@@ -100,12 +100,12 @@ h4,
 
 .shop-now-button {
     background: #d9a441;
-    color: white;
+    color: var(--brand-dark);
     min-width: 240px;
     border: 1px solid #d9a441;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 10px;
 }
 
@@ -136,7 +136,7 @@ h4,
 .btn-black:active,
 .btn-black:focus {
     background: #c28c2e;
-    color: white;
+    color: var(--brand-dark);
 }
 
 .btn {
@@ -629,6 +629,7 @@ label {
 }
 
 @media (min-width: 992px) {
+
     .style-assistant__toggle:hover,
     .style-assistant__toggle:focus-visible {
         width: 10.5rem;
