@@ -49,11 +49,35 @@ class StripeWH_Handler:
         intent = event.data.object
         pid = intent.id
         # Metadata comes from cache_checkout_data before payment confirmation.
-        bag = intent.metadata.bag
-        save_info = intent.metadata.save_info
+        metadata = getattr(intent, 'metadata', {}) or {}
+
+        if hasattr(metadata, 'get'):
+            bag = metadata.get('bag')
+            save_info = metadata.get('save_info')
+            username = metadata.get('username', 'AnonymousUser')
+        else:
+            bag = getattr(metadata, 'bag', None)
+            save_info = getattr(metadata, 'save_info', None)
+            username = getattr(metadata, 'username', 'AnonymousUser')
+
+        # Stripe CLI fixtures often omit checkout metadata; acknowledge and skip.
+        if not bag:
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | INFO: Missing checkout metadata, nothing to reconcile',
+                status=200,
+            )
+
+        save_info = str(save_info).lower() in ('true', '1', 'yes', 'on')
 
         billing_details = intent.charges.data[0].billing_details
         shipping_details = intent.shipping
+
+        if not billing_details or not shipping_details or not shipping_details.address:
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | INFO: Missing billing/shipping details, skipped reconciliation',
+                status=200,
+            )
+
         grand_total = round(intent.charges.data[0].amount / 100, 2)
 
         # Clean data in the shipping details
@@ -63,7 +87,6 @@ class StripeWH_Handler:
 
         # If this wasn't an anonymous checkout, attach/update the user's profile.
         profile = None
-        username = intent.metadata.username
         if username != 'AnonymousUser':
             profile = UserProfile.objects.get(user__username=username)
             if save_info:

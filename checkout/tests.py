@@ -1,6 +1,7 @@
 """Tests for checkout entry-point behaviour."""
 
 from decimal import Decimal
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.http import HttpResponse
@@ -8,6 +9,7 @@ from django.test import TestCase
 from django.urls import reverse
 import stripe
 
+from checkout.webhook_handler import StripeWH_Handler
 from products.models import Category, Product
 
 
@@ -120,3 +122,50 @@ class WebhookViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         mock_handler.assert_called_once_with(event)
+
+
+class StripeWebhookHandlerTests(TestCase):
+    """Unit tests for webhook handler edge cases."""
+
+    def setUp(self):
+        self.handler = StripeWH_Handler(request=None)
+
+    def _event(self, event_type, intent):
+        class Event(dict):
+            pass
+
+        event = Event(type=event_type)
+        event.data = SimpleNamespace(object=intent)
+        return event
+
+    @patch('checkout.webhook_handler.Order.objects.get')
+    def test_succeeded_event_without_metadata_is_ignored(self, mock_order_get):
+        intent = SimpleNamespace(id='pi_test_123', metadata={})
+        event = self._event('payment_intent.succeeded', intent)
+
+        response = self.handler.handle_payment_intent_succeeded(event)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Missing checkout metadata', response.content.decode())
+        mock_order_get.assert_not_called()
+
+    @patch('checkout.webhook_handler.Order.objects.get')
+    def test_succeeded_event_with_metadata_but_missing_shipping_is_ignored(self, mock_order_get):
+        intent = SimpleNamespace(
+            id='pi_test_456',
+            metadata={
+                'bag': '{}',
+                'save_info': 'false',
+                'username': 'AnonymousUser',
+            },
+            charges=SimpleNamespace(data=[SimpleNamespace(billing_details=None, amount=1000)]),
+            shipping=None,
+        )
+        event = self._event('payment_intent.succeeded', intent)
+
+        response = self.handler.handle_payment_intent_succeeded(event)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Missing billing/shipping details', response.content.decode())
+        mock_order_get.assert_not_called()
+
