@@ -868,7 +868,7 @@ label {
 .allauth-form-inner-content input[type="submit"].btn.btn-black,
 .allauth-form-inner-content a.btn.btn-black {
     background: var(--brand-dark);
-    color: #fff;
+    color: #fff !important;
     border-radius: 10px;
     border: 1px solid var(--brand-dark);
 }
@@ -880,7 +880,7 @@ label {
 .allauth-form-inner-content a.btn.btn-black:active {
     background: #c28c2e;
     border-color: #c28c2e;
-    color: #fff;
+    color: #fff !important;
 }
 
 .allauth-form-inner-content a {

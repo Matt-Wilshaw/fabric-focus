@@ -90,3 +90,16 @@ class ProfileOrderHistoryTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Size M')
+
+
+class UserProfileSignalTests(TestCase):
+    """Tests for user/profile signal resilience."""
+
+    def test_saving_user_without_profile_recreates_profile(self):
+        user = User.objects.create_user(username='legacy-user', password='testpass123')
+        UserProfile.objects.filter(user=user).delete()
+
+        user.first_name = 'Legacy'
+        user.save()
+
+        self.assertTrue(UserProfile.objects.filter(user=user).exists())

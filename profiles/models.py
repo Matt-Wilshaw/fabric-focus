@@ -31,6 +31,8 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
     if created:
         UserProfile.objects.create(user=instance)
-    # Existing users: just save the profile
-    instance.userprofile.save()
+        return
+
+    # Legacy users may not have a profile row; create it instead of crashing.
+    UserProfile.objects.get_or_create(user=instance)
     
