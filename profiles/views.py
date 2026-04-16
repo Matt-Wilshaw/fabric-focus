@@ -37,6 +37,7 @@ def profile(request):
 @login_required
 def order_history(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
+    # Past orders should only be visible to the account that owns them.
     if order.user_profile != request.user.userprofile:
         raise PermissionDenied("You do not have permission to view this order.")
 

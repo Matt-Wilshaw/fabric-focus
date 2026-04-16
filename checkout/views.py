@@ -86,6 +86,7 @@ def checkout(request):
                     return redirect(reverse('view_bag'))
 
             request.session['save_info'] = 'save-info' in request.POST
+            # Keep a one-time session marker so the guest/success page cannot be reopened for arbitrary orders.
             request.session['last_order_number'] = order.order_number
             return redirect(reverse('checkout_success', args=[order.order_number]))
         else:
@@ -126,8 +127,6 @@ def checkout(request):
         else:
             order_form = OrderForm()
 
-        # in the video, the below code is not indented properly
-        # this is the correct indentation
         if not stripe_public_key:
             messages.warning(request, 'Stripe public key is missing. \
                 Did you forget to set it in your environment?')
@@ -140,7 +139,6 @@ def checkout(request):
         }
 
         return render(request, template, context)
-        # end of the corrected indentation
 
 
 def checkout_success(request, order_number):
@@ -153,9 +151,12 @@ def checkout_success(request, order_number):
 
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)
+        # Never allow one signed-in user to view or claim another user's order.
         if order.user_profile and order.user_profile != profile:
             raise PermissionDenied("You do not have permission to view this order.")
 
+        # Access is valid if the order already belongs to this profile, or if this is
+        # the immediate post-checkout redirect for the same order in the current session.
         allowed_via_profile = order.user_profile == profile
         allowed_via_checkout_session = last_order_number == order.order_number
         if not allowed_via_profile and not allowed_via_checkout_session:
@@ -181,6 +182,7 @@ def checkout_success(request, order_number):
             if user_profile_form.is_valid():
                 user_profile_form.save()
     elif last_order_number != order.order_number:
+        # Guests may only view the success page for the order created in their current session.
         raise PermissionDenied("You do not have permission to view this order.")
 
     messages.success(request, f'Order successfully processed! \
@@ -188,6 +190,7 @@ def checkout_success(request, order_number):
         email will be sent to {order.email}.')
 
     if 'last_order_number' in request.session:
+        # Clear the one-time marker once the confirmation page has been served.
         del request.session['last_order_number']
 
     if 'bag' in request.session:
