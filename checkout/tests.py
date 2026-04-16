@@ -243,3 +243,21 @@ class StripeWebhookHandlerTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Missing billing/shipping details', response.content.decode())
         mock_order_get.assert_not_called()
+
+    @patch('checkout.webhook_handler.send_mail')
+    def test_send_confirmation_email_renders_existing_templates(self, mock_send_mail):
+        order = Order(
+            full_name='Email Tester',
+            email='tester@example.com',
+            phone_number='07123456789',
+            country='GB',
+            postcode='SW1A1AA',
+            town_or_city='London',
+            street_address1='1 Test Street',
+            original_bag='{}',
+            stripe_pid='pi_test_email',
+        )
+
+        self.handler._send_confirmation_email(order)
+
+        mock_send_mail.assert_called_once()
