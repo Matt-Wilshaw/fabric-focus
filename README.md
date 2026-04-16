@@ -267,6 +267,8 @@ See [TESTING.md](./TESTING.md) for dated evidence and the current accessibility 
 
 Testing focuses on end-to-end shopping flows, account access, checkout reliability, and responsive behaviour.
 
+Recent regression work also hardened order authorisation. Order confirmation pages are now restricted to the same checkout session or the rightful account owner, and saved order-history pages require both login and ownership checks.
+
 For complete testing evidence and validation results, see [TESTING.md](./TESTING.md).
 
 ### Deployed Test Environment

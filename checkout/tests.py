@@ -4,12 +4,15 @@ from decimal import Decimal
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.test import TestCase
 from django.urls import reverse
 import stripe
 
+from checkout.models import Order, OrderLineItem
 from checkout.webhook_handler import StripeWH_Handler
+from profiles.models import UserProfile
 from products.models import Category, Product
 
 
@@ -29,6 +32,26 @@ class CheckoutViewTests(TestCase):
             price=Decimal('20.00'),
         )
 
+    def create_order(self, user_profile=None):
+        order = Order.objects.create(
+            user_profile=user_profile,
+            full_name='Test Shopper',
+            email='shopper@example.com',
+            phone_number='07123456789',
+            country='GB',
+            postcode='SW1A1AA',
+            town_or_city='London',
+            street_address1='1 Test Street',
+            original_bag='{}',
+            stripe_pid='pi_test_checkout',
+        )
+        OrderLineItem.objects.create(
+            order=order,
+            product=self.product,
+            quantity=1,
+        )
+        return order
+
     def test_checkout_redirects_when_bag_is_empty(self):
         response = self.client.get(reverse('checkout'))
 
@@ -47,6 +70,58 @@ class CheckoutViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('order_form', response.context)
         self.assertIn('client_secret', response.context)
+
+    def test_checkout_success_requires_matching_session_for_guest(self):
+        order = self.create_order()
+
+        response = self.client.get(reverse('checkout_success', args=[order.order_number]))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_checkout_success_denies_access_to_other_users_order(self):
+        owner = User.objects.create_user(username='owner', password='testpass123')
+        intruder = User.objects.create_user(username='intruder', password='testpass123')
+        owner_profile = UserProfile.objects.get(user=owner)
+        intruder_profile = UserProfile.objects.get(user=intruder)
+        order = self.create_order(user_profile=owner_profile)
+
+        self.client.force_login(intruder)
+        session = self.client.session
+        session['last_order_number'] = order.order_number
+        session.save()
+
+        response = self.client.get(reverse('checkout_success', args=[order.order_number]))
+
+        self.assertEqual(response.status_code, 403)
+        order.refresh_from_db()
+        self.assertEqual(order.user_profile, owner_profile)
+        self.assertNotEqual(order.user_profile, intruder_profile)
+
+    def test_checkout_success_allows_order_owner_without_session_match(self):
+        owner = User.objects.create_user(username='owner2', password='testpass123')
+        owner_profile = UserProfile.objects.get(user=owner)
+        order = self.create_order(user_profile=owner_profile)
+
+        self.client.force_login(owner)
+        response = self.client.get(reverse('checkout_success', args=[order.order_number]))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_checkout_success_attaches_guest_order_to_authenticated_user_with_session_match(self):
+        user = User.objects.create_user(username='buyer', password='testpass123')
+        profile = UserProfile.objects.get(user=user)
+        order = self.create_order()
+
+        self.client.force_login(user)
+        session = self.client.session
+        session['last_order_number'] = order.order_number
+        session.save()
+
+        response = self.client.get(reverse('checkout_success', args=[order.order_number]))
+
+        self.assertEqual(response.status_code, 200)
+        order.refresh_from_db()
+        self.assertEqual(order.user_profile, profile)
 
 
 class WebhookViewTests(TestCase):
@@ -168,4 +243,3 @@ class StripeWebhookHandlerTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Missing billing/shipping details', response.content.decode())
         mock_order_get.assert_not_called()
-

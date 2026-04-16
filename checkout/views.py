@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpR
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 
 from .forms import OrderForm
 from .models import Order, OrderLineItem
@@ -85,6 +86,7 @@ def checkout(request):
                     return redirect(reverse('view_bag'))
 
             request.session['save_info'] = 'save-info' in request.POST
+            request.session['last_order_number'] = order.order_number
             return redirect(reverse('checkout_success', args=[order.order_number]))
         else:
             messages.error(request, 'There was an error with your form. \
@@ -146,13 +148,23 @@ def checkout_success(request, order_number):
     Handle successful checkouts
     """
     save_info = request.session.get('save_info')
+    last_order_number = request.session.get('last_order_number')
     order = get_object_or_404(Order, order_number=order_number)
 
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)
-        # Attach the user's profile to the order
-        order.user_profile = profile
-        order.save()
+        if order.user_profile and order.user_profile != profile:
+            raise PermissionDenied("You do not have permission to view this order.")
+
+        allowed_via_profile = order.user_profile == profile
+        allowed_via_checkout_session = last_order_number == order.order_number
+        if not allowed_via_profile and not allowed_via_checkout_session:
+            raise PermissionDenied("You do not have permission to view this order.")
+
+        if order.user_profile is None:
+            # First authenticated success view after checkout: safely attach the order.
+            order.user_profile = profile
+            order.save()
 
         # Save the user's info
         if save_info:
@@ -168,10 +180,15 @@ def checkout_success(request, order_number):
             user_profile_form = UserProfileForm(profile_data, instance=profile)
             if user_profile_form.is_valid():
                 user_profile_form.save()
+    elif last_order_number != order.order_number:
+        raise PermissionDenied("You do not have permission to view this order.")
 
     messages.success(request, f'Order successfully processed! \
         Your order number is {order_number}. A confirmation \
         email will be sent to {order.email}.')
+
+    if 'last_order_number' in request.session:
+        del request.session['last_order_number']
 
     if 'bag' in request.session:
         del request.session['bag']

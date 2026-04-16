@@ -22,6 +22,7 @@ At submission stage:
 - Lighthouse checks have been captured for key pages
 - Stripe checkout and webhook behaviour have been tested in test mode
 - automated Django test coverage exists for several core flows and is documented transparently below
+- order confirmation and order-history access controls were retested after an authorisation fix so users can only access their own orders
 - order confirmation in the current project is on-screen and by email only; no SMS notification service is implemented
 
 ## Table of Contents
@@ -201,6 +202,7 @@ Current implementation notes (as of this version of the repo):
 - Stock is not currently reserved at add-to-bag time; in high-concurrency scenarios, two users can checkout overlapping items before stock enforcement is applied (residual oversell risk).
 - The checkout flow collects a phone number for delivery/contact details, but the project does not currently send SMS confirmations or delivery text updates.
 - Automated unit/integration coverage is still modest relative to the full project scope, so manual regression testing remains an important part of the submission evidence.
+- Order access is now enforced server-side: `checkout_success` only permits the same checkout session or the rightful account owner, and `profile/order_history` requires login plus ownership of the requested order.
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user's perspective without needing knowledge of internal code logic.
 
@@ -210,7 +212,7 @@ For additional project details and technical information, including instructions
 
 ## Automated Test Execution Evidence
 
-Date run: 2026-04-15
+Date run: 2026-04-16
 
 Command executed:
 
@@ -222,8 +224,15 @@ Observed output summary:
 
 - Test database created and destroyed successfully.
 - Django system check reported no issues.
-- `Ran 16 tests in 2.218s`
+- `Ran 23 tests in 3.005s`
 - Final status: `OK`
+
+Security-focused regression tests added in this run:
+
+- guest users cannot open arbitrary `/checkout/checkout_success/<order_number>` pages without a matching checkout session
+- authenticated users cannot open or claim another user's order from the checkout success route
+- rightful owners can still access their own saved order confirmations
+- `/profile/order_history/<order_number>` now requires login and blocks non-owners with HTTP 403
 
 ## Browser Compatibility Matrix
 
@@ -982,6 +991,7 @@ How I use this table:
 | 29  | Homepage CTA contrast (`/`)                                          | Lighthouse previously reported insufficient contrast on the homepage Shop Now CTA. Expected: button text/background meet at least `4.5:1` for normal text.                                                                                                                                          | 1) Run Lighthouse on `/` in mobile mode.<br>2) Open Accessibility audits and inspect the colour-contrast finding for `a.shop-now-button`.<br>3) Confirm reported ratio is below expected threshold.<br>4) Apply style update and manually retest CTA contrast and readability.                                                | Fixed              | Updated `.shop-now-button` in `static/css/base.css` on 2026-04-15 to use dark brand text on the gold CTA (including hover/focus/active), improving practical text contrast and resolving the previously tracked issue.                                                                                                                                                                                                                           |
 | 30  | Mobile navigation home route (`collapsed main nav`)                  | On mobile, users had no obvious way to navigate back to Home from the collapsed main menu. Expected: a clear Home link appears at the top of the collapsed navigation list.                                                                                                                         | 1) Open the site on a mobile viewport (`<992px`).<br>2) Open the hamburger menu.<br>3) Before fix, there is no direct Home item in the main nav list.<br>4) After fix, Home appears as the first nav item and routes to `/`.                                                                                                  | Fixed              | Added a Home nav item at the top of `templates/includes/main-nav.html` using `{% url 'home' %}` (`id="home-link"`), with the existing divider pattern preserved before category/dropdown items.                                                                                                                                                                                                                                                  |
 | 31  | Homepage mobile horizontal elastic overflow (`/`)                    | On iPhone/mobile Safari, the homepage could stretch or rubber-band horizontally while `/products/` remained stable. Expected: homepage stays constrained to the viewport width with no sideways elastic movement.                                                                                   | 1) Open `/` on iPhone or Safari mobile emulation.<br>2) Swipe horizontally on the homepage.<br>3) Before fix, the page can feel elastically wider than the viewport.<br>4) After fix, the page remains constrained with no horizontal stretch.                                                                                | Fixed              | Updated `static/css/base.css` to apply `overflow-x: hidden` at the root and disable the fixed body background on screens under `992px` with `background-attachment: scroll`. Deployed to Heroku and verified production returned `200` on 2026-03-31.                                                                                                                                                                                            |
+| 32  | Order authorisation on success/history views (`/checkout/checkout_success/<order_number>`, `/profile/order_history/<order_number>`) | Order pages were previously fetched by `order_number` alone. Expected: only the same checkout session or the rightful account owner can view an order, and one authenticated user must never be able to reassign another user's order to themselves.                                             | 1) Attempt to open another order's success/history URL while anonymous or logged in as a different user.<br>2) Confirm unauthorised access is blocked.<br>3) Confirm the rightful owner can still access their order history.<br>4) Confirm guest checkout success still works for the matching session only.                | Fixed              | Added ownership/session checks in `checkout/views.py` and `profiles/views.py`. `checkout_success` now rejects unauthorised access and no longer reattaches someone else's order to the logged-in user. Added regression tests in `checkout/tests.py` and `profiles/tests.py`. Retested on 2026-04-16 with `manage.py check`, targeted verbose test runs for `checkout.tests` and `profiles.tests`, and full `manage.py test` (`Ran 23 tests`, `OK`). |
 
 ## Testing Table
 
