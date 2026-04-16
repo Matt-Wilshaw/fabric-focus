@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseNotAllowed
 from django.db.models import Q
 from django.db.models.functions import Lower
 
@@ -132,6 +133,9 @@ def delete_product(request, product_id):
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
+
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
     
     product = get_object_or_404(Product, pk=product_id)
     product.delete()

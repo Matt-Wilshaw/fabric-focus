@@ -67,3 +67,26 @@ class ProfileOrderHistoryTests(TestCase):
         response = self.client.get(reverse('order_history', args=[self.order.order_number]))
 
         self.assertEqual(response.status_code, 200)
+
+    def test_profile_order_history_displays_saved_lineitem_size(self):
+        """Profile history should render line-item product_size values."""
+        sized_product = Product.objects.create(
+            category=self.product.category,
+            sku='PRO-2',
+            name='Sized Hoodie',
+            description='Sized item for profile display test.',
+            price=Decimal('55.00'),
+            has_sizes=True,
+        )
+        OrderLineItem.objects.create(
+            order=self.order,
+            product=sized_product,
+            product_size='m',
+            quantity=1,
+        )
+
+        self.client.force_login(self.owner)
+        response = self.client.get(reverse('profile'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Size M')
