@@ -249,7 +249,7 @@ Core customer flows checked: home, products list/detail, bag actions, login/logo
 
 ## Responsiveness Testing
 
-Fabric Focus uses Bootstrap (via CDN in the base template) and I manually check common Bootstrap breakpoints to ensure a consistent experience.
+Fabric Focus uses Bootstrap (via CDN in the base template), and responsiveness was tested manually across common Bootstrap breakpoints to ensure a consistent experience.
 
 Breakpoints I test:
 
@@ -263,13 +263,63 @@ Breakpoints I test:
 | :----: | :----: | :----: | :----: | :----: |
 | Passed | Passed | Passed | Passed | Passed |
 
-Responsiveness evidence currently stored in the repository:
+Responsiveness screenshot evidence captured from the built application:
 
-- `readme-images/mobile-tablet/mobile-tablet-homepage.png`
-- `readme-images/mobile-tablet/mobile-tablet-product-detail.png`
-- `readme-images/mobile-tablet/mobile-tablet-checkout.png`
-- `readme-images/mobile-tablet/mobile-tablet-register.png`
-- `readme-images/mobile-tablet/mobile-tablet-product-management.png`
+**320px**
+
+Homepage  
+![320px homepage responsiveness](testing-images/responsiveness/320/homepage.png)
+
+Products  
+![320px products responsiveness](testing-images/responsiveness/320/products.png)
+
+Checkout  
+![320px checkout responsiveness](testing-images/responsiveness/320/checkout.png)
+
+**576px**
+
+Homepage  
+![576px homepage responsiveness](testing-images/responsiveness/576/homepage.png)
+
+Products  
+![576px products responsiveness](testing-images/responsiveness/576/products.png)
+
+Checkout  
+![576px checkout responsiveness](testing-images/responsiveness/576/checkout.png)
+
+**768px**
+
+Homepage  
+![768px homepage responsiveness](testing-images/responsiveness/768/homepage.png)
+
+Products  
+![768px products responsiveness](testing-images/responsiveness/768/products.png)
+
+Checkout  
+![768px checkout responsiveness](testing-images/responsiveness/768/checkout.png)
+
+**992px**
+
+Homepage  
+![992px homepage responsiveness](testing-images/responsiveness/992/homepage.png)
+
+Products  
+![992px products responsiveness](testing-images/responsiveness/992/products.png)
+
+Checkout  
+![992px checkout responsiveness](testing-images/responsiveness/992/checkout.png)
+
+**1200px**
+
+Homepage  
+![1200px homepage responsiveness](testing-images/responsiveness/1200/homepage.png)
+
+Products  
+![1200px products responsiveness](testing-images/responsiveness/1200/products.png)
+
+Checkout  
+![1200px checkout responsiveness](testing-images/responsiveness/1200/checkout.png)
+
 
 **Manual test steps:**
 
@@ -281,7 +331,7 @@ Responsiveness evidence currently stored in the repository:
   - Header and navigation remain usable
   - Product list cards/rows don't overflow
   - Text remains readable and buttons/links are tappable
-6. Capture screenshots and save them in a project evidence folder (for example `testing-images/` or `readme-images/`) before linking them in this document.
+6. Capture screenshots from the built application and save them in the testing evidence folder before linking them in this document.
 
 ----
 

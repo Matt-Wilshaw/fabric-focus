@@ -5,7 +5,7 @@
 {% block body_class %}bag-page{% endblock %}
 
 {% block page_header %}
-<div class="container header-container">
+<div class="container header-container bag-header-container">
     <div class="row">
         <div class="col"></div>
     </div>
@@ -18,10 +18,9 @@
         <div class="row">
             <div class="col">
                 {% if bag_items %}
-                <hr>
                 {% endif %}
-                <h2 class="logo-font mb-4">Shopping Bag</h2>
-                <hr>
+                <h2 class="logo-font bag-page-title">Shopping Bag</h2>
+                <hr class="bag-title-rule">
             </div>
         </div>
 
@@ -110,6 +109,7 @@
                 </table>
             </div>
             {% else %}
+            <div class="bag-empty-state">
             <p class="lead mb-5">Your bag is empty.</p>
             <a href="{% url 'products' %}" class="btn btn-outline-black btn-lg">
                 <span class="icon">
@@ -117,6 +117,7 @@
                 </span>
                 <span class="text-uppercase">Keep Shopping</span>
             </a>
+            </div>
             {% endif %}
         </div>
     </div>

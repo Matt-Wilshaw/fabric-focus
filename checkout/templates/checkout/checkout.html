@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block page_header %}
-<div class="container header-container">
+<div class="container header-container checkout-header-container">
     <div class="row">
         <div class="col"></div>
     </div>
@@ -17,13 +17,12 @@
 {% block content %}
 <div class="overlay"></div>
 <div class="container">
-    <div class="row">
-        <div class="col">
+        <div class="row">
+            <div class="col">
+            <h2 class="logo-font checkout-page-title">Checkout</h2>
             <hr>
-            <h2 class="logo-font mb-4">Checkout</h2>
-            <hr>
+            </div>
         </div>
-    </div>
 
     <div class="row">
         <div class="col-12 col-lg-6 order-lg-last mb-5">
@@ -57,8 +56,8 @@
                 </div>
             </div>
             {% endfor %}
-            <hr class="my-0">
-            <div class="row text-black text-right">
+            <hr class="checkout-summary-divider">
+            <div class="row text-black text-right checkout-totals-row">
                 <div class="col-7 offset-2">
                     <p class="my-0">Order Total:</p>
                     <p class="my-0">Delivery:</p>
@@ -72,10 +71,10 @@
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <p class="text-muted">Please fill out the form below to complete your order</p>
+            <p class="text-muted checkout-form-intro">Please fill out the form below to complete your order</p>
             <form action="{% url 'checkout' %}" method="POST" id="payment-form">
                 {% csrf_token %}
-                <fieldset class="rounded px-3 mb-5">
+                <fieldset class="rounded px-3 checkout-details-fieldset">
                     <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
                     {{ order_form.full_name | as_crispy_field }}
                     {{ order_form.email | as_crispy_field }}
