@@ -28,7 +28,7 @@ class Category(models.Model):
 class Product(models.Model):
     """A product in the catalogue."""
     category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
-    sku = models.CharField(max_length=254, null=True, blank=True)
+    sku = models.CharField(max_length=254, null=True, blank=True, unique=True)
     name = models.CharField(max_length=254)
     description = models.TextField()
     has_sizes = models.BooleanField(default=False, null=True, blank=True)

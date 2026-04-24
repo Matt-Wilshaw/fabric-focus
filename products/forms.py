@@ -60,3 +60,17 @@ class ProductForm(forms.ModelForm):
                 raise ValidationError('Use at most 2 decimal places, for example 12.99.')
 
         return price
+
+    def clean_sku(self):
+        sku = self.cleaned_data.get('sku')
+        if not sku:
+            return sku
+
+        existing_products = Product.objects.filter(sku__iexact=sku)
+        if self.instance.pk:
+            existing_products = existing_products.exclude(pk=self.instance.pk)
+
+        if existing_products.exists():
+            raise ValidationError('A product with this SKU already exists.')
+
+        return sku

@@ -327,14 +327,19 @@ h4,
 }
 
 .products-home-link {
-    color: #9a6c1c;
+    color: var(--brand-dark);
     text-decoration: none;
 }
 
 .products-home-link:hover,
 .products-home-link:focus {
-    color: #c28c2e;
+    color: #000;
     text-decoration: none;
+}
+
+.products-home-separator {
+    color: #b7b7b7;
+    margin-left: 0.18rem;
 }
 
 .nav-with-dividers .nav-link {

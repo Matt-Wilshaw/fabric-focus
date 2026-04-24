@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from .forms import ProductForm
 from .models import Category, Product
 
 
@@ -101,3 +102,35 @@ class ProductDeleteMethodTests(TestCase):
 
 		self.assertRedirects(response, reverse('products'))
 		self.assertFalse(Product.objects.filter(id=self.product.id).exists())
+
+
+class ProductFormValidationTests(TestCase):
+	"""Tests for product form field-level validation."""
+
+	def setUp(self):
+		self.category = Category.objects.create(name='test', friendly_name='Test')
+		Product.objects.create(
+			category=self.category,
+			sku='SKU-DUP',
+			name='Existing Product',
+			description='Existing product for duplicate SKU validation',
+			price=Decimal('10.00'),
+		)
+
+	def test_duplicate_sku_is_rejected(self):
+		"""The form should reject a SKU that already exists."""
+		form_data = {
+			'category': self.category.id,
+			'sku': 'SKU-DUP',
+			'name': 'New Product',
+			'description': 'New product description',
+			'price': '12.99',
+			'rating': '',
+			'has_sizes': '',
+			'image': '',
+		}
+		form = ProductForm(data=form_data)
+
+		self.assertFalse(form.is_valid())
+		self.assertIn('sku', form.errors)
+		self.assertIn('A product with this SKU already exists.', form.errors['sku'][0])
