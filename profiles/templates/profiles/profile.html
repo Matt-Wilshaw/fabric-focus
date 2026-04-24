@@ -30,7 +30,9 @@
             <form class="mt-3" action="{% url 'profile' %}" method="POST" id="profile-update-form">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button class="btn btn-black rounded-0 text-uppercase float-right">Update Information</button>
+                <div class="text-right">
+                    <button class="btn btn-black text-uppercase form-action-button" type="submit">Update Information</button>
+                </div>
             </form>
         </div>
         <div class="col-12 col-lg-6">

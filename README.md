@@ -68,7 +68,7 @@ This submission was built to evidence the core requirements of a full-stack comm
 
 This project uses the following technologies:
 
-- Language and framework: Python 3.11, Django 3.2.25
+- Language and framework: Python 3.12.10, Django 3.2.25
 - Frontend stack: HTML5, CSS3, JavaScript, Bootstrap 4.4.1 (CDN), jQuery 3.5.1, Font Awesome 5.15.4
 - Databases: SQLite (local default) and PostgreSQL via `DATABASE_URL` in production
 - Authentication and accounts: django-allauth
@@ -623,9 +623,11 @@ Developed as part of a web development learning project.
 
 ## Credits
 
-- Django and Bootstrap documentation
-- Stripe API and Stripe CLI documentation
-- Google AI / Gemini API documentation
-- Project assets and implementation by the Fabric-Focus project author
+- Django documentation: https://docs.djangoproject.com/
+- Bootstrap documentation: https://getbootstrap.com/docs/4.4/
+- Stripe API and Stripe CLI documentation: https://docs.stripe.com/
+- Google AI / Gemini API documentation: https://ai.google.dev/
+- Python package documentation for third-party libraries used in this project (for example django-allauth, django-crispy-forms, django-countries, django-storages, WhiteNoise)
+- Project assets and implementation are by the Fabric-Focus project author unless otherwise stated in this repository
 
 

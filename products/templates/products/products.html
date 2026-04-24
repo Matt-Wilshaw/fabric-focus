@@ -100,11 +100,11 @@
                                     <small class="text-muted">No Rating</small>
                                     {% endif %}
                                     {% if request.user.is_superuser %}
-                                    <small class="ml-3">
-                                        <a href="{% url 'edit_product' product.id %}">Edit</a> |
+                                    <small class="ml-3 superuser-admin-actions">
+                                        <a class="superuser-admin-action" href="{% url 'edit_product' product.id %}">Edit</a> |
                                         <form class="d-inline" method="POST" action="{% url 'delete_product' product.id %}">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-link text-danger p-0 align-baseline">Delete</button>
+                                            <button type="submit" class="superuser-admin-action text-danger p-0 align-baseline">Delete</button>
                                         </form>
                                     </small>
                                     {% endif %}
