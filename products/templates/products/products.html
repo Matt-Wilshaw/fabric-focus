@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% load product_extras %}
 
 {% block page_header %}
@@ -84,7 +85,7 @@
                         <div class="card-footer bg-white pt-0 border-0 text-left">
                             <div class="row">
                                 <div class="col">
-                                    <p class="lead mb-0 text-left font-weight-bold">£{{ product.price }}</p>
+                                    <p class="lead mb-0 text-left font-weight-bold">£{{ product.price|floatformat:2|intcomma }}</p>
                                     {% if product.category %}
                                     <p class="small mt-1 mb-0">
                                         <a class="text-muted"
