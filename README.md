@@ -20,8 +20,8 @@ The project aims to demonstrate:
 - [Fabric-Focus](#fabric-focus)
   - [Live Demo](#live-demo)
   - [Table of Contents](#table-of-contents)
-  - [Technologies Used](#technologies-used)
   - [Project Goals](#project-goals)
+  - [Technologies Used](#technologies-used)
   - [Strategy (Why?)](#strategy-why)
   - [Scope (What?)](#scope-what)
     - [Functional Requirements](#functional-requirements)
@@ -34,21 +34,34 @@ The project aims to demonstrate:
   - [Admin Access](#admin-access)
   - [Design Choices](#design-choices)
   - [Wireframes](#wireframes)
-  - [Colour Palette](#colour-palette)
-  - [Typography](#typography)
-  - [Accessibility](#accessibility)
+    - [Colour Palette](#colour-palette)
+    - [Typography](#typography)
+    - [Accessibility](#accessibility)
   - [Testing Overview](#testing-overview)
-  - [Deployed Test Environment](#deployed-test-environment)
-  - [Smoke Test (Production)](#smoke-test-production)
+    - [Deployed Test Environment](#deployed-test-environment)
+    - [Smoke Test (Production)](#smoke-test-production)
   - [Development Checklist](#development-checklist)
   - [Database Structure](#database-structure)
   - [User Stories](#user-stories)
   - [Installation / Setup](#installation--setup)
+    - [1. Clone the repository](#1-clone-the-repository)
+    - [2. Create a virtual environment (optional but recommended)](#2-create-a-virtual-environment-optional-but-recommended)
+    - [3. Install dependencies](#3-install-dependencies)
+    - [4. Configure local environment variables](#4-configure-local-environment-variables)
+    - [5. Apply database migrations](#5-apply-database-migrations)
+    - [6. Create a superuser (optional, for admin access)](#6-create-a-superuser-optional-for-admin-access)
+    - [7. Run the development server](#7-run-the-development-server)
+    - [8. Run automated tests](#8-run-automated-tests)
   - [AI Style Assistant (What to Wear)](#ai-style-assistant-what-to-wear)
+    - [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
+    - [Frontend](#frontend)
   - [Key Outline](#key-outline)
   - [Known Limitations at Submission](#known-limitations-at-submission)
   - [Future Enhancements](#future-enhancements)
   - [Fabric-Focus Deployment Guide](#fabric-focus-deployment-guide)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+    - [Tips](#tips)
   - [Author](#author)
   - [Credits](#credits)
 
@@ -68,7 +81,7 @@ This submission was built to evidence the core requirements of a full-stack comm
 
 This project uses the following technologies:
 
-- Language and framework: Python 3.12.10, Django 3.2.25
+- Language and framework: Python 3.12, Django 3.2.25
 - Frontend stack: HTML5, CSS3, JavaScript, Bootstrap 4.4.1 (CDN), jQuery 3.5.1, Font Awesome 5.15.4
 - Databases: SQLite (local default) and PostgreSQL via `DATABASE_URL` in production
 - Authentication and accounts: django-allauth
@@ -613,7 +626,7 @@ This repository is Django-rendered and does not include a separate `frontend/` R
 - In production, email must be configured or the app now fails fast on startup instead of silently sending password-reset emails to the console.
 - Never commit real secret keys.
 - Run smoke tests immediately after deployment.
-- Use `.python-version` (for example `3.11`) to define the Python runtime on Heroku; `runtime.txt` is deprecated.
+- Use `.python-version` (for example `3.12`) to define the Python runtime on Heroku; `runtime.txt` is deprecated.
 
 ---
 
