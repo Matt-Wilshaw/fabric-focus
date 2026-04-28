@@ -212,6 +212,13 @@ For additional project details and technical information, including instructions
 
 ## Automated Test Execution Evidence
 
+
+**Note:** The command below uses a full path to the Python executable in my local virtual environment (``.venv``). This folder is not included in the repository and will not be available when cloning the project. Assessors should create and activate their own virtual environment using the provided ``requirements.txt``, then run tests with the generic command:
+
+  python manage.py test
+
+This ensures the tests are run in a clean, reproducible environment.
+
 Date run: 2026-04-16
 
 Command executed:
@@ -233,6 +240,27 @@ Security-focused regression tests added in this run:
 - authenticated users cannot open or claim another user's order from the checkout success route
 - rightful owners can still access their own saved order confirmations
 - `/profile/order_history/<order_number>` now requires login and blocks non-owners with HTTP 403
+
+---
+
+## Automated Test Execution Evidence
+
+Date run: 2026-04-28
+
+Command executed:
+
+```powershell
+python manage.py test
+```
+
+Observed output summary:
+
+- Test database created and destroyed successfully.
+- Django system check reported no issues.
+- `Ran 32 tests in 4.886s`
+- Final status: `OK`
+
+This run confirms all automated unit and integration tests pass in the current development environment.
 
 ## Browser Compatibility Matrix
 
