@@ -127,26 +127,27 @@ h4,
     .home-page .home-hero {
         align-items: flex-start;
         min-height: auto;
-        padding-top: 1.75rem;
-        padding-bottom: 1rem;
+        padding-top: 2.35rem;
+        padding-bottom: 0.5rem;
     }
 
     .home-page .hero-copy {
-        transform: translateY(18px);
+        transform: translateY(30px);
         max-width: 23.5rem;
     }
 
     .home-page .shop-now-button {
         min-width: 0;
         width: auto;
-        max-width: 180px;
-        padding: 0.6rem 1.05rem !important;
-        font-size: 0.8rem;
+        min-height: 42px;
+        max-width: 200px;
+        padding: 0.7rem 1.2rem !important;
+        font-size: 0.85rem;
         letter-spacing: 0.06em;
     }
 
     .home-page .hero-copy .my-5 {
-        margin-top: 1rem !important;
+        margin-top: 0.75rem !important;
         margin-bottom: 0 !important;
     }
 }
@@ -1289,7 +1290,7 @@ label {
     }
 
     .home-page .hero-copy {
-        transform: translateY(18px);
+        transform: translateY(100px);
     }
 
     .home-page .hero-title {
@@ -1655,6 +1656,12 @@ label {
     }
 }
 
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .home-page .hero-copy {
+        margin-left: -0.75rem;
+    }
+}
+
 @media (min-width: 1200px) {
     .home-page .hero-copy {
         max-width: 25rem;
@@ -1717,7 +1724,7 @@ label {
 
 @media (max-width: 575.98px) {
     .header-container {
-        padding-top: 132px;
+        padding-top: 100px;
     }
 
     .home-page .home-hero {
@@ -1730,6 +1737,7 @@ label {
         max-width: calc(100vw - 3.5rem);
         padding-left: 0;
         padding-right: 0;
+        padding-top: 0;
         margin-left: 0;
         margin-right: auto;
         text-align: left;
