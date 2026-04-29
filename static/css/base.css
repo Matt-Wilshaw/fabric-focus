@@ -37,8 +37,9 @@ body {
 }
 
 body.home-page {
-    background: url('/media/homepage_background_cropped.jpg') no-repeat center center fixed;
+    background: url('/static/images/homepage_background_hero.jpg') no-repeat center center;
     background-size: cover;
+    background-attachment: scroll;
 }
 
 body.home-page::before {
@@ -1375,7 +1376,7 @@ label {
 
     body.home-page {
         background:
-            url('/media/homepage_background_cropped.jpg') no-repeat center top;
+            url('/static/images/homepage_background_hero.jpg') no-repeat center top;
         background-size: cover;
         background-attachment: scroll;
     }
