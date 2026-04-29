@@ -25,7 +25,6 @@ video {
 }
 
 body {
-    background: url('/media/homepage_background_cropped.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #555;
     font-family: var(--font-body);
@@ -37,7 +36,12 @@ body {
     overflow-x: hidden;
 }
 
-body::before {
+body.home-page {
+    background: url('/media/homepage_background_cropped.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+body.home-page::before {
     content: "";
     position: fixed;
     top: 0;
