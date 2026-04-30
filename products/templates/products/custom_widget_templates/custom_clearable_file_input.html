@@ -1,21 +1,21 @@
 {% if widget.is_initial %}
-<div class="form-group mb-3">
-    <p class="mb-2">{{ widget.initial_text }}:</p>
-    <a href="{{ widget.value.url }}">
-        <img width="96" height="96" class="rounded shadow-sm" src="{{ widget.value.url }}">
+<div class="form-group mb-4 product-image-widget">
+    <a href="{{ widget.value.url }}" class="product-image-widget__preview-link">
+        <img width="96" height="96" class="rounded shadow-sm product-image-widget__preview" src="{{ widget.value.url }}" alt="Current product image">
     </a>
-    {% if not widget.required %}
-    <div class="custom-control custom-checkbox mt-2">
-        <input class="custom-control-input" type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
-        <label class="custom-control-label text-danger" for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label
-            }}</label>
-    </div>
-    {% endif %}
-    {{ widget.input_text }}
 </div>
 {% endif %}
 <div class="form-group mb-3">
+    {% if widget.input_text %}
+    <label class="mb-2" for="new-image">{{ widget.input_text }}</label>
+    {% endif %}
     <input id="new-image" class="form-control-file border-black rounded-0 w-100" type="{{ widget.type }}" name="{{ widget.name }}" {%
         include "django/forms/widgets/attrs.html" %}>
     <p class="text-danger mb-0 mt-2" id="filename"></p>
+    {% if not widget.required %}
+    <div class="custom-control custom-checkbox mt-3 product-image-widget__remove">
+        <input class="custom-control-input" type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
+        <label class="custom-control-label text-danger" for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+    </div>
+    {% endif %}
 </div>

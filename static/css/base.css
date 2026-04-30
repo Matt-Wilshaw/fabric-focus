@@ -1355,6 +1355,14 @@ label {
     width: 100%;
 }
 
+.product-image-widget__preview {
+    object-fit: cover;
+}
+
+.product-image-widget__remove {
+    display: inline-block;
+}
+
 .custom-checkbox .custom-control-label::before {
     border-radius: 0;
     border-color: #dc3545;

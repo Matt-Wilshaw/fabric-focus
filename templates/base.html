@@ -215,6 +215,29 @@
     $('.toast').toast('show');
 
     (function () {
+      const dismissibleToasts = Array.from(document.querySelectorAll('.toast'))
+        .filter((toast) => toast.dataset.autohide !== 'false');
+
+      if (!dismissibleToasts.length) {
+        return;
+      }
+
+      function dismissToastsOnOutsideClick(event) {
+        if (event.target.closest('.toast')) {
+          return;
+        }
+
+        dismissibleToasts.forEach((toast) => {
+          $(toast).toast('hide');
+        });
+
+        document.removeEventListener('click', dismissToastsOnOutsideClick);
+      }
+
+      document.addEventListener('click', dismissToastsOnOutsideClick);
+    })();
+
+    (function () {
       const dismissibleToast = document.querySelector('.toast[data-dismiss-on-scroll="true"]');
       if (!dismissibleToast) {
         return;
