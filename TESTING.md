@@ -21,6 +21,7 @@ At submission stage:
 - HTML and CSS validation evidence has been recorded
 - Lighthouse checks have been captured for key pages
 - Stripe checkout and webhook behaviour have been tested in test mode
+- the AI style assistant has been tested for disclaimer visibility and outfit suggestion responses
 - automated Django test coverage across models, forms, views, and security controls is documented below
 - order confirmation and order-history access controls were retested after an authorisation fix so users can only access their own orders
 - order confirmation in the current project is on-screen and by email only; no SMS notification service is implemented
@@ -48,12 +49,12 @@ At submission stage:
     - [Final Validation Summary](#final-validation-summary)
     - [Validation Cleanup Summary](#validation-cleanup-summary)
     - [Homepage (`/`) Validation Snapshot](#homepage--validation-snapshot)
-    - [Products List (`/products/`) validation snapshot](#products-list-products-validation-snapshot)
-    - [Product Detail (`/products/2/`) validation snapshot](#product-detail-products2-validation-snapshot)
-    - [Bag (`/bag/`) validation snapshot](#bag-bag-validation-snapshot)
-    - [Checkout (`/checkout/`) validation snapshot](#checkout-checkout-validation-snapshot)
-    - [Account Login (`/accounts/login/`) validation snapshot](#account-login-accountslogin-validation-snapshot)
-    - [Account Signup (`/accounts/signup/`) validation snapshot](#account-signup-accountssignup-validation-snapshot)
+    - [Products List (`/products/`) Validation Snapshot](#products-list-products-validation-snapshot)
+    - [Product Detail (`/products/2/`) Validation Snapshot](#product-detail-products2-validation-snapshot)
+    - [Bag (`/bag/`) Validation Snapshot](#bag-bag-validation-snapshot)
+    - [Checkout (`/checkout/`) Validation Snapshot](#checkout-checkout-validation-snapshot)
+    - [Account Login (`/accounts/login/`) Validation Snapshot](#account-login-accountslogin-validation-snapshot)
+    - [Account Signup (`/accounts/signup/`) Validation Snapshot](#account-signup-accountssignup-validation-snapshot)
   - [CSS Validator Testing](#css-validator-testing)
     - [CSS Validation Summary by Page](#css-validation-summary-by-page)
   - [Accessibility Testing](#accessibility-testing)
@@ -73,6 +74,9 @@ At submission stage:
     - [6. Product Images and Fallbacks](#6-product-images-and-fallbacks)
     - [7. Admin / Product Management (Superuser)](#7-admin--product-management-superuser)
     - [8. Add-to-Bag Redirect Stability (Regression)](#8-add-to-bag-redirect-stability-regression)
+    - [9. Checkout](#9-checkout)
+    - [10. Order History](#10-order-history)
+    - [11. AI Style Assistant (What to Wear)](#11-ai-style-assistant-what-to-wear)
   - [Bug Tracker](#bug-tracker)
   - [Testing Table](#testing-table)
 
@@ -362,7 +366,7 @@ Checkout
   - Text remains readable and buttons/links are tappable
 6. Capture screenshots from the built application and save them in the testing evidence folder before linking them in this document.
 
-----
+---
 
 ## HTML Validator Testing
 
@@ -444,7 +448,7 @@ Retest status:
 
 **Summary:** 12 errors · 2 warnings · 1 info notice
 
-### Products List (`/products/`) validation snapshot
+### Products List (`/products/`) Validation Snapshot
 
 **Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/`
 
@@ -471,7 +475,7 @@ Retest status:
 
 **Summary:** 11 errors · 4 warnings · 1 info notice
 
-### Product Detail (`/products/2/`) validation snapshot
+### Product Detail (`/products/2/`) Validation Snapshot
 
 **Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/`
 
@@ -497,7 +501,7 @@ Retest status:
 
 **Summary:** 11 errors · 3 warnings · 1 info notice
 
-### Bag (`/bag/`) validation snapshot
+### Bag (`/bag/`) Validation Snapshot
 
 **Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/`
 
@@ -524,7 +528,7 @@ Retest status:
 
 **Summary:** 11 errors · 4 warnings · 1 info notice
 
-### Checkout (`/checkout/`) validation snapshot
+### Checkout (`/checkout/`) Validation Snapshot
 
 **Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/`
 
@@ -551,7 +555,7 @@ Retest status:
 
 **Summary:** 11 errors · 4 warnings · 1 info notice
 
-### Account Login (`/accounts/login/`) validation snapshot
+### Account Login (`/accounts/login/`) Validation Snapshot
 
 **Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/`
 
@@ -576,7 +580,7 @@ Retest status:
 
 **Summary:** 11 errors · 2 warnings · 1 info notice
 
-### Account Signup (`/accounts/signup/`) validation snapshot
+### Account Signup (`/accounts/signup/`) Validation Snapshot
 
 **Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/`
 
@@ -601,7 +605,7 @@ Retest status:
 
 **Summary:** 11 errors · 2 warnings · 1 info notice
 
-----
+---
 
 ## CSS Validator Testing
 
@@ -625,7 +629,7 @@ Latest live rerun date: 2026-03-24
 
 > Note: all tested pages reported `0` CSS errors on the live rerun. The `738` warnings are largely informational and come from CSS variables, vendor extensions, Bootstrap, and Font Awesome rather than unresolved stylesheet errors in the project CSS.
 
-----
+---
 
 ## Accessibility Testing
 
@@ -692,7 +696,7 @@ Representative desktop evidence captured for this submission:
 
 - Evidence in this section is representative and practical; a full WCAG conformance audit and full assistive-technology matrix are still pending.
 
-----
+---
 
 ## Lighthouse Testing
 
@@ -1027,9 +1031,97 @@ As a shopper, I want product detail pages to remain stable after adding an item 
 
 ---
 
+### 9. Checkout
+
+- [x] Tested
+
+**Story:**
+As a shopper, I want to complete a purchase securely so that I can buy products with confidence.
+
+**Acceptance criteria:**
+
+- Given I have items in my bag
+- When I proceed to checkout and submit valid delivery and payment details
+- Then my order is confirmed on-screen and by email
+- And a Stripe payment intent is created and confirmed
+
+**Manual test steps:**
+
+1. Add one or more items to the bag.
+2. Navigate to `/checkout/`.
+3. Complete the delivery form with valid details.
+4. Enter Stripe test card `4242424242424242` with any future expiry, CVC, and postal code.
+5. Submit the form and confirm the order confirmation page loads.
+6. Confirm a confirmation email is sent to the provided address.
+
+**Bug tracking / notes:**
+
+- See Bug Tracker for previous checkout template and webhook issues.
+
+---
+
+### 10. Order History
+
+- [x] Tested
+
+**Story:**
+As a registered user, I want to view my past orders so that I can keep track of my purchases.
+
+**Acceptance criteria:**
+
+- Given I am logged in
+- When I visit my profile
+- Then I can see a list of my past orders
+- And I can click through to view the full details of each order
+
+**Manual test steps:**
+
+1. Log in as a registered user who has placed at least one order.
+2. Navigate to `/profile/`.
+3. Confirm past orders are listed.
+4. Click an order and confirm the order detail page loads with correct information.
+5. Confirm that attempting to view another user's order is blocked.
+
+**Bug tracking / notes:**
+
+- See Bug #32 for the order authorisation fix.
+
+---
+
+### 11. AI Style Assistant (What to Wear)
+
+- [x] Tested
+
+**Story:**
+As a shopper, I want to use the style assistant to get outfit suggestions based on occasion or preference so that I can find products suited to my needs.
+
+**Acceptance criteria:**
+
+- Given I am on a products page
+- When I click the "What to wear" button
+- Then the assistant panel opens
+- And I can select a preset option or type my own prompt
+- And the assistant returns an outfit suggestion
+- And a disclaimer is visible before I submit
+
+**Manual test steps:**
+
+1. Navigate to `/products/` or a product detail page.
+2. Click the "What to wear" button and confirm the panel opens.
+3. Select a preset option (e.g. "Casual weekend") and confirm a suggestion is returned.
+4. Type a custom prompt and submit, confirm a suggestion is returned.
+5. Inspect the disclaimer text above the input and confirm it is clearly visible before submitting.
+
+**Bug tracking / notes:**
+
+- The assistant is intentionally shown only on product browsing pages where outfit guidance is most relevant.
+- If the `GEMINI_API_KEY` is missing, the widget falls back to keyword-based responses.
+
+---
+
 ## Bug Tracker
 
-I log bugs here as I find them during manual testing and validation.
+I log bugs here as I find them during automated, manual testing and validation.
 
 How I use this table:
 
@@ -1039,7 +1131,7 @@ How I use this table:
 - **Steps to Reproduce:** clear steps from a fresh page load
 - **Status:** Open / In Progress / Fixed / Retest Needed
 - **Fix Summary:** short note on what I changed (file/symbol if useful)
-
+- 
 | ID  | Area / Feature                                                                                                                      | Description                                                                                                                                                                                                                                                                                                        | Steps to Reproduce                                                                                                                                                                                                                                                                                                            | Status             | Fix Summary                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Products routing (`/products/`) + product detail links                                                                              | Dev server failed to start due to a syntax error in the Products URLconf, and the products views were incomplete. Expected: `runserver` starts and `/products/` loads; clicking a product navigates to its detail page.                                                                                            | 1) In the project root, run `python manage.py runserver` (or `python manage.py check`).<br>2) Before the fix, Django raises a `SyntaxError` in `products/urls.py` ("Perhaps you forgot a comma?").<br>3) After the fix, visit `/products/` and click a product card link.                                                     | Fixed              | Fixed `products/urls.py` by adding the missing comma and using `path('<int:product_id>/', ...)`. Updated `products/views.py` so `all_products` returns `products/products.html` and `product_detail(request, product_id)` renders `products/product_detail.html`. Retested locally on 2026-02-03 (dev server starts; `/products/` loads; product links work).                                                                                        |

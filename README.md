@@ -1,6 +1,6 @@
 # Fabric-Focus
 
-Fabric-Focus is a full-stack Django e-commerce project created as an assessment submission. It delivers a complete online shopping flow for a contemporary clothing store, from product discovery through to bag management, Stripe checkout, account handling, order history, and superuser product management.
+Fabric-Focus is a full-stack Django e-commerce project created as an assessment submission. It delivers a complete online shopping flow for a contemporary clothing store, from product discovery through to bag management, Stripe checkout, account handling, order history, superuser product management, and an AI-powered style assistant.
 
 The project aims to demonstrate:
 
@@ -360,7 +360,7 @@ Run these quick checks after deployment:
 - **User Experience & Accessibility**
   - [x] Shopper: experience responsive pages that work on mobile devices.
   - [ ] Shopper: access clear size guidance and an easy returns process.
-  - [ ] User: use accessible UI (keyboard navigation, screen-reader support).
+  - [x] User: use accessible UI (keyboard navigation, screen-reader support).
 
 - **Performance, Privacy & Compliance**
   - [x] Stakeholder: ensure fast page loads and CDN for static assets.
@@ -375,6 +375,7 @@ Run these quick checks after deployment:
   - [ ] Shopper: create wishlists and gift registries.
   - [ ] Shopper: subscribe to back-in-stock alerts for out-of-stock items.
 
+---
 
 ## Database Structure
 
@@ -419,7 +420,10 @@ Key relationships:
   - [ ] User: access shipment tracking links.
   - [ ] User: submit returns requests.
 
+- **AI Style Assistant**
+  - [x] Shopper: use the style assistant to get outfit suggestions based on occasion or preference.
 
+---
 
 ## Installation / Setup
 
