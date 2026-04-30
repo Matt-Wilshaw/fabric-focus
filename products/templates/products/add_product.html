@@ -13,7 +13,7 @@
 <div class="overlay"></div>
 <div class="container">
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col">
             <div class="page-title-block">
                 <h2 class="logo-font mb-4">Product Management</h2>
                 <hr>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
             <form method="POST" action="{% url 'add_product' %}" class="form mb-2 product-management-form"
                 enctype="multipart/form-data">
                 {% csrf_token %}
@@ -46,14 +46,15 @@
             </form>
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}
 
-    {% block postloadjs %}
-    {{ block.super }}
-    <script>
-        $('#new-image').change(function () {
-            var file = $('#new-image')[0].files[0];
-            $('#filename').text(`Image will be set to: ${file.name}`);
-        });
-    </script>
-    {% endblock %}
+{% block postloadjs %}
+{{ block.super }}
+<script>
+    $('#new-image').change(function () {
+        var file = $('#new-image')[0].files[0];
+        $('#filename').text(`Image will be set to: ${file.name}`);
+    });
+</script>
+{% endblock %}

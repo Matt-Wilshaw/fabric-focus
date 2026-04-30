@@ -13,7 +13,7 @@
 <div class="overlay"></div>
 <div class="container">
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col">
             <div class="page-title-block">
                 <h2 class="logo-font mb-4">Product Management</h2>
                 <hr>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
             <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2 product-management-form"
                 enctype="multipart/form-data">
                 {% csrf_token %}
@@ -31,7 +31,9 @@
                 {% if field.name != 'image' %}
                 {{ field | as_crispy_field }}
                 {% else %}
-                {{ field }}
+                <div class="mb-3">
+                    {{ field | as_crispy_field }}
+                </div>
                 {% endif %}
                 {% endfor %}
                 <div class="product-form-actions">
