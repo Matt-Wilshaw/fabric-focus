@@ -39,6 +39,7 @@ At submission stage:
     - [Handler Method Checks](#handler-method-checks)
     - [Webhook Reconciliation Evidence](#webhook-reconciliation-evidence)
   - [Testing Scope and Notes](#testing-scope-and-notes)
+  - [Known Limitations](#known-limitations)
   - [Automated Test Execution Evidence — 2026-04-16](#automated-test-execution-evidence--2026-04-16)
   - [Automated Test Execution Evidence — 2026-04-28](#automated-test-execution-evidence--2026-04-28)
   - [Browser Compatibility Matrix](#browser-compatibility-matrix)
@@ -211,6 +212,18 @@ All discovered bugs, fixes, and retests should be documented throughout this fil
 
 For additional project details and technical information, including instructions on running the site, please refer to the [README.md](./README.md)
 
+## Known Limitations
+
+The following limitations are acknowledged at submission. They are documented here for transparency and are not testing failures — they represent features not yet implemented rather than bugs.
+
+- Stock is not reserved at add-to-bag time. Two users could theoretically add the same last item and both proceed to checkout before either is blocked.
+- The bag is session-based and is not saved to a user's account. Items will not carry over between devices or browser sessions.
+- Product listings have no pagination. A large catalogue would become unwieldy to browse.
+- There is no order status tracking after purchase. Customers can view order history but cannot see dispatch status.
+- Stock levels are not managed in the admin. There is no quantity field on products, so overselling cannot be prevented at the catalogue level.
+- Product images must be managed manually. There is no bulk upload or catalogue import facility.
+- No SMS order confirmations are sent. The checkout collects a phone number for delivery contact purposes only.
+
 ## Automated Test Execution Evidence — 2026-04-16
 
 **Note:** The command below uses a full path to the Python executable in my local virtual environment (``.venv``). This folder is not included in the repository and will not be available when cloning the project. Assessors should create and activate their own virtual environment using the provided ``requirements.txt``, then run tests with the generic command:
@@ -238,8 +251,6 @@ Security-focused regression tests added in this run:
 - authenticated users cannot open or claim another user's order from the checkout success route
 - rightful owners can still access their own saved order confirmations
 - `/profile/order_history/<order_number>` now requires login and blocks non-owners with HTTP 403
-
----
 
 ## Automated Test Execution Evidence — 2026-04-28
 
