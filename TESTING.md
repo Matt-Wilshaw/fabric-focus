@@ -2,15 +2,15 @@
 
 Live site: https://fabric-focus-f1a8e9ed6562.herokuapp.com/
 
-This document records the testing evidence for Fabric Focus as an assessment submission. It is intended to demonstrate that the application has been checked for functionality, responsiveness, validation, accessibility, and the main customer journey from browsing through to checkout.
+This document records the testing evidence for Fabric-Focus as an assessment submission. It is intended to demonstrate that the application has been checked for functionality, responsiveness, validation, accessibility, and the main customer journey from browsing through to checkout.
 
 Testing in this project combines:
 
 - manual end-to-end testing of real user flows
-- targeted automated regression testing where coverage currently exists
+- automated regression testing using Django's built-in test framework, covering models, forms, views, and security controls
 - validator, Lighthouse, and compatibility checks to support front-end quality evidence
 
-Automated coverage is still modest compared with the full project scope, so this file also acts as the main evidence log for practical testing completed during development and before submission.
+This file records the full testing evidence completed during development and before submission, including automated test output, manual test results, and validation snapshots.
 
 ## Submission Summary
 
@@ -21,7 +21,7 @@ At submission stage:
 - HTML and CSS validation evidence has been recorded
 - Lighthouse checks have been captured for key pages
 - Stripe checkout and webhook behaviour have been tested in test mode
-- automated Django test coverage exists for several core flows and is documented transparently below
+- automated Django test coverage across models, forms, views, and security controls is documented below
 - order confirmation and order-history access controls were retested after an authorisation fix so users can only access their own orders
 - order confirmation in the current project is on-screen and by email only; no SMS notification service is implemented
 
@@ -30,39 +30,39 @@ At submission stage:
 - [Testing](#testing)
   - [Submission Summary](#submission-summary)
   - [Table of Contents](#table-of-contents)
-  - [Stripe testing](#stripe-testing)
-    - [Test card numbers](#test-card-numbers)
-  - [Account email verification testing](#account-email-verification-testing)
-  - [Stripe webhook command-output evidence](#stripe-webhook-command-output-evidence)
-    - [Environment checks](#environment-checks)
-    - [Webhook endpoint check](#webhook-endpoint-check)
-    - [Handler method checks](#handler-method-checks)
-    - [Webhook reconciliation evidence](#webhook-reconciliation-evidence)
-  - [Testing scope and notes](#testing-scope-and-notes)
-  - [Automated Test Execution Evidence](#automated-test-execution-evidence)
-  - [Automated Test Execution Evidence](#automated-test-execution-evidence-1)
+  - [Stripe Testing](#stripe-testing)
+    - [Test Card Numbers](#test-card-numbers)
+  - [Account Email Verification Testing](#account-email-verification-testing)
+  - [Stripe Webhook Command-Output Evidence](#stripe-webhook-command-output-evidence)
+    - [Environment Checks](#environment-checks)
+    - [Webhook Endpoint Check](#webhook-endpoint-check)
+    - [Handler Method Checks](#handler-method-checks)
+    - [Webhook Reconciliation Evidence](#webhook-reconciliation-evidence)
+  - [Testing Scope and Notes](#testing-scope-and-notes)
+  - [Automated Test Execution Evidence — 2026-04-16](#automated-test-execution-evidence--2026-04-16)
+  - [Automated Test Execution Evidence — 2026-04-28](#automated-test-execution-evidence--2026-04-28)
   - [Browser Compatibility Matrix](#browser-compatibility-matrix)
   - [Responsiveness Testing](#responsiveness-testing)
   - [HTML Validator Testing](#html-validator-testing)
-    - [Final validation summary](#final-validation-summary)
-    - [Validation cleanup summary](#validation-cleanup-summary)
-    - [Homepage (`/`) validation snapshot](#homepage--validation-snapshot)
-    - [Products list (`/products/`) validation snapshot](#products-list-products-validation-snapshot)
-    - [Product detail (`/products/2/`) validation snapshot](#product-detail-products2-validation-snapshot)
+    - [Final Validation Summary](#final-validation-summary)
+    - [Validation Cleanup Summary](#validation-cleanup-summary)
+    - [Homepage (`/`) Validation Snapshot](#homepage--validation-snapshot)
+    - [Products List (`/products/`) validation snapshot](#products-list-products-validation-snapshot)
+    - [Product Detail (`/products/2/`) validation snapshot](#product-detail-products2-validation-snapshot)
     - [Bag (`/bag/`) validation snapshot](#bag-bag-validation-snapshot)
     - [Checkout (`/checkout/`) validation snapshot](#checkout-checkout-validation-snapshot)
-    - [Account login (`/accounts/login/`) validation snapshot](#account-login-accountslogin-validation-snapshot)
-    - [Account signup (`/accounts/signup/`) validation snapshot](#account-signup-accountssignup-validation-snapshot)
+    - [Account Login (`/accounts/login/`) validation snapshot](#account-login-accountslogin-validation-snapshot)
+    - [Account Signup (`/accounts/signup/`) validation snapshot](#account-signup-accountssignup-validation-snapshot)
   - [CSS Validator Testing](#css-validator-testing)
-    - [CSS validation summary by page](#css-validation-summary-by-page)
+    - [CSS Validation Summary by Page](#css-validation-summary-by-page)
   - [Accessibility Testing](#accessibility-testing)
     - [Screen Reader Evidence Log](#screen-reader-evidence-log)
-    - [Keyboard-only Result (Representative)](#keyboard-only-result-representative)
+    - [Keyboard-Only Result (Representative)](#keyboard-only-result-representative)
     - [Contrast Evidence Log](#contrast-evidence-log)
     - [Known Accessibility Issues](#known-accessibility-issues)
   - [Lighthouse Testing](#lighthouse-testing)
-    - [Homepage (`/`) mobile Lighthouse evidence](#homepage--mobile-lighthouse-evidence)
-    - [Homepage (`/`) previous mobile Lighthouse evidence](#homepage--previous-mobile-lighthouse-evidence)
+    - [Homepage (`/`) Previous Mobile Lighthouse Evidence](#homepage--previous-mobile-lighthouse-evidence)
+    - [Homepage (`/`) Final Mobile Lighthouse Evidence](#homepage--final-mobile-lighthouse-evidence)
   - [User Stories](#user-stories)
     - [1. Browse Products](#1-browse-products)
     - [2. View Product Details](#2-view-product-details)
@@ -75,13 +75,13 @@ At submission stage:
   - [Bug Tracker](#bug-tracker)
   - [Testing Table](#testing-table)
 
-## Stripe testing
+## Stripe Testing
 
 - Mock `stripe.PaymentIntent.create` in unit tests; do not call the real Stripe API during unit testing.
 - For integration tests, provide a test `STRIPE_SECRET_KEY` in the test environment (never commit real or live keys).
 - Developer secrets for local runs can be placed in `env.py` (this repo ignores `env.py`).
 
-### Test card numbers
+### Test Card Numbers
 
 Use these card numbers in test mode. Enter any future expiry date, any CVC, and any postal code.
 
@@ -92,18 +92,18 @@ Use these card numbers in test mode. Enter any future expiry date, any CVC, and 
 | 4000000000009995    | Card declined (e.g. insufficient_funds) | Fill in the credit card form with this number and any expiry, CVC, and postal code.                           |
 | 6205500000000000004 | UnionPay (variable length 13–19 digits) | Fill in the credit card form with this number (adjust length if needed) and any expiry, CVC, and postal code. |
 
-## Account email verification testing
+## Account Email Verification Testing
 
 - Local development uses Django's console email backend (`django.core.mail.backends.console.EmailBackend`).
 - Verification emails are printed to the terminal running `manage.py runserver`; no real inbox delivery occurs in local testing.
 - Test accounts can use placeholder addresses (for example `tester@example.com`) because the verification URL is copied from terminal output.
 - Verification is completed by opening the printed `/accounts/confirm-email/<key>/` link in the browser.
 
-## Stripe webhook command-output evidence
+## Stripe Webhook Command-Output Evidence
 
 Date run: 2026-02-25
 
-### Environment checks
+### Environment Checks
 
 ```powershell
 stripe version
@@ -126,7 +126,7 @@ Observed output:
 System check identified no issues (0 silenced).
 ```
 
-### Webhook endpoint check
+### Webhook Endpoint Check
 
 ```powershell
 python manage.py shell -c "from django.test import Client; c=Client(); r=c.post('/checkout/wh/', data='{}', content_type='application/json', HTTP_HOST='localhost'); print('status=', r.status_code)"
@@ -141,7 +141,7 @@ Bad Request: /checkout/wh/
 
 Note: This 400 is expected for an unsigned test request. Stripe signature verification requires a valid `Stripe-Signature` header and payload.
 
-### Handler method checks
+### Handler Method Checks
 
 ```powershell
 python manage.py shell -c "from django.test import RequestFactory; from checkout.webhook_handler import StripeWH_Handler; req=RequestFactory().post('/checkout/wh/'); h=StripeWH_Handler(req); events=['payment_intent.created','payment_intent.succeeded','payment_intent.payment_failed']; [print(et, '->', (h.handle_event({'type':et}) if et=='payment_intent.created' else h.handle_payment_intent_succeeded({'type':et}) if et=='payment_intent.succeeded' else h.handle_payment_intent_payment_failed({'type':et})).status_code) for et in events]"
@@ -157,7 +157,7 @@ payment_intent.payment_failed -> 200
 
 This confirms the webhook handler class methods for unhandled, succeeded, and failed payment-intent events all return HTTP 200 responses.
 
-### Webhook reconciliation evidence
+### Webhook Reconciliation Evidence
 
 Date run: 2026-02-26
 
@@ -188,7 +188,7 @@ saved_defaults= 07123456789 GB SW1A1AA London
 
 This confirms webhook-created orders correctly attach `user_profile` and persist default delivery details when `save_info` is true.
 
-## Testing scope and notes
+## Testing Scope and Notes
 
 Key areas covered in testing include:
 - Navigation and URL routing (home, products, and accounts routes)
@@ -202,7 +202,7 @@ Current implementation notes (as of this version of the repo):
 - The products template references a placeholder image (`MEDIA_URL + noimage.png`) when a product has no image; the fallback file exists at `media/noimage.png`.
 - Stock is not currently reserved at add-to-bag time; in high-concurrency scenarios, two users can checkout overlapping items before stock enforcement is applied (residual oversell risk).
 - The checkout flow collects a phone number for delivery/contact details, but the project does not currently send SMS confirmations or delivery text updates.
-- Automated unit/integration coverage is still modest relative to the full project scope, so manual regression testing remains an important part of the submission evidence.
+- Automated unit and integration tests cover core flows using Django's built-in test framework, and manual regression testing provides additional coverage across the full project scope.
 - Order access is now enforced server-side: `checkout_success` only permits the same checkout session or the rightful account owner, and `profile/order_history` requires login plus ownership of the requested order.
 
 For each user story, **black box testing** is applied — evaluating the system purely from the user's perspective without needing knowledge of internal code logic.
@@ -211,16 +211,13 @@ All discovered bugs, fixes, and retests should be documented throughout this fil
 
 For additional project details and technical information, including instructions on running the site, please refer to the [README.md](./README.md)
 
-## Automated Test Execution Evidence
-
+## Automated Test Execution Evidence — 2026-04-16
 
 **Note:** The command below uses a full path to the Python executable in my local virtual environment (``.venv``). This folder is not included in the repository and will not be available when cloning the project. Assessors should create and activate their own virtual environment using the provided ``requirements.txt``, then run tests with the generic command:
 
   python manage.py test
 
 This ensures the tests are run in a clean, reproducible environment.
-
-Date run: 2026-04-16
 
 Command executed:
 
@@ -244,15 +241,7 @@ Security-focused regression tests added in this run:
 
 ---
 
-## Automated Test Execution Evidence
-
-Date run: 2026-04-28
-
-Command executed:
-
-```powershell
-python manage.py test
-```
+## Automated Test Execution Evidence — 2026-04-28
 
 Observed output summary:
 
@@ -278,7 +267,7 @@ Core customer flows checked: home, products list/detail, bag actions, login/logo
 
 ## Responsiveness Testing
 
-Fabric Focus uses Bootstrap (via CDN in the base template), and responsiveness was tested manually across common Bootstrap breakpoints to ensure a consistent experience.
+Fabric-Focus uses Bootstrap (via CDN in the base template), and responsiveness was tested manually across common Bootstrap breakpoints to ensure a consistent experience.
 
 Breakpoints I test:
 
@@ -368,7 +357,7 @@ Checkout
 
 HTML validation was carried out using the [W3C Markup Validation Service](https://validator.w3.org/).
 
-### Final validation summary
+### Final Validation Summary
 
 Final validation rerun date: 2026-03-24
 
@@ -399,7 +388,7 @@ Verification:
 
 Historical validator output from before the cleanup is retained below for traceability.
 
-### Validation cleanup summary
+### Validation Cleanup Summary
 
 Initial validator runs highlighted a set of repeated shared-template issues rather than isolated page-specific failures. The main problems were:
 
@@ -418,7 +407,7 @@ Retest status:
 - `manage.py check` passes after the cleanup.
 - A post-deploy W3C validator JSON API rerun was captured on 2026-03-24 and confirmed zero errors, zero warnings, and zero info messages across the tested pages.
 
-### Homepage (`/`) validation snapshot
+### Homepage (`/`) Validation Snapshot
 
 **Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
 
@@ -444,9 +433,9 @@ Retest status:
 
 **Summary:** 12 errors · 2 warnings · 1 info notice
 
-### Products list (`/products/`) validation snapshot
+### Products List (`/products/`) validation snapshot
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/`
+**Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/`
 
 🔗 [View full validation result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fproducts%2F)
 
@@ -471,9 +460,9 @@ Retest status:
 
 **Summary:** 11 errors · 4 warnings · 1 info notice
 
-### Product detail (`/products/2/`) validation snapshot
+### Product Detail (`/products/2/`) validation snapshot
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/`
+**Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/2/`
 
 🔗 [View full validation result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fproducts%2F2%2F)
 
@@ -499,7 +488,7 @@ Retest status:
 
 ### Bag (`/bag/`) validation snapshot
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/`
+**Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/bag/`
 
 🔗 [View full validation result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fbag%2F)
 
@@ -526,7 +515,7 @@ Retest status:
 
 ### Checkout (`/checkout/`) validation snapshot
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/`
+**Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/checkout/`
 
 🔗 [View full validation result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Fcheckout%2F)
 
@@ -551,9 +540,9 @@ Retest status:
 
 **Summary:** 11 errors · 4 warnings · 1 info notice
 
-### Account login (`/accounts/login/`) validation snapshot
+### Account Login (`/accounts/login/`) validation snapshot
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/`
+**Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/login/`
 
 🔗 [View full validation result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Faccounts%2Flogin%2F)
 
@@ -576,9 +565,9 @@ Retest status:
 
 **Summary:** 11 errors · 2 warnings · 1 info notice
 
-### Account signup (`/accounts/signup/`) validation snapshot
+### Account Signup (`/accounts/signup/`) validation snapshot
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/`
+**Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/accounts/signup/`
 
 🔗 [View full validation result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2Faccounts%2Fsignup%2F)
 
@@ -611,7 +600,7 @@ CSS validation was carried out using the [W3C CSS Validation Service](https://ji
 
 Latest live rerun date: 2026-03-24
 
-### CSS validation summary by page
+### CSS Validation Summary by Page
 
 | Page                | Full validator result                                                                                                                                                                           | Errors | Warnings |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------- |
@@ -675,7 +664,7 @@ Representative desktop evidence captured for this submission:
 | NVDA           | Windows + Chrome 146.0.7680.178 | Home navigation and header menus  | `readme-images/miscellaneous/nvda-screen-reader.png`  | Passed (representative) | Screenshot captured with NVDA output visible during navigation checks. This is a representative sample rather than a full screen-reader matrix. |
 | NVDA           | Windows + Chrome 146.0.7680.178 | Product imagery/tag announcements | `readme-images/miscellaneous/nvda-screen-reader2.png` | Passed (representative) | Additional representative screenshot showing NVDA announcements for product imagery/tag-related content.                                        |
 
-### Keyboard-only Result (Representative)
+### Keyboard-Only Result (Representative)
 
 - Keyboard tab navigation reached primary navigation, account controls, bag actions, and form controls in representative desktop checks.
 - Visible focus indicators were present on tested interactive elements.
@@ -716,10 +705,10 @@ Test profile used:
 
 **Results:**
 
-| Page         | Date       | Performance | Accessibility | Best Practices | SEO |
-| ------------ | ---------- | ----------- | ------------- | -------------- | --- |
-| `/`          | 2026-03-24 | 57          | 94            | 100            | 91  |
-| `/`          | 2026-04-30 | 77          | 100           | 100            | 100 |
+| Page | Date       | Performance | Accessibility | Best Practices | SEO |
+| ---- | ---------- | ----------- | ------------- | -------------- | --- |
+| `/`  | 2026-03-24 | 57          | 94            | 100            | 91  |
+| `/`  | 2026-04-30 | 77          | 100           | 100            | 100 |
 
 Notes:
 
@@ -728,7 +717,7 @@ Notes:
 - The 2026-03-24 row records the previous captured homepage mobile Lighthouse run.
 - The 2026-04-30 row records the final homepage mobile Lighthouse run after image/performance work and mobile header accessibility labels.
 
-### Homepage (`/`) previous mobile Lighthouse evidence
+### Homepage (`/`) Previous Mobile Lighthouse Evidence
 
 Report metadata:
 
@@ -752,7 +741,7 @@ Key findings:
 - SEO: score of `91` indicates a minor SEO opportunity was present in the earlier homepage audit.
 - Best Practices: `100` — no issues flagged.
 
-### Homepage (`/`) final mobile Lighthouse evidence
+### Homepage (`/`) Final Mobile Lighthouse Evidence
 
 Report metadata:
 
@@ -1078,50 +1067,50 @@ How I use this table:
 | 34  | Product rating validation (`/products/add/`, `/products/edit/<id>/`)                                                                | Rating input accepted values outside the intended `0.00` to `5.00` range. Expected: the form only accepts decimal ratings between 0.00 and 5.00, with a clear error if the value is out of range.                                                                                                                  | 1) Open `/products/add/` or `/products/edit/<id>/`.<br>2) Enter a rating above 5 or below 0.<br>3) Submit the form.<br>4) Confirm the form blocks the save and shows the range message.                                                                                                                                       | Fixed              | Added explicit `ProductForm.rating` validation in `products/forms.py` with `min_value=0`, `max_value=5`, `decimal_places=2`, `step='0.01'`, and a label of `Rating (0.00 - 5.00)`. Also added model validators in `products/models.py`.                                                                                                                                                                                                              |
 | 35  | Product price validation and display (`/products/add/`, `/products/edit/<id>/`, product list/detail)                                | Price input and display were not clearly constrained to pounds and pence. Expected: the form accepts decimal prices with at most 2 decimal places, rejects commas, and product prices display with comma separators for thousands when needed.                                                                     | 1) Open `/products/add/` or `/products/edit/<id>/`.<br>2) Enter a price using a comma or more than two decimal places.<br>3) Submit the form and confirm it is rejected with a clear message.<br>4) View product list/detail and confirm values over 999 display with a thousands separator.                                  | Fixed              | Updated `products/forms.py` to label the field `Price (£)`, set `step='0.01'`, and reject commas and more than two decimal places with explicit validation messages. Enabled `django.contrib.humanize` in `fabric_focus/settings.py` and formatted displayed prices with `intcomma` in `products/templates/products/products.html` and `products/templates/products/product_detail.html`.                                                            |
 | 36  | Product search results summary (`/products/?q=...`)                                                                                 | The search results summary showed the literal words `search term` instead of the query the user entered, so the page did not clearly tell the user what had been searched. Expected: the results line should show the actual search query in a natural sentence, or just the total count when no search is active. | 1) Visit `/products/?q=soft` or another search query.<br>2) Before the fix, the summary showed a placeholder like `search term` instead of the entered query.<br>3) After the fix, the summary reads `Showing 3 results for "soft"`.                                                                                          | Fixed              | Updated `products/templates/products/products.html` to render a clearer summary line using the actual `search_term`: `Showing {{ products                                                                                                                                                                                                                                                                                                            | length }} result{{ products | length | pluralize }} for "{{ search_term }}"` when searching, and a plain product count otherwise. |
-
-| 37  | Product SKU uniqueness (`/products/add/`, `/products/edit/<id>/`)                                                                  | The product form allowed duplicate SKUs, which could create duplicate catalogue entries and confusion in admin management. Expected: SKU values are unique and duplicate entries are rejected with a clear validation message.                                                                    | 1) Open `/products/add/` or `/products/edit/<id>/`.<br>2) Enter a SKU that already exists on another product.<br>3) Submit the form.<br>4) Confirm the form blocks the save and shows the duplicate-SKU message.                                                                                                            | Fixed              | Added `unique=True` to `Product.sku` in `products/models.py`, added duplicate-SKU validation in `products/forms.py`, and created regression coverage in `products/tests.py`. Created migration `products/migrations/0004_alter_product_sku.py` and verified with `python manage.py test products`. |
-| 38  | Dependency: django-countries (Python 3.12 upgrade) | After upgrading to Python 3.12, `python manage.py makemigrations` failed with an import error in `django_countries` due to an outdated version incompatible with Python 3.12. Expected: migrations and management commands run without errors on Python 3.12. | 1) Upgrade to Python 3.12.<br>2) Run `python manage.py makemigrations`.<br>3) Observe import error in `django_countries`.<br>4) Upgrade `django-countries` and `setuptools`.<br>5) Retry migrations. | Fixed | Upgraded `django-countries` to 8.2.0 and `setuptools` to latest. Updated `requirements.txt` with new versions. Verified `python manage.py makemigrations` and `python manage.py migrate` both succeed on Python 3.12. |
-| 39  | Mobile header icon link accessible names (`/`)                                                                                      | Lighthouse reported that the mobile search and account dropdown links did not have discernible names. Expected: icon-only mobile header controls expose clear accessible names to assistive technologies.                                                                      | 1) Run Lighthouse mobile on `/`.<br>2) Review the Accessibility audit for "Links do not have a discernible name".<br>3) Confirm `a#mobile-search` and `a#user-options-mobile` are listed before the fix.<br>4) Add accessible names and rerun Lighthouse after deployment.                                                    | Fixed locally      | Added explicit `aria-label` values to the mobile search link, account menu link, bag link, and search submit button in `templates/includes/mobile-top-header.html` on 2026-04-30. |
+| 37  | Product SKU uniqueness (`/products/add/`, `/products/edit/\<id\>/`)                                                                 | The product form allowed duplicate SKUs, which could create duplicate catalogue entries and confusion in admin management. Expected: SKU values are unique and duplicate entries are rejected with a clear validation message.                                                                                     | 1) Open `/products/add/` or `/products/edit/\<id\>/`.<br>2) Enter a SKU that already exists on another product.<br>3) Submit the form.<br>4) Confirm the form blocks the save and shows the duplicate-SKU message.                                                                                                            | Fixed              | Added `unique=True` to `Product.sku` in `products/models.py`, added duplicate-SKU validation in `products/forms.py`, and created regression coverage in `products/tests.py`. Created migration `products/migrations/0004_alter_product_sku.py` and verified with `python manage.py test products`.                                                                                                                                                   |
+| 38  | Dependency: django-countries (Python 3.12 upgrade)                                                                                  | After upgrading to Python 3.12, `python manage.py makemigrations` failed with an import error in `django_countries` due to an outdated version incompatible with Python 3.12. Expected: migrations and management commands run without errors on Python 3.12.                                                      | 1) Upgrade to Python 3.12.<br>2) Run `python manage.py makemigrations`.<br>3) Observe import error in `django_countries`.<br>4) Upgrade `django-countries` and `setuptools`.<br>5) Retry migrations.                                                                                                                          | Fixed              | Upgraded `django-countries` to 8.2.0 and `setuptools` to latest. Updated `requirements.txt` with new versions. Verified `python manage.py makemigrations` and `python manage.py migrate` both succeed on Python 3.12.                                                                                                                                                                                                                                |
+| 39  | Dependency: Django compatibility (Python 3.12 upgrade)                                                                              | After upgrading to Python 3.12, Django was incompatible with the new Python version, causing SMTP-based registration emails to fail. Expected: user registration emails send successfully and Django operates normally on Python 3.12.                                                                             | 1) Upgrade to Python 3.12.<br>2) Attempt user registration.<br>3) Observe SMTP/email failure during registration flow.<br>4) Upgrade Django to 4.2.30.<br>5) Retry registration and confirm email is sent.                                                                                                                    | Fixed              | Upgraded Django to 4.2.30. Updated `requirements.txt`. Verified user registration emails send correctly and all management commands run without errors.                                                                                                                                                                                                                                                                                              |
+| 40  | Mobile header icon link accessible names (`/`)                                                                                      | Lighthouse reported that the mobile search and account dropdown links did not have discernible names. Expected: icon-only mobile header controls expose clear accessible names to assistive technologies.                                                                                                          | 1) Run Lighthouse mobile on `/`.<br>2) Review the Accessibility audit for "Links do not have a discernible name".<br>3) Confirm `a#mobile-search` and `a#user-options-mobile` are listed before the fix.<br>4) Add accessible names and rerun Lighthouse after deployment.                                                    | Fixed locally      | Added explicit `aria-label` values to the mobile search link, account menu link, bag link, and search submit button in `templates/includes/mobile-top-header.html` on 2026-04-30.                                                                                                                                                                                                                                                                    |
 
 ## Testing Table
 
 This table summarises key test cases and their results for core project features.
 
-| Test Case                          | Area / Feature  | Steps / Description                                                                                                                        | Expected Result                                                                          | Actual Result                                                                                                                                                                 | Status |
-| ---------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| Homepage loads                     | Home page       | Visit `/`                                                                                                                                  | Page loads, no errors                                                                    | As expected                                                                                                                                                                   | Passed |
-| Product list loads                 | Products        | Visit `/products/`                                                                                                                         | Product list visible                                                                     | As expected                                                                                                                                                                   | Passed |
-| Product detail loads               | Products        | Click product from list                                                                                                                    | Detail page visible                                                                      | As expected                                                                                                                                                                   | Passed |
-| Add to bag                         | Bag             | Add product to bag                                                                                                                         | Bag updates                                                                              | As expected                                                                                                                                                                   | Passed |
-| Remove from bag                    | Bag             | Remove product from bag                                                                                                                    | Bag updates                                                                              | As expected                                                                                                                                                                   | Passed |
-| Checkout form renders              | Checkout        | Visit `/checkout/`                                                                                                                         | Form visible                                                                             | As expected                                                                                                                                                                   | Passed |
-| User registration                  | Accounts        | Register new user                                                                                                                          | Account created                                                                          | As expected                                                                                                                                                                   | Passed |
-| Login/logout                       | Accounts        | Login and logout flows                                                                                                                     | Auth works                                                                               | As expected                                                                                                                                                                   | Passed |
-| Admin access                       | Admin           | Login as superuser, visit `/admin/`                                                                                                        | Admin dashboard loads                                                                    | As expected                                                                                                                                                                   | Passed |
-| Invalid login                      | Accounts        | Attempt login with wrong password                                                                                                          | Error message shown                                                                      | As expected                                                                                                                                                                   | Passed |
-| Password reset                     | Accounts        | Request password reset email                                                                                                               | Email sent, can reset                                                                    | As expected                                                                                                                                                                   | Passed |
-| Search products                    | Products        | Use search box with query                                                                                                                  | Filtered results shown                                                                   | As expected                                                                                                                                                                   | Passed |
-| Empty search                       | Products        | Submit empty search                                                                                                                        | Error message, redirect                                                                  | As expected                                                                                                                                                                   | Passed |
-| Add product with size              | Bag             | Add product with size to bag                                                                                                               | Size shown in bag                                                                        | As expected                                                                                                                                                                   | Passed |
-| Remove product with size           | Bag             | Remove sized product from bag                                                                                                              | Bag updates                                                                              | As expected                                                                                                                                                                   | Passed |
-| Responsive layout (mobile)         | Layout          | View site on mobile device                                                                                                                 | Layout adapts, no overlap                                                                | As expected                                                                                                                                                                   | Passed |
-| Responsive layout (desktop)        | Layout          | View site on desktop                                                                                                                       | Layout adapts, no overlap                                                                | As expected                                                                                                                                                                   | Passed |
-| Placeholder image for no product   | Products        | View product with no image                                                                                                                 | Placeholder image shown                                                                  | As expected                                                                                                                                                                   | Passed |
-| Add-to-bag toast notification      | Bag             | Add item to bag                                                                                                                            | Toast notification appears                                                               | As expected                                                                                                                                                                   | Passed |
-| Product detail after add redirect  | Products/Bag    | From `/products/<id>/`, submit Add to Bag and follow redirect                                                                              | POST returns `302`; redirected detail returns `200`                                      | As expected                                                                                                                                                                   | Passed |
-| Remove-from-bag toast notification | Bag             | Remove item from bag                                                                                                                       | Toast notification appears                                                               | As expected                                                                                                                                                                   | Passed |
-| Admin create product               | Admin           | Create product in admin                                                                                                                    | Product appears in list                                                                  | As expected                                                                                                                                                                   | Passed |
-| Admin edit product                 | Admin           | Edit product in admin                                                                                                                      | Changes visible in list                                                                  | As expected                                                                                                                                                                   | Passed |
-| Admin delete product               | Admin           | Delete product in admin                                                                                                                    | Product removed from list                                                                | As expected                                                                                                                                                                   | Passed |
-| Checkout with empty bag            | Checkout        | Try to checkout with empty bag                                                                                                             | Error message, redirect                                                                  | As expected                                                                                                                                                                   | Passed |
-| Checkout with filled bag           | Checkout        | Checkout with items in bag                                                                                                                 | Order form shown                                                                         | As expected                                                                                                                                                                   | Passed |
-| Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent                                                                               | First call creates order; second verifies existing                                       | As expected                                                                                                                                                                   | Passed |
-| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit                                                                                       | Webhook creates order from metadata                                                      | As expected                                                                                                                                                                   | Passed |
-| AI assistant disclaimer visibility | AI Assistant    | Open the "What to wear" panel and inspect helper text above the input                                                                      | Disclaimer is clearly visible before submitting chat                                     | As expected                                                                                                                                                                   | Passed |
-| CSS validation                     | Static files    | W3C CSS Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/` (CSS Level 3 + SVG) | No CSS errors found                                                                      | 0 errors on all tested pages; 738 warnings per page (mainly third-party/vendor CSS)                                                                                           | Passed |
-| HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/`                    | Valid markup                                                                             | Post-deploy validator rerun on 2026-03-24 returned 0 errors, 0 warnings, and 0 info messages on all tested pages.                                                             | Passed |
+| Test Case                          | Area / Feature  | Steps / Description                                                                                                                        | Expected Result                                                                          | Actual Result                                                                                                                                                                                                        | Status |
+| ---------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Homepage loads                     | Home page       | Visit `/`                                                                                                                                  | Page loads, no errors                                                                    | As expected                                                                                                                                                                                                          | Passed |
+| Product list loads                 | Products        | Visit `/products/`                                                                                                                         | Product list visible                                                                     | As expected                                                                                                                                                                                                          | Passed |
+| Product detail loads               | Products        | Click product from list                                                                                                                    | Detail page visible                                                                      | As expected                                                                                                                                                                                                          | Passed |
+| Add to bag                         | Bag             | Add product to bag                                                                                                                         | Bag updates                                                                              | As expected                                                                                                                                                                                                          | Passed |
+| Remove from bag                    | Bag             | Remove product from bag                                                                                                                    | Bag updates                                                                              | As expected                                                                                                                                                                                                          | Passed |
+| Checkout form renders              | Checkout        | Visit `/checkout/`                                                                                                                         | Form visible                                                                             | As expected                                                                                                                                                                                                          | Passed |
+| User registration                  | Accounts        | Register new user                                                                                                                          | Account created                                                                          | As expected                                                                                                                                                                                                          | Passed |
+| Login/logout                       | Accounts        | Login and logout flows                                                                                                                     | Auth works                                                                               | As expected                                                                                                                                                                                                          | Passed |
+| Admin access                       | Admin           | Login as superuser, visit `/admin/`                                                                                                        | Admin dashboard loads                                                                    | As expected                                                                                                                                                                                                          | Passed |
+| Invalid login                      | Accounts        | Attempt login with wrong password                                                                                                          | Error message shown                                                                      | As expected                                                                                                                                                                                                          | Passed |
+| Password reset                     | Accounts        | Request password reset email                                                                                                               | Email sent, can reset                                                                    | As expected                                                                                                                                                                                                          | Passed |
+| Search products                    | Products        | Use search box with query                                                                                                                  | Filtered results shown                                                                   | As expected                                                                                                                                                                                                          | Passed |
+| Empty search                       | Products        | Submit empty search                                                                                                                        | Error message, redirect                                                                  | As expected                                                                                                                                                                                                          | Passed |
+| Add product with size              | Bag             | Add product with size to bag                                                                                                               | Size shown in bag                                                                        | As expected                                                                                                                                                                                                          | Passed |
+| Remove product with size           | Bag             | Remove sized product from bag                                                                                                              | Bag updates                                                                              | As expected                                                                                                                                                                                                          | Passed |
+| Responsive layout (mobile)         | Layout          | View site on mobile device                                                                                                                 | Layout adapts, no overlap                                                                | As expected                                                                                                                                                                                                          | Passed |
+| Responsive layout (desktop)        | Layout          | View site on desktop                                                                                                                       | Layout adapts, no overlap                                                                | As expected                                                                                                                                                                                                          | Passed |
+| Placeholder image for no product   | Products        | View product with no image                                                                                                                 | Placeholder image shown                                                                  | As expected                                                                                                                                                                                                          | Passed |
+| Add-to-bag toast notification      | Bag             | Add item to bag                                                                                                                            | Toast notification appears                                                               | As expected                                                                                                                                                                                                          | Passed |
+| Product detail after add redirect  | Products/Bag    | From `/products/<id>/`, submit Add to Bag and follow redirect                                                                              | POST returns `302`; redirected detail returns `200`                                      | As expected                                                                                                                                                                                                          | Passed |
+| Remove-from-bag toast notification | Bag             | Remove item from bag                                                                                                                       | Toast notification appears                                                               | As expected                                                                                                                                                                                                          | Passed |
+| Admin create product               | Admin           | Create product in admin                                                                                                                    | Product appears in list                                                                  | As expected                                                                                                                                                                                                          | Passed |
+| Admin edit product                 | Admin           | Edit product in admin                                                                                                                      | Changes visible in list                                                                  | As expected                                                                                                                                                                                                          | Passed |
+| Admin delete product               | Admin           | Delete product in admin                                                                                                                    | Product removed from list                                                                | As expected                                                                                                                                                                                                          | Passed |
+| Checkout with empty bag            | Checkout        | Try to checkout with empty bag                                                                                                             | Error message, redirect                                                                  | As expected                                                                                                                                                                                                          | Passed |
+| Checkout with filled bag           | Checkout        | Checkout with items in bag                                                                                                                 | Order form shown                                                                         | As expected                                                                                                                                                                                                          | Passed |
+| Webhook dedupe on same PI          | Checkout/Stripe | Call `payment_intent.succeeded` twice for same PaymentIntent                                                                               | First call creates order; second verifies existing                                       | As expected                                                                                                                                                                                                          | Passed |
+| Webhook fallback order creation    | Checkout/Stripe | Simulate payment confirmed without final form submit                                                                                       | Webhook creates order from metadata                                                      | As expected                                                                                                                                                                                                          | Passed |
+| AI assistant disclaimer visibility | AI Assistant    | Open the "What to wear" panel and inspect helper text above the input                                                                      | Disclaimer is clearly visible before submitting chat                                     | As expected                                                                                                                                                                                                          | Passed |
+| CSS validation                     | Static files    | W3C CSS Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/` (CSS Level 3 + SVG) | No CSS errors found                                                                      | 0 errors on all tested pages; 738 warnings per page (mainly third-party/vendor CSS)                                                                                                                                  | Passed |
+| HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/`                    | Valid markup                                                                             | Post-deploy validator rerun on 2026-03-24 returned 0 errors, 0 warnings, and 0 info messages on all tested pages.                                                                                                    | Passed |
 | Lighthouse audit                   | Site            | Run Lighthouse on `/`                                                                                                                      | Numeric scores recorded for submission                                                   | Homepage run captured on 2026-03-24: Performance 57, Accessibility 94, Best Practices 100, SEO 91. Final homepage screenshot captured on 2026-04-30: Performance 77, Accessibility 100, Best Practices 100, SEO 100. | Passed |
-| Rating validation                  | Products        | Open the add/edit product form and try values outside the 0.00 to 5.00 range                                                               | Form blocks invalid ratings and shows a clear error                                      | As expected                                                                                                                                                                   | Passed |
-| Price validation and formatting    | Products        | Open the add/edit product form and enter commas or more than 2 decimal places; view prices above 999 on list/detail pages                  | Form rejects invalid price input and displayed prices use comma separators for thousands | As expected                                                                                                                                                                   | Passed |
-| Search results summary             | Products        | Search for a product and review the results summary text                                                                                   | Summary reads naturally and shows the query clearly when search is active                | As expected                                                                                                                                                                   | Passed |
-| SKU uniqueness                     | Products        | Open the add/edit product form and enter a SKU that already exists                                                                         | Duplicate SKU is rejected with a clear validation message                                | As expected                                                                                                                                                                   | Passed |
+| Rating validation                  | Products        | Open the add/edit product form and try values outside the 0.00 to 5.00 range                                                               | Form blocks invalid ratings and shows a clear error                                      | As expected                                                                                                                                                                                                          | Passed |
+| Price validation and formatting    | Products        | Open the add/edit product form and enter commas or more than 2 decimal places; view prices above 999 on list/detail pages                  | Form rejects invalid price input and displayed prices use comma separators for thousands | As expected                                                                                                                                                                                                          | Passed |
+| Search results summary             | Products        | Search for a product and review the results summary text                                                                                   | Summary reads naturally and shows the query clearly when search is active                | As expected                                                                                                                                                                                                          | Passed |
+| SKU uniqueness                     | Products        | Open the add/edit product form and enter a SKU that already exists                                                                         | Duplicate SKU is rejected with a clear validation message                                | As expected                                                                                                                                                                                                          | Passed |

@@ -44,16 +44,16 @@ The project aims to demonstrate:
   - [Database Structure](#database-structure)
   - [User Stories](#user-stories)
   - [Installation / Setup](#installation--setup)
-    - [1. Clone the repository](#1-clone-the-repository)
-    - [2. Create a virtual environment (optional but recommended)](#2-create-a-virtual-environment-optional-but-recommended)
-    - [3. Install dependencies](#3-install-dependencies)
-    - [4. Configure local environment variables](#4-configure-local-environment-variables)
-    - [5. Apply database migrations](#5-apply-database-migrations)
-    - [6. Create a superuser (optional, for admin access)](#6-create-a-superuser-optional-for-admin-access)
-    - [7. Run the development server](#7-run-the-development-server)
-    - [8. Run automated tests](#8-run-automated-tests)
+    - [1. Clone the Repository](#1-clone-the-repository)
+    - [2. Create a Virtual Environment (Optional but Recommended)](#2-create-a-virtual-environment-optional-but-recommended)
+    - [3. Install Dependencies](#3-install-dependencies)
+    - [4. Configure Local Environment Variables](#4-configure-local-environment-variables)
+    - [5. Apply Database Migrations](#5-apply-database-migrations)
+    - [6. Create a Superuser (Optional, for Admin Access)](#6-create-a-superuser-optional-for-admin-access)
+    - [7. Run the Development Server](#7-run-the-development-server)
+    - [8. Run Automated Tests](#8-run-automated-tests)
   - [AI Style Assistant (What to Wear)](#ai-style-assistant-what-to-wear)
-    - [Stripe testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
+    - [Stripe Testing (Stripe CLI - Windows)](#stripe-testing-stripe-cli---windows)
     - [Frontend](#frontend)
   - [Key Outline](#key-outline)
   - [Known Limitations at Submission](#known-limitations-at-submission)
@@ -81,7 +81,7 @@ This submission was built to evidence the core requirements of a full-stack comm
 
 This project uses the following technologies:
 
-- Language and framework: Python 3.12, Django 3.2.25
+- Language and framework: Python 3.12, Django 4.2.30
 - Frontend stack: HTML5, CSS3, JavaScript, Bootstrap 4.4.1 (CDN), jQuery 3.5.1, Font Awesome 5.15.4
 - Databases: SQLite (local default) and PostgreSQL via `DATABASE_URL` in production
 - Authentication and accounts: django-allauth
@@ -425,13 +425,13 @@ Key relationships:
 
 Follow these steps to set up Fabric-Focus locally:
 
-### 1. Clone the repository
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Matt-Wilshaw/fabric-focus.git
 cd fabric-focus
 ```
 
-### 2. Create a virtual environment (optional but recommended)
+### 2. Create a Virtual Environment (Optional but Recommended)
 ```bash
 python -m venv .venv
 # Activate it (Windows):
@@ -440,12 +440,12 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 3. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure local environment variables
+### 4. Configure Local Environment Variables
 
 This project loads local development environment values from `env.py` if the file exists.
 
@@ -465,22 +465,22 @@ Optional variables:
 
 Production note: do not set `DEVELOPMENT` in production. In this project, debug mode is controlled by the presence of `DEVELOPMENT`.
 
-### 5. Apply database migrations
+### 5. Apply Database Migrations
 ```bash
 python manage.py migrate
 ```
 
-### 6. Create a superuser (optional, for admin access)
+### 6. Create a Superuser (Optional, for Admin Access)
 ```bash
 python manage.py createsuperuser
 ```
 
-### 7. Run the development server
+### 7. Run the Development Server
 ```bash
 python manage.py runserver
 ```
 
-### 8. Run automated tests
+### 8. Run Automated Tests
 ```bash
 python manage.py test
 ```
@@ -512,7 +512,7 @@ This project includes a custom "What to wear" assistant widget that talks to an 
 - If the API key is missing, the widget falls back to simple keyword-based responses.
 - The assistant panel includes an on-screen disclaimer asking users to double-check important details, as AI suggestions can occasionally be inaccurate.
 
-### Stripe testing (Stripe CLI - Windows)
+### Stripe Testing (Stripe CLI - Windows)
 
 If you want to test Stripe webhooks locally using the Stripe CLI on Windows, follow these steps.
 
@@ -581,7 +581,7 @@ This repository is Django-rendered and does not include a separate frontend sing
 
 ## Known Limitations at Submission
 
-- Automated test coverage is still modest relative to the full project scope. Core flows now have basic Django test coverage, but broader regression coverage across profiles, admin actions, and edge cases would strengthen long-term maintainability.
+- Automated test coverage focuses on core flows using Django's built-in test framework (32 tests passing at submission). Broader regression coverage across profiles, admin actions, and edge cases would strengthen long-term maintainability.
 - Order confirmation is currently provided on-screen and by email. Although a phone number is collected during checkout for delivery/contact details, the project does not send SMS confirmations or text-message delivery updates.
 - Accessibility validation includes practical project-level checks, but a full assistive-technology audit across all user flows has not yet been completed.
 
