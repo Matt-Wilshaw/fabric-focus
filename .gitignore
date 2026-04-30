@@ -3,7 +3,9 @@
 __pycache__/
 *.pyc
 db.sqlite3
-.env## Python: Byte-compiled / caches
+.env
+
+## Python: Byte-compiled / caches
 __pycache__/
 **/__pycache__/
 *.py[cod]

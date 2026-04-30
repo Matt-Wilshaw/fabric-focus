@@ -662,8 +662,8 @@ Not yet fully audited:
 Outcome summary:
 
 - Markup quality improved as part of the HTML validation fixes on 2026-03-24.
-- Homepage Lighthouse mobile accessibility score on 2026-04-30: `95`.
-- Lighthouse flagged the mobile search and account menu icon links as missing discernible names on 2026-04-30; the mobile header controls now include explicit `aria-label` values.
+- Homepage Lighthouse mobile accessibility score on the final 2026-04-30 screenshot: `100`.
+- Lighthouse previously flagged the mobile search and account menu icon links as missing discernible names; the mobile header controls now include explicit `aria-label` values.
 - Homepage CTA contrast issue is tracked in the Bug Tracker as item `29` (Fixed).
 
 ### Screen Reader Evidence Log
@@ -719,14 +719,14 @@ Test profile used:
 | Page         | Date       | Performance | Accessibility | Best Practices | SEO |
 | ------------ | ---------- | ----------- | ------------- | -------------- | --- |
 | `/`          | 2026-03-24 | 57          | 94            | 100            | 91  |
-| `/`          | 2026-04-30 | 77          | 95            | 100            | 100 |
+| `/`          | 2026-04-30 | 77          | 100           | 100            | 100 |
 
 Notes:
 
 - Scores can vary between runs (network conditions, cold cache, background processes).
 - For consistency, I run audits in an Incognito window with extensions disabled.
 - The 2026-03-24 row records the previous captured homepage mobile Lighthouse run.
-- The 2026-04-30 row records the newer homepage mobile Lighthouse run.
+- The 2026-04-30 row records the final homepage mobile Lighthouse run after image/performance work and mobile header accessibility labels.
 
 ### Homepage (`/`) previous mobile Lighthouse evidence
 
@@ -752,7 +752,7 @@ Key findings:
 - SEO: score of `91` indicates a minor SEO opportunity was present in the earlier homepage audit.
 - Best Practices: `100` — no issues flagged.
 
-### Homepage (`/`) mobile Lighthouse rerun
+### Homepage (`/`) final mobile Lighthouse evidence
 
 Report metadata:
 
@@ -765,9 +765,13 @@ Report metadata:
 Summary scores captured for `/` on 2026-04-30:
 
 - Performance: `77`
-- Accessibility: `95`
+- Accessibility: `100`
 - Best Practices: `100`
 - SEO: `100`
+
+Evidence screenshot:
+
+- `testing-images/lighthouse/lighthouse-testing-final.png`
 
 Supporting evidence from the same report:
 
@@ -779,8 +783,9 @@ Supporting evidence from the same report:
 
 Key findings called out by Lighthouse:
 
-- Accessibility: Lighthouse flagged two mobile header links without discernible names: `a#mobile-search` and `a#user-options-mobile`.
-- Accessibility fix: the mobile search, account menu, search submit, and bag controls now include explicit accessible names.
+- Accessibility: final screenshot shows the homepage mobile accessibility score increased to `100` after the mobile search, account menu, search submit, and bag controls were given explicit accessible names.
+- Performance: score improved from the previous captured homepage score of `57` to `77`.
+- Performance note: the improvement is likely helped by the smaller homepage hero image and the later Python/Django upgrade, alongside normal Lighthouse run-to-run variation.
 - Performance: render-blocking requests were identified as the largest optimisation opportunity, with estimated savings of `2,970 ms`.
 - Performance: cache lifetime, font display, document request latency, unused JavaScript, unused CSS, and CSS minification were also identified as optimisation opportunities.
 
@@ -1115,7 +1120,7 @@ This table summarises key test cases and their results for core project features
 | AI assistant disclaimer visibility | AI Assistant    | Open the "What to wear" panel and inspect helper text above the input                                                                      | Disclaimer is clearly visible before submitting chat                                     | As expected                                                                                                                                                                   | Passed |
 | CSS validation                     | Static files    | W3C CSS Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/` (CSS Level 3 + SVG) | No CSS errors found                                                                      | 0 errors on all tested pages; 738 warnings per page (mainly third-party/vendor CSS)                                                                                           | Passed |
 | HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/`                    | Valid markup                                                                             | Post-deploy validator rerun on 2026-03-24 returned 0 errors, 0 warnings, and 0 info messages on all tested pages.                                                             | Passed |
-| Lighthouse audit                   | Site            | Run Lighthouse on `/`                                                                                                                      | Numeric scores recorded for submission                                                   | Homepage run captured on 2026-03-24: Performance 57, Accessibility 94, Best Practices 100, SEO 91. Homepage run captured on 2026-04-30: Performance 77, Accessibility 95, Best Practices 100, SEO 100. | Passed |
+| Lighthouse audit                   | Site            | Run Lighthouse on `/`                                                                                                                      | Numeric scores recorded for submission                                                   | Homepage run captured on 2026-03-24: Performance 57, Accessibility 94, Best Practices 100, SEO 91. Final homepage screenshot captured on 2026-04-30: Performance 77, Accessibility 100, Best Practices 100, SEO 100. | Passed |
 | Rating validation                  | Products        | Open the add/edit product form and try values outside the 0.00 to 5.00 range                                                               | Form blocks invalid ratings and shows a clear error                                      | As expected                                                                                                                                                                   | Passed |
 | Price validation and formatting    | Products        | Open the add/edit product form and enter commas or more than 2 decimal places; view prices above 999 on list/detail pages                  | Form rejects invalid price input and displayed prices use comma separators for thousands | As expected                                                                                                                                                                   | Passed |
 | Search results summary             | Products        | Search for a product and review the results summary text                                                                                   | Summary reads naturally and shows the query clearly when search is active                | As expected                                                                                                                                                                   | Passed |
