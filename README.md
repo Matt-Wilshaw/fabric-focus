@@ -583,7 +583,13 @@ This repository is Django-rendered and does not include a separate frontend sing
 
 - Automated test coverage focuses on core flows using Django's built-in test framework (32 tests passing at submission). Broader regression coverage across profiles, admin actions, and edge cases would strengthen long-term maintainability.
 - Order confirmation is currently provided on-screen and by email. Although a phone number is collected during checkout for delivery/contact details, the project does not send SMS confirmations or text-message delivery updates.
+- Stock is not reserved at add-to-bag time. In theory, two users could add the same last item simultaneously and both proceed to checkout before either order is blocked. Stock enforcement is not currently implemented at the application level.
 - Accessibility validation includes practical project-level checks, but a full assistive-technology audit across all user flows has not yet been completed.
+- Product listings have no pagination. If the catalogue grew large this would become unwieldy for users to browse.
+- There is no order status tracking after purchase. Customers can view their order history but cannot see whether an order has been dispatched.
+- Stock levels are not managed in the admin. There is no quantity field on products, so overselling cannot be prevented at the catalogue level.
+- Product images must be managed manually. There is no bulk upload or catalogue import facility.
+- The bag is session-based and is not saved to a user's account. Items added on one device or browser will not carry over to another session.
 
 ## Future Enhancements
 
