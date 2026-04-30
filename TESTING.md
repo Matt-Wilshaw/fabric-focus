@@ -62,7 +62,7 @@ At submission stage:
     - [Known Accessibility Issues](#known-accessibility-issues)
   - [Lighthouse Testing](#lighthouse-testing)
     - [Homepage (`/`) mobile Lighthouse evidence](#homepage--mobile-lighthouse-evidence)
-    - [Products (`/products/`) mobile Lighthouse evidence](#products-products-mobile-lighthouse-evidence)
+    - [Homepage (`/`) previous mobile Lighthouse evidence](#homepage--previous-mobile-lighthouse-evidence)
   - [User Stories](#user-stories)
     - [1. Browse Products](#1-browse-products)
     - [2. View Product Details](#2-view-product-details)
@@ -662,7 +662,8 @@ Not yet fully audited:
 Outcome summary:
 
 - Markup quality improved as part of the HTML validation fixes on 2026-03-24.
-- Homepage Lighthouse mobile accessibility score on 2026-03-24: `95`.
+- Homepage Lighthouse mobile accessibility score on 2026-04-30: `95`.
+- Lighthouse flagged the mobile search and account menu icon links as missing discernible names on 2026-04-30; the mobile header controls now include explicit `aria-label` values.
 - Homepage CTA contrast issue is tracked in the Bug Tracker as item `29` (Fixed).
 
 ### Screen Reader Evidence Log
@@ -697,7 +698,7 @@ Representative desktop evidence captured for this submission:
 
 Lighthouse (Chrome DevTools) audits pages for performance, accessibility, best practices, and SEO.
 
-Latest captured audit: 2026-03-24
+Latest captured audit: 2026-04-30
 
 Test profile used:
 
@@ -715,64 +716,29 @@ Test profile used:
 
 **Results:**
 
-| Page         | Performance | Accessibility | Best Practices | SEO |
-| ------------ | ----------- | ------------- | -------------- | --- |
-| `/`          | 79          | 95            | 100            | 100 |
-| `/products/` | 57          | 94            | 100            | 91  |
+| Page         | Date       | Performance | Accessibility | Best Practices | SEO |
+| ------------ | ---------- | ----------- | ------------- | -------------- | --- |
+| `/`          | 2026-03-24 | 57          | 94            | 100            | 91  |
+| `/`          | 2026-04-30 | 77          | 95            | 100            | 100 |
 
 Notes:
 
 - Scores can vary between runs (network conditions, cold cache, background processes).
 - For consistency, I run audits in an Incognito window with extensions disabled.
-- Both rows above are supported by captured mobile Lighthouse runs dated 2026-03-24.
+- The 2026-03-24 row records the previous captured homepage mobile Lighthouse run.
+- The 2026-04-30 row records the newer homepage mobile Lighthouse run.
 
-### Homepage (`/`) mobile Lighthouse evidence
+### Homepage (`/`) previous mobile Lighthouse evidence
 
 Report metadata:
 
 - URL tested: `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
 - Lighthouse version: `13.0.2`
-- Fetch time: `2026-03-24T08:17:17.483Z`
-- Form factor: mobile
-- Browser profile: Chrome 146 mobile emulation
-
-Summary scores captured on 2026-03-24:
-
-- Performance: `79`
-- Accessibility: `95`
-- Best Practices: `100`
-- SEO: `100`
-
-Supporting evidence from the same report:
-
-- First Contentful Paint: `3.8 s`
-- Largest Contentful Paint: `3.8 s`
-- Speed Index: `3.8 s`
-- Total Blocking Time: `105.5 ms`
-- Time to Interactive: `5.3 s`
-- Cumulative Layout Shift: `0.001`
-- Max Potential First Input Delay: `261 ms`
-- Initial server response time: `55 ms`
-
-Key findings called out by Lighthouse:
-
-- Accessibility: one contrast issue on the homepage `Shop Now` button was reported.
-- Accessibility proof: Lighthouse flagged `a.shop-now-button` at a contrast ratio of `2.24:1`, where `4.5:1` was expected for normal text.
-- Performance: total page weight was approximately `8,024 KiB`.
-- Performance: the largest payload contributor was the homepage hero background image (`homepage_background_cropped.jpg`), at roughly `7.5 MB`.
-- Performance: render-blocking resources, unused JavaScript, and unused CSS were identified as the main optimisation opportunities in the audit.
-
-### Products (`/products/`) mobile Lighthouse evidence
-
-Report metadata:
-
-- URL tested: `https://fabric-focus-f1a8e9ed6562.herokuapp.com/products/`
-- Lighthouse version: `13.0.2`
 - Fetch time: `2026-03-24`
 - Form factor: mobile
 - Browser profile: Chrome mobile emulation
 
-Summary scores captured on 2026-03-24:
+Summary scores captured for `/` on 2026-03-24:
 
 - Performance: `57`
 - Accessibility: `94`
@@ -781,10 +747,42 @@ Summary scores captured on 2026-03-24:
 
 Key findings:
 
-- Performance: the lower score relative to the homepage is expected given the products page loads multiple product images simultaneously, increasing total page weight and request count.
-- Accessibility: score of `94` indicates at least one remaining accessibility opportunity on `/products/`; refer to the captured Lighthouse report details for the exact flagged audit item(s).
-- SEO: score of `91` indicates a minor SEO opportunity (for example, missing or non-descriptive meta description on the products listing page).
+- Performance: this earlier homepage run reported a lower performance score than the later 2026-04-30 rerun.
+- Accessibility: score of `94` indicates at least one remaining accessibility opportunity was present in the earlier homepage audit.
+- SEO: score of `91` indicates a minor SEO opportunity was present in the earlier homepage audit.
 - Best Practices: `100` — no issues flagged.
+
+### Homepage (`/`) mobile Lighthouse rerun
+
+Report metadata:
+
+- URL tested: `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
+- Lighthouse version: `13.0.2`
+- Fetch time: `2026-04-30`
+- Form factor: mobile
+- Browser profile: Chrome mobile emulation
+
+Summary scores captured for `/` on 2026-04-30:
+
+- Performance: `77`
+- Accessibility: `95`
+- Best Practices: `100`
+- SEO: `100`
+
+Supporting evidence from the same report:
+
+- First Contentful Paint: `4.1 s`
+- Largest Contentful Paint: `4.1 s`
+- Speed Index: `4.1 s`
+- Total Blocking Time: `60 ms`
+- Cumulative Layout Shift: `0`
+
+Key findings called out by Lighthouse:
+
+- Accessibility: Lighthouse flagged two mobile header links without discernible names: `a#mobile-search` and `a#user-options-mobile`.
+- Accessibility fix: the mobile search, account menu, search submit, and bag controls now include explicit accessible names.
+- Performance: render-blocking requests were identified as the largest optimisation opportunity, with estimated savings of `2,970 ms`.
+- Performance: cache lifetime, font display, document request latency, unused JavaScript, unused CSS, and CSS minification were also identified as optimisation opportunities.
 
 ---
 
@@ -1077,8 +1075,8 @@ How I use this table:
 | 36  | Product search results summary (`/products/?q=...`)                                                                                 | The search results summary showed the literal words `search term` instead of the query the user entered, so the page did not clearly tell the user what had been searched. Expected: the results line should show the actual search query in a natural sentence, or just the total count when no search is active. | 1) Visit `/products/?q=soft` or another search query.<br>2) Before the fix, the summary showed a placeholder like `search term` instead of the entered query.<br>3) After the fix, the summary reads `Showing 3 results for "soft"`.                                                                                          | Fixed              | Updated `products/templates/products/products.html` to render a clearer summary line using the actual `search_term`: `Showing {{ products                                                                                                                                                                                                                                                                                                            | length }} result{{ products | length | pluralize }} for "{{ search_term }}"` when searching, and a plain product count otherwise. |
 
 | 37  | Product SKU uniqueness (`/products/add/`, `/products/edit/<id>/`)                                                                  | The product form allowed duplicate SKUs, which could create duplicate catalogue entries and confusion in admin management. Expected: SKU values are unique and duplicate entries are rejected with a clear validation message.                                                                    | 1) Open `/products/add/` or `/products/edit/<id>/`.<br>2) Enter a SKU that already exists on another product.<br>3) Submit the form.<br>4) Confirm the form blocks the save and shows the duplicate-SKU message.                                                                                                            | Fixed              | Added `unique=True` to `Product.sku` in `products/models.py`, added duplicate-SKU validation in `products/forms.py`, and created regression coverage in `products/tests.py`. Created migration `products/migrations/0004_alter_product_sku.py` and verified with `python manage.py test products`. |
-
 | 38  | Dependency: django-countries (Python 3.12 upgrade) | After upgrading to Python 3.12, `python manage.py makemigrations` failed with an import error in `django_countries` due to an outdated version incompatible with Python 3.12. Expected: migrations and management commands run without errors on Python 3.12. | 1) Upgrade to Python 3.12.<br>2) Run `python manage.py makemigrations`.<br>3) Observe import error in `django_countries`.<br>4) Upgrade `django-countries` and `setuptools`.<br>5) Retry migrations. | Fixed | Upgraded `django-countries` to 8.2.0 and `setuptools` to latest. Updated `requirements.txt` with new versions. Verified `python manage.py makemigrations` and `python manage.py migrate` both succeed on Python 3.12. |
+| 39  | Mobile header icon link accessible names (`/`)                                                                                      | Lighthouse reported that the mobile search and account dropdown links did not have discernible names. Expected: icon-only mobile header controls expose clear accessible names to assistive technologies.                                                                      | 1) Run Lighthouse mobile on `/`.<br>2) Review the Accessibility audit for "Links do not have a discernible name".<br>3) Confirm `a#mobile-search` and `a#user-options-mobile` are listed before the fix.<br>4) Add accessible names and rerun Lighthouse after deployment.                                                    | Fixed locally      | Added explicit `aria-label` values to the mobile search link, account menu link, bag link, and search submit button in `templates/includes/mobile-top-header.html` on 2026-04-30. |
 
 ## Testing Table
 
@@ -1117,7 +1115,7 @@ This table summarises key test cases and their results for core project features
 | AI assistant disclaimer visibility | AI Assistant    | Open the "What to wear" panel and inspect helper text above the input                                                                      | Disclaimer is clearly visible before submitting chat                                     | As expected                                                                                                                                                                   | Passed |
 | CSS validation                     | Static files    | W3C CSS Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/` (CSS Level 3 + SVG) | No CSS errors found                                                                      | 0 errors on all tested pages; 738 warnings per page (mainly third-party/vendor CSS)                                                                                           | Passed |
 | HTML validation                    | Templates       | W3C HTML Validator on `/`, `/products/`, `/products/2/`, `/bag/`, `/checkout/`, `/accounts/login/`, `/accounts/signup/`                    | Valid markup                                                                             | Post-deploy validator rerun on 2026-03-24 returned 0 errors, 0 warnings, and 0 info messages on all tested pages.                                                             | Passed |
-| Lighthouse audit                   | Site            | Run Lighthouse on `/` and `/products/`                                                                                                     | Numeric scores recorded for submission                                                   | Homepage: Performance 79, Accessibility 95, Best Practices 100, SEO 100. Products: Performance 57, Accessibility 94, Best Practices 100, SEO 91. Both captured on 2026-03-24. | Passed |
+| Lighthouse audit                   | Site            | Run Lighthouse on `/`                                                                                                                      | Numeric scores recorded for submission                                                   | Homepage run captured on 2026-03-24: Performance 57, Accessibility 94, Best Practices 100, SEO 91. Homepage run captured on 2026-04-30: Performance 77, Accessibility 95, Best Practices 100, SEO 100. | Passed |
 | Rating validation                  | Products        | Open the add/edit product form and try values outside the 0.00 to 5.00 range                                                               | Form blocks invalid ratings and shows a clear error                                      | As expected                                                                                                                                                                   | Passed |
 | Price validation and formatting    | Products        | Open the add/edit product form and enter commas or more than 2 decimal places; view prices above 999 on list/detail pages                  | Form rejects invalid price input and displayed prices use comma separators for thousands | As expected                                                                                                                                                                   | Passed |
 | Search results summary             | Products        | Search for a product and review the results summary text                                                                                   | Summary reads naturally and shows the query clearly when search is active                | As expected                                                                                                                                                                   | Passed |
