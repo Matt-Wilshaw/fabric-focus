@@ -985,6 +985,42 @@ label {
     margin-top: 0;
 }
 
+.allauth-form-inner-content > :not(.page-title-block) {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.allauth-login-page .allauth-form-inner-content > :not(.page-title-block) {
+    max-width: 480px;
+}
+
+.allauth-login-page .login-secondary-action,
+.allauth-login-page form.login .form-check,
+.allauth-login-page form.login .checkbox {
+    text-align: right;
+}
+
+.allauth-login-page form.login .form-check {
+    padding-left: 0;
+}
+
+.allauth-login-page form.login .form-check-input {
+    position: static;
+    margin-left: 0;
+    margin-right: 0.4rem;
+}
+
+.allauth-logout-page .allauth-form-inner-content > :not(.page-title-block) {
+    max-width: 640px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.allauth-logout-page .allauth-form-actions {
+    justify-content: flex-start;
+}
+
 .page-title-block {
     padding-top: 1.25rem;
 }
@@ -1067,14 +1103,15 @@ label {
 .allauth-form-inner-content .btn,
 .allauth-form-inner-content button,
 .allauth-form-inner-content input[type='submit'] {
-    padding: 0.36rem 0.78rem;
-    font-size: 0.94rem;
-    line-height: 1.35;
+    min-height: 40px;
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    line-height: 1.2;
 }
 
 .allauth-form-inner-content .btn.btn-lg {
-    padding: 0.36rem 0.78rem;
-    font-size: 0.94rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
 }
 
 .allauth-form-inner-content .allauth-form-actions .btn,
@@ -1082,9 +1119,10 @@ label {
 .allauth-form-inner-content form.signup .btn,
 .allauth-form-inner-content form button.btn,
 .allauth-form-inner-content p .btn {
-    padding: 0.32rem 0.7rem;
-    font-size: 0.9rem;
-    line-height: 1.3;
+    min-height: 40px;
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    line-height: 1.2;
 }
 
 .allauth-form-inner-content a {
@@ -1094,6 +1132,8 @@ label {
 .allauth-form-actions {
     margin-top: 1.75rem;
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* Product cards */
@@ -1599,12 +1639,14 @@ label {
     }
 
     .message-container {
-        left: 8px;
-        right: 8px;
+        left: auto;
+        right: 12px;
+        width: min(350px, calc(100vw - 24px));
     }
 
     .message-container .toast {
-        max-width: 100%;
+        width: 100%;
+        max-width: 350px;
     }
 
     .update-link,
@@ -1701,6 +1743,13 @@ label {
         min-width: 0 !important;
         max-width: none !important;
         margin-top: 0 !important;
+    }
+
+    .mobile-account-dropdown {
+        left: auto !important;
+        right: 0.75rem !important;
+        width: min(18rem, calc(100vw - 1.5rem)) !important;
+        max-width: 18rem !important;
     }
 }
 
