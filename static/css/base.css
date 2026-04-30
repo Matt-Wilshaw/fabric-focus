@@ -255,6 +255,7 @@ h4,
     line-height: 1.2;
     padding: 0.5rem 1rem;
     min-height: 40px;
+
 }
 
 .btn-outline-black:hover,
@@ -1246,7 +1247,9 @@ label {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-width: 180px;
+    width: 210px;
+    max-width: 100%;
+    white-space: nowrap;
 }
 
 .superuser-admin-actions {
@@ -1648,7 +1651,14 @@ label {
     }
 
     .product-form-actions {
-        justify-content: flex-start;
+        margin-top: 1rem;
+        margin-bottom: 0.85rem;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center !important;
+        /* Fixed syntax */
+        gap: 0.6rem;
+        flex-wrap: wrap;
     }
 
     .bag-action-button {
