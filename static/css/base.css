@@ -985,13 +985,13 @@ label {
     margin-top: 0;
 }
 
-.allauth-form-inner-content > :not(.page-title-block) {
+.allauth-form-inner-content> :not(.page-title-block) {
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.allauth-login-page .allauth-form-inner-content > :not(.page-title-block) {
+.allauth-login-page .allauth-form-inner-content> :not(.page-title-block) {
     max-width: 480px;
 }
 
@@ -1011,9 +1011,9 @@ label {
     margin-right: 0.4rem;
 }
 
-.allauth-logout-page .allauth-form-inner-content > :not(.page-title-block) {
-    max-width: 640px;
-    margin-left: 0;
+.allauth-logout-page .allauth-form-inner-content> :not(.page-title-block) {
+    max-width: 720px;
+    margin-left: auto;
     margin-right: auto;
 }
 
@@ -1127,6 +1127,22 @@ label {
 
 .allauth-form-inner-content a {
     color: #17a2b8;
+}
+
+.allauth-login-page .allauth-form-inner-content p a,
+.allauth-signup-page .allauth-form-inner-content p a,
+.allauth-logout-page .allauth-form-inner-content p a {
+    color: #c28c2e;
+    text-decoration: underline;
+    text-decoration-color: #c28c2e;
+    text-underline-offset: 0.15em;
+}
+
+.allauth-login-page .allauth-form-inner-content p a:hover,
+.allauth-signup-page .allauth-form-inner-content p a:hover,
+.allauth-logout-page .allauth-form-inner-content p a:hover {
+    color: #a67622;
+    text-decoration-color: #a67622;
 }
 
 .allauth-form-actions {
@@ -1385,15 +1401,71 @@ label {
     }
 
     .header-container {
-        padding-top: 164px;
+        padding-top: 220px;
     }
 
     .allauth-page .allauth-form-inner-content {
-        padding-top: 5rem;
+        padding-top: 3.5rem;
     }
 
     .allauth-signup-page .allauth-form-inner-content {
-        padding-top: 3.75rem;
+        padding-top: 1.0rem;
+    }
+
+    .allauth-login-page .page-title-block {
+        max-width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .allauth-signup-page .page-title-block {
+        max-width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .allauth-logout-page .page-title-block {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Make shopping bag title a bit wider on large screens and keep its rule equal width */
+    .bag-page .bag-page-title,
+    .bag-page .bag-title-rule,
+    .bag-page .bag-empty-state {
+        max-width: 800px;
+        margin-left: 0;
+        margin-right: auto;
+    }
+
+    .bag-page .bag-page-title {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+
+    /* Ensure the title has no left offset */
+    .bag-page .bag-page-title,
+    .bag-page .bag-empty-state,
+    .bag-page .bag-empty-state .form-action-button {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    .bag-page .bag-title-rule {
+        display: block;
+        width: 100%;
+    }
+
+    /* Ensure empty-state text and button align with the title/underline */
+    .bag-page .bag-empty-state {
+        text-align: left;
+    }
+
+    .bag-page .bag-empty-state .form-action-button {
+        margin-left: 0;
+        display: inline-block;
     }
 
     .page-title-block {
@@ -1422,7 +1494,7 @@ label {
     }
 
     .products-header-container {
-        padding-top: 164px;
+        padding-top: 220px;
     }
 
     .products-title-wrap {
@@ -1434,7 +1506,7 @@ label {
     }
 
     .bag-header-container {
-        padding-top: 194px;
+        padding-top: 220px;
     }
 
     .bag-page-title {
@@ -1451,7 +1523,7 @@ label {
     }
 
     .checkout-header-container {
-        padding-top: 190px;
+        padding-top: 220px;
     }
 
     .checkout-page-title {
@@ -1468,6 +1540,11 @@ label {
 @media (max-width: 991.98px) {
     .mobile-header-icons .dropdown {
         position: static;
+    }
+
+    /* Nudge sign-out content down a little on small and tablet screens */
+    .allauth-logout-page .allauth-form-inner-content {
+        padding-top: 2.5rem;
     }
 
     .fixed-top.container-fluid {
@@ -1966,5 +2043,18 @@ label {
 
     .home-page .hero-copy {
         padding-top: 0.75rem;
+    }
+}
+
+/* Ensure logout and bag-empty content align at md and up (fix 768-992 drift) */
+@media (min-width: 768px) {
+
+    .allauth-logout-page .page-title-block,
+    .allauth-logout-page .allauth-form-inner-content> :not(.page-title-block),
+    .bag-page .bag-page-title,
+    .bag-page .bag-empty-state {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

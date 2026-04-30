@@ -179,8 +179,6 @@ The design supports both usability and brand identity, creating a professional a
 - Admin product and category management
 - Responsive layout across mobile, tablet, and desktop
 
----
-
 ## Admin Access
 
 If you are logged in as an admin user, you can access the Django admin panel to manage products, categories, users, and orders using:
@@ -191,8 +189,6 @@ If you are logged in as an admin user, you can access the Django admin panel to 
 Alternatively, you can go to Product Management from the My Account screen if you want to add a product to the system without using the Django backend.
 
 ![Admin Navigation](readme-images/miscellaneous/admin-navigation.png)
-
----
 
 ## Design Choices
 
@@ -236,13 +232,15 @@ Wireframes and screen references were used to guide responsive layout decisions.
 
 Fabric-Focus uses a dark neutral base with warm gold accents.
 
-- **Brand Dark** (`#1f2a2e`): Primary dark UI elements and headings.
-- **Brand Dark Hover** (`#162024`): Hover state for dark interactive components.
-- **Gold Accent** (`#d9a441`): Main call-to-action emphasis.
-- **Gold Accent Hover/Alt** (`#c28c2e`): Accent hover/border variant.
-- **Body Text Neutral** (`#555555`): Default readable body content colour.
+| Swatch                                                   | Name              | Hex       | Usage                                         |
+| -------------------------------------------------------- | ----------------- | --------- | --------------------------------------------- |
+| ![#1f2a2e](https://placehold.co/60x20/1f2a2e/1f2a2e.png) | Brand Dark        | `#1f2a2e` | Primary UI elements, headings, and navigation |
+| ![#162024](https://placehold.co/60x20/162024/162024.png) | Brand Dark Hover  | `#162024` | Hover state for dark interactive components   |
+| ![#d9a441](https://placehold.co/60x20/d9a441/d9a441.png) | Gold Accent       | `#d9a441` | Main call-to-action buttons and highlights    |
+| ![#c28c2e](https://placehold.co/60x20/c28c2e/c28c2e.png) | Gold Accent Hover | `#c28c2e` | Accent hover states and border variants       |
+| ![#555555](https://placehold.co/60x20/555555/555555.png) | Body Text Neutral | `#555555` | Default readable body content                 |
 
-These values are taken from the current `static/css/base.css` theme variables and rules.
+These values are defined as CSS variables in `static/css/base.css` and applied consistently across all templates.
 
 ### Typography
 
@@ -274,8 +272,6 @@ Not yet fully audited:
 
 See [TESTING.md](./TESTING.md) for dated evidence and the current accessibility status.
 
----
-
 ## Testing Overview
 
 Testing focuses on end-to-end shopping flows, account access, checkout reliability, and responsive behaviour.
@@ -300,8 +296,6 @@ Run these quick checks after deployment:
 4. Checkout page loads delivery form and payment area.
 5. Complete a Stripe test payment and verify confirmation.
 6. Confirm admin/product management access for superuser.
-
----
 
 ## Development Checklist
 
@@ -375,8 +369,6 @@ Run these quick checks after deployment:
   - [ ] Shopper: create wishlists and gift registries.
   - [ ] Shopper: subscribe to back-in-stock alerts for out-of-stock items.
 
----
-
 ## Database Structure
 
 Fabric-Focus uses relational Django models across catalogue, checkout, and profile domains.
@@ -391,8 +383,6 @@ Key relationships:
 - One Category -> many Products
 - One UserProfile -> many Orders
 - One Order -> many OrderLineItems
-
----
 
 ## User Stories
 

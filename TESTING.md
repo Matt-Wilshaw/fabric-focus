@@ -45,6 +45,11 @@ At submission stage:
   - [Automated Test Execution Evidence — 2026-04-28](#automated-test-execution-evidence--2026-04-28)
   - [Browser Compatibility Matrix](#browser-compatibility-matrix)
   - [Responsiveness Testing](#responsiveness-testing)
+    - [320px](#320px)
+    - [576px](#576px)
+    - [768px](#768px)
+    - [992px](#992px)
+    - [1200px](#1200px)
   - [HTML Validator Testing](#html-validator-testing)
     - [Final Validation Summary](#final-validation-summary)
     - [Validation Cleanup Summary](#validation-cleanup-summary)
@@ -114,7 +119,7 @@ Date run: 2026-02-25
 stripe version
 ```
 
-Observed output:
+**Observed Output:**
 
 ```text
 stripe version 1.37.0
@@ -125,7 +130,7 @@ Checking for new versions...
 python manage.py check
 ```
 
-Observed output:
+**Observed Output:**
 
 ```text
 System check identified no issues (0 silenced).
@@ -137,7 +142,7 @@ System check identified no issues (0 silenced).
 python manage.py shell -c "from django.test import Client; c=Client(); r=c.post('/checkout/wh/', data='{}', content_type='application/json', HTTP_HOST='localhost'); print('status=', r.status_code)"
 ```
 
-Observed output:
+**Observed Output:**
 
 ```text
 status= 400
@@ -152,7 +157,7 @@ Note: This 400 is expected for an unsigned test request. Stripe signature verifi
 python manage.py shell -c "from django.test import RequestFactory; from checkout.webhook_handler import StripeWH_Handler; req=RequestFactory().post('/checkout/wh/'); h=StripeWH_Handler(req); events=['payment_intent.created','payment_intent.succeeded','payment_intent.payment_failed']; [print(et, '->', (h.handle_event({'type':et}) if et=='payment_intent.created' else h.handle_payment_intent_succeeded({'type':et}) if et=='payment_intent.succeeded' else h.handle_payment_intent_payment_failed({'type':et})).status_code) for et in events]"
 ```
 
-Observed output:
+**Observed Output:**
 
 ```text
 payment_intent.created -> 200
@@ -173,7 +178,7 @@ Date run: 2026-02-26
   - Match on customer/address/total plus `original_bag` and `stripe_pid`.
   - Create the order only if no match is found.
 
-Observed dedupe validation output:
+**Observed Dedupe Validation Output:**
 
 ```text
 pi=pi_... call1_delta=1 call2_delta=0
@@ -181,7 +186,7 @@ Webhook received: payment_intent.succeeded | SUCCESS: created order in webhook
 Webhook received: payment_intent.succeeded | VERIFIED order already in database
 ```
 
-Observed profile-integration validation output (webhook parity with checkout view):
+**Observed Profile-Integration Validation Output (Webhook Parity with Checkout View):**
 
 ```text
 resp1= 200 Webhook received: payment_intent.succeeded | SUCCESS: Created order in webhook
@@ -236,20 +241,20 @@ The following limitations are acknowledged at submission. They are documented he
 
 This ensures the tests are run in a clean, reproducible environment.
 
-Command executed:
+**Command executed:**
 
 ```powershell
 C:/Projects/fabric-focus/.venv/Scripts/python.exe manage.py test
 ```
 
-Observed output summary:
+**Observed Output Summary:**
 
 - Test database created and destroyed successfully.
 - Django system check reported no issues.
 - `Ran 23 tests in 3.005s`
 - Final status: `OK`
 
-Security-focused regression tests added in this run:
+**Security-Focused Regression Tests Added in this Run:**
 
 - guest users cannot open arbitrary `/checkout/checkout_success/<order_number>` pages without a matching checkout session
 - authenticated users cannot open or claim another user's order from the checkout success route
@@ -258,12 +263,25 @@ Security-focused regression tests added in this run:
 
 ## Automated Test Execution Evidence — 2026-04-28
 
-Observed output summary:
+**Command executed:**
+
+```powershell
+python manage.py test
+```
+
+**Observed Output Summary:**
 
 - Test database created and destroyed successfully.
 - Django system check reported no issues.
 - `Ran 32 tests in 4.886s`
 - Final status: `OK`
+
+**Additional Tests Added in this Run:**
+
+- Product rating validation: form rejects values outside `0.00`–`5.00`.
+- Product price validation: form rejects commas and more than two decimal places; prices display with thousands separators.
+- Search results summary: results line renders the actual search query rather than a placeholder.
+- SKU uniqueness: duplicate SKUs are rejected with a clear validation message.
 
 This run confirms all automated unit and integration tests pass in the current development environment.
 
@@ -298,59 +316,59 @@ Breakpoints I test:
 
 Responsiveness screenshot evidence captured from the built application:
 
-**320px**
+### 320px
 
-Homepage  
+**Homepage**
 ![320px homepage responsiveness](testing-images/responsiveness/320/homepage.png)
 
-Products  
+**Products**
 ![320px products responsiveness](testing-images/responsiveness/320/products.png)
 
-Checkout  
+**Checkout**
 ![320px checkout responsiveness](testing-images/responsiveness/320/checkout.png)
 
-**576px**
+### 576px
 
-Homepage  
+**Homepage**
 ![576px homepage responsiveness](testing-images/responsiveness/576/homepage.png)
 
-Products  
+**Products**
 ![576px products responsiveness](testing-images/responsiveness/576/products.png)
 
-Checkout  
+**Checkout**
 ![576px checkout responsiveness](testing-images/responsiveness/576/checkout.png)
 
-**768px**
+### 768px
 
-Homepage  
+**Homepage**
 ![768px homepage responsiveness](testing-images/responsiveness/768/homepage.png)
 
-Products  
+**Products**
 ![768px products responsiveness](testing-images/responsiveness/768/products.png)
 
-Checkout  
+**Checkout**
 ![768px checkout responsiveness](testing-images/responsiveness/768/checkout.png)
 
-**992px**
+### 992px
 
-Homepage  
+**Homepage**
 ![992px homepage responsiveness](testing-images/responsiveness/992/homepage.png)
 
-Products  
+**Products**
 ![992px products responsiveness](testing-images/responsiveness/992/products.png)
 
-Checkout  
+**Checkout**
 ![992px checkout responsiveness](testing-images/responsiveness/992/checkout.png)
 
-**1200px**
+### 1200px
 
-Homepage  
+**Homepage**
 ![1200px homepage responsiveness](testing-images/responsiveness/1200/homepage.png)
 
-Products  
+**Products**
 ![1200px products responsiveness](testing-images/responsiveness/1200/products.png)
 
-Checkout  
+**Checkout**
 ![1200px checkout responsiveness](testing-images/responsiveness/1200/checkout.png)
 
 
@@ -365,8 +383,6 @@ Checkout
   - Product list cards/rows don't overflow
   - Text remains readable and buttons/links are tappable
 6. Capture screenshots from the built application and save them in the testing evidence folder before linking them in this document.
-
----
 
 ## HTML Validator Testing
 
@@ -424,7 +440,7 @@ Retest status:
 
 ### Homepage (`/`) Validation Snapshot
 
-**Page tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
+**Page Tested:** `https://fabric-focus-f1a8e9ed6562.herokuapp.com/`
 
 🔗 [View full validation result](https://validator.w3.org/nu/?doc=https%3A%2F%2Ffabric-focus-f1a8e9ed6562.herokuapp.com%2F)
 
