@@ -1145,6 +1145,18 @@ label {
     text-decoration-color: #a67622;
 }
 
+.order-history a {
+    color: #c28c2e;
+    text-decoration: underline;
+    text-decoration-color: #c28c2e;
+    text-underline-offset: 0.15em;
+}
+
+.order-history a:hover {
+    color: #a67622;
+    text-decoration-color: #a67622;
+}
+
 .allauth-form-actions {
     margin-top: 1.75rem;
     margin-bottom: 1rem;
