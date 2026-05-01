@@ -1007,6 +1007,12 @@ label {
     margin-right: auto;
 }
 
+.allauth-confirm-email-page .page-title-block {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .allauth-reset-password-page .allauth-form-inner-content> :not(.page-title-block) {
     max-width: 640px;
     margin-left: auto;
@@ -1062,6 +1068,10 @@ label {
 }
 
 .allauth-change-password-done-page .allauth-form-actions {
+    justify-content: flex-start;
+}
+
+.allauth-confirm-email-page .allauth-form-actions {
     justify-content: flex-start;
 }
 
@@ -1175,7 +1185,8 @@ label {
 
 .allauth-login-page .allauth-form-inner-content p a,
 .allauth-signup-page .allauth-form-inner-content p a,
-.allauth-logout-page .allauth-form-inner-content p a {
+.allauth-logout-page .allauth-form-inner-content p a,
+.allauth-confirm-email-page .allauth-form-inner-content p a {
     color: #c28c2e;
     text-decoration: underline;
     text-decoration-color: #c28c2e;
@@ -1184,7 +1195,8 @@ label {
 
 .allauth-login-page .allauth-form-inner-content p a:hover,
 .allauth-signup-page .allauth-form-inner-content p a:hover,
-.allauth-logout-page .allauth-form-inner-content p a:hover {
+.allauth-logout-page .allauth-form-inner-content p a:hover,
+.allauth-confirm-email-page .allauth-form-inner-content p a:hover {
     color: #a67622;
     text-decoration-color: #a67622;
 }
@@ -1480,9 +1492,15 @@ label {
         margin-right: auto;
     }
 
-    .allauth-change-password-page .page-title-block,
-    .allauth-confirm-email-page .page-title-block {
+    .allauth-change-password-page .page-title-block {
         max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .allauth-confirm-email-page .page-title-block,
+    .allauth-confirm-email-page .allauth-form-inner-content> :not(.page-title-block) {
+        max-width: 640px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1500,12 +1518,6 @@ label {
     }
 
     .allauth-change-password-page .page-title-block {
-        max-width: 720px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .allauth-change-password-done-page .page-title-block {
         max-width: 720px;
         margin-left: auto;
         margin-right: auto;
@@ -1643,6 +1655,10 @@ label {
         max-width: 720px;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    .allauth-confirm-email-page .page-title-block {
+        padding-top: 3rem;
     }
 
     .fixed-top.container-fluid {
@@ -2296,5 +2312,13 @@ label {
     .bag-page .table-responsive th:nth-child(5),
     .bag-page .table-responsive td:nth-child(5) {
         padding-left: 4rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .allauth-signup-page .page-title-block {
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

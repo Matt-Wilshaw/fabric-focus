@@ -54,3 +54,44 @@
 </p>
 
 {% endblock %}
+
+{% block extra_body %}
+{{ block.super }}
+<style>
+/* Compact inline password toggle specific to the login page */
+.password-wrapper{position:relative;display:block}
+.password-wrapper input{padding-right:2.25rem}
+.password-toggle{position:absolute;right:0.5rem;top:50%;transform:translateY(-50%);cursor:pointer;color:#6c757d;font-size:1rem;display:inline-flex;align-items:center;justify-content:center}
+.password-toggle i{font-size:1rem}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var form = document.querySelector('form.login');
+  if(!form) return;
+  var pwd = form.querySelector('input[type="password"]');
+  if(!pwd) return;
+  var wrapper = document.createElement('span');
+  wrapper.className = 'password-wrapper';
+  pwd.parentNode.insertBefore(wrapper, pwd);
+  wrapper.appendChild(pwd);
+  var toggle = document.createElement('span');
+  toggle.className = 'password-toggle';
+  toggle.setAttribute('role','button');
+  toggle.setAttribute('aria-label','Toggle password visibility');
+  toggle.setAttribute('tabindex','0');
+  toggle.innerHTML = '<i class="fas fa-eye"></i>';
+  wrapper.appendChild(toggle);
+  function togglePwd(){
+    if(pwd.type === 'password'){
+      pwd.type = 'text';
+      toggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+    } else {
+      pwd.type = 'password';
+      toggle.innerHTML = '<i class="fas fa-eye"></i>';
+    }
+  }
+  toggle.addEventListener('click', function(e){ e.preventDefault(); togglePwd(); });
+  toggle.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePwd(); }});
+});
+</script>
+{% endblock %}
