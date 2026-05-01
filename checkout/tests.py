@@ -329,3 +329,57 @@ class StripeWebhookHandlerTests(TestCase):
         )
         mock_charge_retrieve.assert_called_once_with('ch_latest_charge')
         mock_send_mail.assert_called_once()
+
+    @patch('checkout.webhook_handler.send_mail')
+    def test_succeeded_event_recovers_missing_authenticated_profile(
+            self, mock_send_mail):
+        user = User.objects.create_user(
+            username='missingprofile',
+            password='testpass123',
+        )
+        UserProfile.objects.filter(user=user).delete()
+        order = Order.objects.create(
+            full_name='Missing Profile Tester',
+            email='missingprofile@example.com',
+            phone_number='07123456789',
+            country='GB',
+            postcode='SW1A1AA',
+            town_or_city='London',
+            street_address1='1 Test Street',
+            original_bag='{}',
+            stripe_pid='pi_missing_profile',
+        )
+        address = self._stripe_object(
+            country='GB',
+            postal_code='SW1A1AA',
+            city='London',
+            line1='1 Test Street',
+            line2=None,
+            state=None,
+        )
+        intent = self._stripe_object(
+            id='pi_missing_profile',
+            metadata={
+                'bag': '{}',
+                'save_info': 'true',
+                'username': user.username,
+            },
+            charges=self._stripe_object(data=[
+                self._stripe_object(
+                    amount=0,
+                    billing_details=self._stripe_object(email=order.email),
+                ),
+            ]),
+            shipping=self._stripe_object(
+                name=order.full_name,
+                phone=order.phone_number,
+                address=address,
+            ),
+        )
+        event = self._event('payment_intent.succeeded', intent)
+
+        response = self.handler.handle_payment_intent_succeeded(event)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(UserProfile.objects.filter(user=user).exists())
+        mock_send_mail.assert_called_once()

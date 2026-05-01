@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -116,8 +117,10 @@ class StripeWH_Handler:
         # If this wasn't an anonymous checkout, attach/update the user's profile.
         profile = None
         if username != 'AnonymousUser':
-            profile = UserProfile.objects.get(user__username=username)
-            if save_info:
+            user = get_user_model().objects.filter(username=username).first()
+            if user:
+                profile, _ = UserProfile.objects.get_or_create(user=user)
+            if profile and save_info:
                 profile.default_phone_number = shipping_details.phone
                 profile.default_country = shipping_details.address.country
                 profile.default_postcode = shipping_details.address.postal_code
