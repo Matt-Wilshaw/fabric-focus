@@ -1047,12 +1047,22 @@ label {
     margin-right: auto;
 }
 
+.allauth-change-password-done-page .allauth-form-inner-content> :not(.page-title-block) {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .allauth-logout-page .allauth-form-actions {
     justify-content: flex-start;
 }
 
 .allauth-change-password-page .allauth-form-actions {
     justify-content: flex-end;
+}
+
+.allauth-change-password-done-page .allauth-form-actions {
+    justify-content: flex-start;
 }
 
 .page-title-block {
@@ -1490,6 +1500,12 @@ label {
     }
 
     .allauth-change-password-page .page-title-block {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .allauth-change-password-done-page .page-title-block {
         max-width: 720px;
         margin-left: auto;
         margin-right: auto;
