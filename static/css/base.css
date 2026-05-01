@@ -995,9 +995,15 @@ label {
     max-width: 480px;
 }
 
+.allauth-change-password-page .allauth-form-inner-content> :not(.page-title-block),
+.allauth-confirm-email-page .allauth-form-inner-content> :not(.page-title-block) {
+    max-width: 480px;
+}
+
 .allauth-login-page .login-secondary-action,
 .allauth-login-page form.login .form-check,
-.allauth-login-page form.login .checkbox {
+.allauth-login-page form.login .checkbox,
+.allauth-change-password-page .login-secondary-action {
     text-align: right;
 }
 
@@ -1017,7 +1023,17 @@ label {
     margin-right: auto;
 }
 
+.allauth-change-password-page .allauth-form-inner-content> :not(.page-title-block) {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .allauth-logout-page .allauth-form-actions {
+    justify-content: flex-start;
+}
+
+.allauth-change-password-page .allauth-form-actions {
     justify-content: flex-start;
 }
 
@@ -1436,7 +1452,20 @@ label {
         margin-right: auto;
     }
 
+    .allauth-change-password-page .page-title-block,
+    .allauth-confirm-email-page .page-title-block {
+        max-width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .allauth-logout-page .page-title-block {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .allauth-change-password-page .page-title-block {
         max-width: 720px;
         margin-left: auto;
         margin-right: auto;
