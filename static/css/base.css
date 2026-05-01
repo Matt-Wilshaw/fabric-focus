@@ -995,6 +995,24 @@ label {
     max-width: 480px;
 }
 
+.allauth-login-page .page-title-block {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.allauth-reset-password-page .page-title-block {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.allauth-reset-password-page .allauth-form-inner-content> :not(.page-title-block) {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .allauth-change-password-page .allauth-form-inner-content> :not(.page-title-block),
 .allauth-confirm-email-page .allauth-form-inner-content> :not(.page-title-block) {
     max-width: 480px;
@@ -1034,7 +1052,7 @@ label {
 }
 
 .allauth-change-password-page .allauth-form-actions {
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 
 .page-title-block {
@@ -1441,20 +1459,26 @@ label {
     }
 
     .allauth-login-page .page-title-block {
-        max-width: 850px;
+        max-width: 480px;
         margin-left: auto;
         margin-right: auto;
     }
 
-    .allauth-signup-page .page-title-block {
-        max-width: 1100px;
+    .allauth-reset-password-page .page-title-block {
+        max-width: 640px;
         margin-left: auto;
         margin-right: auto;
     }
 
     .allauth-change-password-page .page-title-block,
     .allauth-confirm-email-page .page-title-block {
-        max-width: 850px;
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .allauth-signup-page .page-title-block {
+        max-width: 1100px;
         margin-left: auto;
         margin-right: auto;
     }
