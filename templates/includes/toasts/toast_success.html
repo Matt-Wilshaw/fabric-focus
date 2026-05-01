@@ -1,6 +1,6 @@
 {% url 'view_bag' as bag_url %}
 <div class="toast custom-toast rounded-0 border-top-0 {% if grand_total and request.path != bag_url %}toast-bag-action{% else %}toast-account-action{% endif %}" {% if grand_total and request.path != bag_url %} data-autohide="true"
-    data-delay="5000" data-dismiss-on-scroll="true" {% else %} data-autohide="true" data-delay="4500" {% endif %}>
+    data-delay="5000" data-dismiss-on-scroll="true" {% else %} data-autohide="true" data-delay="6500" {% endif %}>
     <div class="arrow-up arrow-success"></div>
     <div class="w-100 toast-capper bg-success"></div>
     <div class="toast-header bg-white text-dark">
