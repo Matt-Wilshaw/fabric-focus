@@ -5,9 +5,14 @@
 
 {% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
 
+{% block body_class %}allauth-page allauth-confirm-email-page{% endblock %}
+
 
 {% block inner_content %}
-<h1>{% trans "Confirm E-mail Address" %}</h1>
+<div class="page-title-block">
+    <h2 class="logo-font mb-4">{% trans "Confirm E-mail Address" %}</h2>
+    <hr>
+</div>
 
 {% if confirmation %}
 
@@ -16,8 +21,10 @@
 <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
 
 <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
-{% csrf_token %}
-    <button type="submit">{% trans 'Confirm' %}</button>
+    {% csrf_token %}
+    <div class="allauth-form-actions">
+        <button class="btn btn-black btn-lg text-uppercase" type="submit">{% trans 'Confirm' %}</button>
+    </div>
 </form>
 
 {% else %}
