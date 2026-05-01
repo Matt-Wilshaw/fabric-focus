@@ -1511,6 +1511,13 @@ label {
         margin-right: auto;
     }
 
+    .allauth-logout-page .allauth-form-inner-content,
+    .allauth-change-password-done-page .allauth-form-inner-content {
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     /* Make shopping bag title a bit wider on large screens and keep its rule equal width */
     .bag-page .bag-page-title,
     .bag-page .bag-title-rule,
@@ -1623,9 +1630,19 @@ label {
         position: static;
     }
 
-    /* Nudge sign-out content down a little on small and tablet screens */
-    .allauth-logout-page .allauth-form-inner-content {
-        padding-top: 2.5rem;
+    /* Keep sign-out and password-change confirmation closer to the desktop layout */
+    .allauth-logout-page .allauth-form-inner-content,
+    .allauth-change-password-done-page .allauth-form-inner-content {
+        padding-top: 3rem;
+    }
+
+    .allauth-logout-page .page-title-block,
+    .allauth-logout-page .allauth-form-inner-content> :not(.page-title-block),
+    .allauth-change-password-done-page .page-title-block,
+    .allauth-change-password-done-page .allauth-form-inner-content> :not(.page-title-block) {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .fixed-top.container-fluid {
