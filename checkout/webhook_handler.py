@@ -8,6 +8,7 @@ from products.models import Product
 from profiles.models import UserProfile
 
 import json
+import stripe
 import time
 
 
@@ -33,6 +34,30 @@ class StripeWH_Handler:
             settings.DEFAULT_FROM_EMAIL,
             [cust_email]
         )
+
+    def _get_value(self, obj, key, default=None):
+        """Read from either StripeObject-style objects or dictionaries."""
+        if isinstance(obj, dict):
+            return obj.get(key, default)
+        return getattr(obj, key, default)
+
+    def _get_payment_intent_charge(self, intent):
+        """
+        Return the charge for a PaymentIntent.
+
+        Some Stripe API versions include an expanded charges collection on the
+        webhook payload; newer payloads commonly provide latest_charge instead.
+        """
+        charges = self._get_value(intent, 'charges')
+        charge_data = self._get_value(charges, 'data', []) if charges else []
+        if charge_data:
+            return charge_data[0]
+
+        latest_charge = self._get_value(intent, 'latest_charge')
+        if latest_charge:
+            return stripe.Charge.retrieve(latest_charge)
+
+        return None
 
     def handle_event(self, event):
         """
@@ -69,7 +94,10 @@ class StripeWH_Handler:
 
         save_info = str(save_info).lower() in ('true', '1', 'yes', 'on')
 
-        billing_details = intent.charges.data[0].billing_details
+        charge = self._get_payment_intent_charge(intent)
+        billing_details = (
+            self._get_value(charge, 'billing_details') if charge else None
+        )
         shipping_details = intent.shipping
 
         if not billing_details or not shipping_details or not shipping_details.address:
@@ -78,7 +106,7 @@ class StripeWH_Handler:
                 status=200,
             )
 
-        grand_total = round(intent.charges.data[0].amount / 100, 2)
+        grand_total = round(self._get_value(charge, 'amount') / 100, 2)
 
         # Clean data in the shipping details
         for field, value in shipping_details.address.items():
@@ -104,34 +132,42 @@ class StripeWH_Handler:
         # Retry briefly to avoid race conditions with the normal checkout view.
         while attempt <= 5:
             try:
-                order = Order.objects.get(
-                    full_name__iexact=shipping_details.name,
-                    email__iexact=billing_details.email,
-                    phone_number__iexact=shipping_details.phone,
-                    country__iexact=shipping_details.address.country,
-                    postcode__iexact=shipping_details.address.postal_code,
-                    town_or_city__iexact=shipping_details.address.city,
-                    street_address1__iexact=shipping_details.address.line1,
-                    street_address2__iexact=shipping_details.address.line2,
-                    county__iexact=shipping_details.address.state,
-                    grand_total=grand_total,
-                    original_bag=bag,
-                    stripe_pid=pid,
-                )
+                order = Order.objects.get(original_bag=bag, stripe_pid=pid)
                 order_exists = True
                 break
             except Order.DoesNotExist:
-                attempt += 1
-                time.sleep(1)
+                try:
+                    order = Order.objects.get(
+                        full_name__iexact=shipping_details.name,
+                        email__iexact=billing_details.email,
+                        phone_number__iexact=shipping_details.phone,
+                        country__iexact=shipping_details.address.country,
+                        postcode__iexact=shipping_details.address.postal_code,
+                        town_or_city__iexact=shipping_details.address.city,
+                        street_address1__iexact=shipping_details.address.line1,
+                        street_address2__iexact=shipping_details.address.line2,
+                        county__iexact=shipping_details.address.state,
+                        grand_total=grand_total,
+                        original_bag=bag,
+                        stripe_pid=pid,
+                    )
+                    order_exists = True
+                    break
+                except Order.DoesNotExist:
+                    attempt += 1
+                    time.sleep(1)
         if order_exists:
             self._send_confirmation_email(order)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
+                content=(
+                    f'Webhook received: {event["type"]} | SUCCESS: '
+                    'Verified order already in database'
+                ),
                 status=200)
         else:
             order = None
             try:
-                # Fallback path: create the full order from Stripe data + bag metadata.
+                # Fallback: create the order from Stripe data + bag metadata.
                 order = Order.objects.create(
                     full_name=shipping_details.name,
                     user_profile=profile,
@@ -173,7 +209,10 @@ class StripeWH_Handler:
                     status=500)
         self._send_confirmation_email(order)
         return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
+            content=(
+                f'Webhook received: {event["type"]} | SUCCESS: '
+                'Created order in webhook'
+            ),
             status=200)
 
     def handle_payment_intent_payment_failed(self, event):

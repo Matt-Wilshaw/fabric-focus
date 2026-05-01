@@ -205,6 +205,19 @@ class StripeWebhookHandlerTests(TestCase):
     def setUp(self):
         self.handler = StripeWH_Handler(request=None)
 
+    def _stripe_object(self, **kwargs):
+        class StripeObject(dict):
+            def __getattr__(self, key):
+                try:
+                    return self[key]
+                except KeyError:
+                    raise AttributeError(key)
+
+            def __setattr__(self, key, value):
+                self[key] = value
+
+        return StripeObject(**kwargs)
+
     def _event(self, event_type, intent):
         class Event(dict):
             pass
@@ -260,4 +273,59 @@ class StripeWebhookHandlerTests(TestCase):
 
         self.handler._send_confirmation_email(order)
 
+        mock_send_mail.assert_called_once()
+
+    @patch('checkout.webhook_handler.send_mail')
+    @patch('checkout.webhook_handler.stripe.Charge.retrieve')
+    def test_succeeded_event_retrieves_latest_charge_when_charges_missing(
+            self, mock_charge_retrieve, mock_send_mail):
+        order = Order.objects.create(
+            full_name='Latest Charge Tester',
+            email='latest@example.com',
+            phone_number='07123456789',
+            country='GB',
+            postcode='SW1A1AA',
+            town_or_city='London',
+            street_address1='1 Test Street',
+            original_bag='{}',
+            stripe_pid='pi_latest_charge',
+        )
+        address = self._stripe_object(
+            country='GB',
+            postal_code='SW1A1AA',
+            city='London',
+            line1='1 Test Street',
+            line2=None,
+            state=None,
+        )
+        charge = self._stripe_object(
+            amount=0,
+            billing_details=self._stripe_object(email=order.email),
+        )
+        mock_charge_retrieve.return_value = charge
+        intent = self._stripe_object(
+            id='pi_latest_charge',
+            metadata={
+                'bag': '{}',
+                'save_info': 'false',
+                'username': 'AnonymousUser',
+            },
+            charges=None,
+            latest_charge='ch_latest_charge',
+            shipping=self._stripe_object(
+                name=order.full_name,
+                phone=order.phone_number,
+                address=address,
+            ),
+        )
+        event = self._event('payment_intent.succeeded', intent)
+
+        response = self.handler.handle_payment_intent_succeeded(event)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            'Verified order already in database',
+            response.content.decode(),
+        )
+        mock_charge_retrieve.assert_called_once_with('ch_latest_charge')
         mock_send_mail.assert_called_once()
